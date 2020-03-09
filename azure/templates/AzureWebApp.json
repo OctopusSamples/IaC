@@ -1,0 +1,76 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {        
+        "appServiceName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },        
+        "hostingPlanName": {
+            "type": "string"
+        },                
+        "appServiceSku": {
+            "type": "string"
+        },
+        "appServiceSkuCode": {
+            "type": "string"
+        },                      
+        "currentStack": {
+            "defaultValue": "dotnetcore",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "subscriptionId": "[subscription().subscriptionId]",
+        "resourceGroupName": "[resourceGroup().name]"    
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('appServiceName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+            ],
+            "properties": {
+                "name": "[parameters('appServiceName')]",
+                "siteConfig": {
+                    "appSettings": [],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "[parameters('currentStack')]"
+                        }
+                    ],
+                    "alwaysOn": false
+                },
+                "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('resourceGroupName'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+                "hostingEnvironment": "",
+                "clientAffinityEnabled": true
+            }
+        },
+        {
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('hostingPlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[parameters('location')]",
+            "kind": "",
+            "tags": {},
+            "properties": {
+                "name": "[parameters('hostingPlanName')]",
+                "workerSize": 0,
+                "workerSizeId": 0,
+                "numberOfWorkers": 0,
+                "hostingEnvironment": ""
+            },
+            "sku": {
+                "Tier": "[parameters('appServiceSku')]",
+                "Name": "[parameters('appServiceSkuCode')]"
+            }
+        }
+    ]
+}

@@ -1,0 +1,219 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the administrator of the new VM. Exclusion list: 'admin','administrator'"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the administrator account of the new VM"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }      
+    },     
+    "webVmName": {
+      "type": "string",
+      "metadata": {
+          "description": "The name of the VM for the Web Server"
+      }
+    },
+    "webVmSize": {
+        "type": "string",
+        "metadata": {
+            "description": "The VM size for the Web Server VM"
+        }
+    },      
+    "vmDiskStorageAccountName": {
+        "type": "string",
+        "metadata": {
+            "description": "The storage account name to be used to store the VM hard drives"
+        }
+    },
+    "virtualNetworkName": {
+        "type": "string",
+        "metadata": {
+            "description": "VNET Name"
+        }
+    },
+    "virtualNetworkResourceGroup": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group VNET is deployed in"
+        }
+    },
+    "subnet1Name": {
+        "type": "string",
+        "metadata": {
+            "description": "Name of the subnet inside the VNET"
+        }
+    }
+  },
+  "variables": {        
+    "webServerNetworkSecurityGroupName": "TentacleNsg",
+    "publicIpWebName": "[concat(parameters('webVmName'),'Ip')]",
+    "nicwebName": "[concat(parameters('webVmName'),'Nic')]",    
+    "vnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",    
+    "bootstrapWebVMName": "[concat(parameters('webVmName'),'bootStrap')]"    
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIpWebName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
+    },    
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[parameters('vmDiskStorageAccountName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },   
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('webServerNetworkSecurityGroupName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-Octopus",
+            "properties": {
+              "description": "Allow Octopus",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "10933",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1001,
+              "direction": "Inbound"
+            }
+          }                 
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicwebName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [        
+        "[resourceId('Microsoft.Network/networkSecurityGroups',variables('webServerNetworkSecurityGroupName'))]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('webServerNetworkSecurityGroupName'))]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpWebName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnet1Ref')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2016-04-30-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('webVmName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts',parameters('vmDiskStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('nicwebName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('webVmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('webVmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicwebName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[concat('http://',parameters('vmDiskStorageAccountName'),'.blob.core.windows.net')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('bootstrapWebVMName')]",
+      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "https://gallery.azure.com/artifact/20161101/Microsoft.CustomScriptExtension-arm.2.0.50/Artifacts/MainTemplate.json"
+          },
+          "parameters": {
+              "vmName": {
+                  "value": "[parameters('webVmName')]"
+              },
+              "location": {
+                  "value": "[parameters('location')]"
+              },
+              "fileUris": {
+                  "value": "https://raw.githubusercontent.com/OctopusSamples/KCDCIac/master/arm/bootstrap/BootstrapTentacleAndRunChoco.ps1"
+              },
+              "arguments": {
+                  "value": "\"#{Project.Octopus.ServerThumbprint}\" \"#{Project.VM.Name}\" \"#{Project.Chocolatey.Apps}\" \"#{Project.Dism.Apps}\""
+              }
+          }
+      },
+      "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('webVmName'))]"
+      ]
+    }    
+  ],
+  "outputs":{
+    "vmNetworkInterfaces":{
+        "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpWebName')),'2016-09-01')]",
+        "type": "object"
+    }
+  }
+}

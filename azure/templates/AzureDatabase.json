@@ -1,0 +1,98 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {        
+        "databaseName": {
+            "type": "string"
+        },
+        "databaseTier": {
+            "type": "string"
+        },
+        "databaseSkuName": {
+            "type": "string"
+        },        
+        "databaseServerName": {
+            "type": "string"
+        },
+        "databaseServerLocation": {
+            "type": "string"
+        }        
+    },
+    "variables": {
+        "subscriptionId": "[subscription().subscriptionId]",
+        "resourceGroupName": "[resourceGroup().name]",
+        "uniqueStorage": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), parameters('databaseServerLocation'))]",
+        "storageName": "[tolower(concat('sqlva', variables('uniqueStorage')))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2016-01-01",
+            "name": "[variables('storageName')]",
+            "location": "[parameters('databaseServerLocation')]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "properties": {},
+            "condition": false
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2017-10-01-preview",
+            "name": "[concat(parameters('databaseServerName'), '/', parameters('databaseName'))]",
+            "location": "[parameters('databaseServerLocation')]",
+            "tags": {},
+            "sku": {
+                "name": "[parameters('databaseSkuName')]",
+                "tier": "[parameters('databaseTier')]"
+            },
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 2147483648,
+                "sampleName": "",
+                "zoneRedundant": false,
+                "licenseType": "",
+                "readScale": "Disabled",
+                "readReplicaCount": 0,
+                "minCapacity": "",
+                "autoPauseDelay": ""
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2017-03-01-preview",
+            "name": "[concat(parameters('databaseServerName'), '/Default')]",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'), '/databases/', parameters('databaseName'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "disabledAlerts": [],
+                "emailAddresses": [],
+                "emailAccountAdmins": true
+            },
+            "condition": false
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2018-06-01-preview",
+            "name": "[concat(parameters('databaseServerName'), '/Default')]",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'), '/databases/', parameters('databaseName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('storageName'))]",
+                "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'), '/securityAlertPolicies/Default')]"
+            ],
+            "properties": {
+                "storageContainerPath": "",
+                "storageAccountAccessKey": "",
+                "recurringScans": {
+                    "isEnabled": true,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            },
+            "condition": false
+        }
+    ]
+}
