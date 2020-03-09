@@ -198,7 +198,7 @@
                   "value": "[parameters('location')]"
               },
               "fileUris": {
-                  "value": "https://raw.githubusercontent.com/OctopusSamples/KCDCIac/master/arm/bootstrap/BootstrapTentacleAndRunChoco.ps1"
+                  "value": "https://raw.githubusercontent.com/OctopusSamples/IaC/master/azure/bootstrap/BootstrapTentacleAndRunChoco.ps1"
               },
               "arguments": {
                   "value": "\"#{Project.Octopus.ServerThumbprint}\" \"#{Project.VM.Name}\" \"#{Project.Chocolatey.Apps}\" \"#{Project.Dism.Apps}\""
