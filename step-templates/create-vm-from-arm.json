@@ -1,0 +1,166 @@
+{
+    "Id": "ActionTemplates-311",
+    "Name": "Create VM via ARM",
+    "Description": "This step template is specific for the CS team at Octopus Deploy.  For any updates to this step, please export and save to the [Samples IAC] (https://github.com/OctopusSamples/IaC)",
+    "ActionType": "Octopus.AzureResourceGroup",
+    "Version": 3,
+    "CommunityActionTemplateId": null,
+    "Packages": [],
+    "Properties": {
+      "Octopus.Action.Azure.ResourceGroupDeploymentMode": "Incremental",
+      "Octopus.Action.Azure.TemplateSource": "Inline",
+      "Octopus.Action.Azure.ResourceGroupTemplateParameters": "{\"adminUsername\":{\"value\":\"#{CreateVM.Azure.VM.Admin.UserName}\"},\"adminPassword\":{\"value\":\"#{CreateVM.Azure.VM.Admin.Password}\"},\"location\":{\"value\":\"#{CreateVM.Azure.ResourceGroup.Location}\"},\"webVmName\":{\"value\":\"#{CreateVM.Azure.VM.Name}\"},\"webVmSize\":{\"value\":\"#{CreateVM.Azure.VM.Size}\"},\"vmDiskStorageAccountName\":{\"value\":\"#{CreateVM.Azure.VM.StorageAccount.Name}\"},\"virtualNetworkName\":{\"value\":\"#{CreateVM.Azure.Network.Name}\"},\"virtualNetworkResourceGroup\":{\"value\":\"#{CreateVM.Azure.Network.ResourceGroup.Name}\"},\"subnet1Name\":{\"value\":\"#{CreateVM.Azure.Network.Subnet.Name}\"}}",
+      "Octopus.Action.Azure.AccountId": "#{CreateVM.Azure.Account}",
+      "Octopus.Action.Azure.ResourceGroupName": "#{CreateVM.Azure.ResourceGroup.Name}",
+      "Octopus.Action.Azure.ResourceGroupTemplate": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"adminUsername\": {\n      \"type\": \"string\",\n      \"metadata\": {\n        \"description\": \"The name of the administrator of the new VM. Exclusion list: 'admin','administrator'\"\n      }\n    },\n    \"adminPassword\": {\n      \"type\": \"securestring\",\n      \"metadata\": {\n        \"description\": \"The password for the administrator account of the new VM\"\n      }\n    },\n    \"location\": {\n      \"type\": \"string\",\n      \"defaultValue\": \"[resourceGroup().location]\",\n      \"metadata\": {\n        \"description\": \"Location for all resources.\"\n      }      \n    },     \n    \"webVmName\": {\n      \"type\": \"string\",\n      \"metadata\": {\n          \"description\": \"The name of the VM for the Web Server\"\n      }\n    },\n    \"webVmSize\": {\n        \"type\": \"string\",\n        \"metadata\": {\n            \"description\": \"The VM size for the Web Server VM\"\n        }\n    },      \n    \"vmDiskStorageAccountName\": {\n        \"type\": \"string\",\n        \"metadata\": {\n            \"description\": \"The storage account name to be used to store the VM hard drives\"\n        }\n    },\n    \"virtualNetworkName\": {\n        \"type\": \"string\",\n        \"metadata\": {\n            \"description\": \"VNET Name\"\n        }\n    },\n    \"virtualNetworkResourceGroup\": {\n        \"type\": \"string\",\n        \"metadata\": {\n            \"description\": \"Resource Group VNET is deployed in\"\n        }\n    },\n    \"subnet1Name\": {\n        \"type\": \"string\",\n        \"metadata\": {\n            \"description\": \"Name of the subnet inside the VNET\"\n        }\n    }\n  },\n  \"variables\": {        \n    \"webServerNetworkSecurityGroupName\": \"TentacleNsg\",\n    \"publicIpWebName\": \"[concat(parameters('webVmName'),'Ip')]\",\n    \"nicwebName\": \"[concat(parameters('webVmName'),'Nic')]\",    \n    \"vnetID\": \"[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]\",\n    \"subnet1Ref\": \"[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]\",    \n    \"bootstrapWebVMName\": \"[concat(parameters('webVmName'),'bootStrap')]\"    \n  },\n  \"resources\": [\n    {\n      \"apiVersion\": \"2015-06-15\",\n      \"type\": \"Microsoft.Network/publicIPAddresses\",\n      \"name\": \"[variables('publicIpWebName')]\",\n      \"location\": \"[parameters('location')]\",\n      \"properties\": {\n        \"publicIPAllocationMethod\": \"Dynamic\"\n      }\n    },    \n    {\n      \"apiVersion\": \"2015-06-15\",\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"name\": \"[parameters('vmDiskStorageAccountName')]\",\n      \"location\": \"[parameters('location')]\",\n      \"properties\": {\n        \"accountType\": \"Standard_LRS\"\n      }\n    },   \n    {\n      \"apiVersion\": \"2015-06-15\",\n      \"type\": \"Microsoft.Network/networkSecurityGroups\",\n      \"name\": \"[variables('webServerNetworkSecurityGroupName')]\",\n      \"location\": \"[parameters('location')]\",\n      \"properties\": {\n        \"securityRules\": [\n          {\n            \"name\": \"default-allow-Octopus\",\n            \"properties\": {\n              \"description\": \"Allow Octopus\",\n              \"protocol\": \"Tcp\",\n              \"sourcePortRange\": \"*\",\n              \"destinationPortRange\": \"10933\",\n              \"sourceAddressPrefix\": \"*\",\n              \"destinationAddressPrefix\": \"*\",\n              \"access\": \"Allow\",\n              \"priority\": 1001,\n              \"direction\": \"Inbound\"\n            }\n          }                 \n        ]\n      }\n    },\n    {\n      \"apiVersion\": \"2015-06-15\",\n      \"type\": \"Microsoft.Network/networkInterfaces\",\n      \"name\": \"[variables('nicwebName')]\",\n      \"location\": \"[parameters('location')]\",\n      \"dependsOn\": [        \n        \"[resourceId('Microsoft.Network/networkSecurityGroups',variables('webServerNetworkSecurityGroupName'))]\"\n      ],\n      \"properties\": {\n        \"networkSecurityGroup\": {\n          \"id\": \"[resourceId('Microsoft.Network/networkSecurityGroups',variables('webServerNetworkSecurityGroupName'))]\"\n        },\n        \"ipConfigurations\": [\n          {\n            \"name\": \"ipconfig1\",\n            \"properties\": {\n              \"privateIPAllocationMethod\": \"Dynamic\",\n              \"publicIPAddress\": {\n                \"id\": \"[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpWebName'))]\"\n              },\n              \"subnet\": {\n                \"id\": \"[variables('subnet1Ref')]\"\n              }\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"apiVersion\": \"2016-04-30-preview\",\n      \"type\": \"Microsoft.Compute/virtualMachines\",\n      \"name\": \"[parameters('webVmName')]\",\n      \"location\": \"[parameters('location')]\",\n      \"dependsOn\": [\n        \"[resourceId('Microsoft.Storage/storageAccounts',parameters('vmDiskStorageAccountName'))]\",\n        \"[concat('Microsoft.Network/networkInterfaces/',variables('nicwebName'))]\"\n      ],\n      \"properties\": {\n        \"hardwareProfile\": {\n          \"vmSize\": \"[parameters('webVmSize')]\"\n        },\n        \"osProfile\": {\n          \"computerName\": \"[parameters('webVmName')]\",\n          \"adminUsername\": \"[parameters('adminUsername')]\",\n          \"adminPassword\": \"[parameters('adminPassword')]\"\n        },\n        \"storageProfile\": {\n          \"imageReference\": {\n            \"publisher\": \"MicrosoftWindowsServer\",\n            \"offer\": \"WindowsServer\",\n            \"sku\": \"2016-Datacenter\",\n            \"version\": \"latest\"\n          },\n          \"osDisk\": {\n            \"createOption\": \"FromImage\"\n          }\n        },\n        \"networkProfile\": {\n          \"networkInterfaces\": [\n            {\n              \"id\": \"[resourceId('Microsoft.Network/networkInterfaces',variables('nicwebName'))]\"\n            }\n          ]\n        },\n        \"diagnosticsProfile\": {\n          \"bootDiagnostics\": {\n            \"enabled\": \"true\",\n            \"storageUri\": \"[concat('http://',parameters('vmDiskStorageAccountName'),'.blob.core.windows.net')]\"\n          }\n        }\n      }\n    },\n    {\n      \"name\": \"[variables('bootstrapWebVMName')]\",\n      \"apiVersion\": \"2015-01-01\",\n      \"type\": \"Microsoft.Resources/deployments\",\n      \"properties\": {\n          \"mode\": \"Incremental\",\n          \"templateLink\": {\n              \"uri\": \"https://gallery.azure.com/artifact/20161101/Microsoft.CustomScriptExtension-arm.2.0.50/Artifacts/MainTemplate.json\"\n          },\n          \"parameters\": {\n              \"vmName\": {\n                  \"value\": \"[parameters('webVmName')]\"\n              },\n              \"location\": {\n                  \"value\": \"[parameters('location')]\"\n              },\n              \"fileUris\": {\n                  \"value\": \"https://raw.githubusercontent.com/OctopusSamples/IaC/master/azure/bootstrap/BootstrapTentacleAndRunChoco.ps1\"\n              },\n              \"arguments\": {\n                  \"value\": \"\\\"#{CreateVM.Octopus.Thumbprint}\\\" \\\"#{CreateVM.Azure.VM.Name}\\\" \\\"#{CreateVM.Chocolatey.Apps}\\\" \\\"#{CreateVM.Dism.Apps}\\\"\"\n              }\n          }\n      },\n      \"dependsOn\": [\n          \"[concat('Microsoft.Compute/virtualMachines/', parameters('webVmName'))]\"\n      ]\n    }    \n  ],\n  \"outputs\":{\n    \"vmNetworkInterfaces\":{\n        \"value\": \"[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpWebName')),'2016-09-01')]\",\n        \"type\": \"object\"\n    }\n  }\n}"
+    },
+    "Parameters": [
+      {
+        "Id": "271278b2-7ebf-4b69-a281-d76aa08aa73f",
+        "Name": "CreateVM.Azure.Account",
+        "Label": "Azure Account",
+        "HelpText": "The Azure Account to use to run the ARM Template",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "AzureAccount"
+        }
+      },
+      {
+        "Id": "b185960a-6649-455a-a1c6-d5d064032e90",
+        "Name": "CreateVM.Azure.ResourceGroup.Name",
+        "Label": "Resource Group Name",
+        "HelpText": "Name of the resource group to create the VM in.",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "e85673dc-5df5-4a75-847c-9acbb6c7ab71",
+        "Name": "CreateVM.Azure.VM.Admin.UserName",
+        "Label": "VM Admin User Name",
+        "HelpText": "The Username for the admin account on the VM.  Cannot be `admin` or `administrator`",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Sensitive"
+        }
+      },
+      {
+        "Id": "267dcf89-220f-43af-8c99-a3816ee73936",
+        "Name": "CreateVM.Azure.VM.Admin.Password",
+        "Label": "VM Admin Password",
+        "HelpText": "The password of the admin user for the VM",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Sensitive"
+        }
+      },
+      {
+        "Id": "aad68ac1-78c5-4b0c-9408-e7975462086d",
+        "Name": "CreateVM.Azure.ResourceGroup.Location",
+        "Label": "Resource Group Location",
+        "HelpText": "The location, or data center, of the resource group",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Select",
+          "Octopus.SelectOptions": "Central US|Americas - Central US\nEast US|Americas - East US\nEast US 2|Americas - East US 2\nNorth Central US|Americas - North Central US\nSouth Central US|Americas - South Central US\nWest US|Americas - West US\nWest US 2|Americas - West US 2\nWest Central US|Americas - West Central US\nCanada Central|Americas - Canada Central\nCanada East|Americas - Canada East\nBrazil South|Americas - Brazil South\nEast Asia|Asia Pacific - East Asia\nSoutheast Asia|Asia Pacific - Southeast Asia\nAustralia Central|Asia Pacific - Australia Central\nAustralia Central 2|Asia Pacific - Australia Central 2\nAustralia East|Asia Pacific - Australia East\nAustralia Southeast|Asia Pacific - Australia Southeast\nChina East|Asia Pacific - China East\nChina East 2|Asia Pacific - China East 2\nChina North|Asia Pacific - China North\nChina North 2|Asia Pacific - China North 2\nCentral India|Asia Pacific - Central India\nSouth India|Asia Pacific - South India\nWest India|Asia Pacific - West India\nJapan East|Asia Pacific - Japan East\nJapan West|Asia Pacific - Japan West\nKorea Central|Asia Pacific - Korea Central\nKorea South|Asia Pacific - Korea South\nNorth Europe|Europe - North Europe\nWest Europe|Europe - West Europe\nFrance Central|Europe - France Central\nFrance South|Europe - France South\nGermany North|Europe - Germany North\nGermany West Central|Europe - Germany West Central\nNorway East|Europe - Norway East\nNorway West|Europe - Norway West\nSpain Central|Europe - Spain Central\nSwitzerland North|Europe - Switzerland North\nSwitzerland West|Europe - Switzerland West\nUK South|Europe - UK South\nUK West|Europe - UK West\nSouth Africa North|Middle East and Africa - South Africa North\nSouth Africa West|Middle East and Africa - South Africa West\nUAE Central|Middle East and Africa - UAE Central\nUAE North|Middle East and Africa - UAE North"
+        }
+      },
+      {
+        "Id": "6bdb8bd9-2042-44b4-83d7-58fd4052f1b5",
+        "Name": "CreateVM.Azure.VM.Name",
+        "Label": "VM Name",
+        "HelpText": "Name of the VM (must be less than 18 characters)",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "edbd3d25-ada2-4b26-8673-d86183665dda",
+        "Name": "CreateVM.Azure.VM.Size",
+        "Label": "VM Size",
+        "HelpText": "The VM Size, for example standard_b2ms, or standard_d2v2",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "cda829de-a048-4c4e-b879-a30d44a92f12",
+        "Name": "CreateVM.Azure.VM.StorageAccount.Name",
+        "Label": "VM Storage Account Name",
+        "HelpText": "The name of the storage account hosting the OS disks which will be created for this VM.",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "de237d0d-c981-4c1a-8c1e-c6b585919738",
+        "Name": "CreateVM.Azure.Network.Name",
+        "Label": "VNET Name",
+        "HelpText": "Pre-Existing Virtual Network Name to attach this VM to",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "f3b5d668-20c3-4e83-83d5-2581fe476cb1",
+        "Name": "CreateVM.Azure.Network.ResourceGroup.Name",
+        "Label": "VNET Resource Group Name",
+        "HelpText": "The name of the resource group where the pre-existing VNET lives",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "71b2df7e-7546-4b34-9eee-a7dee95f66c7",
+        "Name": "CreateVM.Azure.Network.Subnet.Name",
+        "Label": "VNET Subnet Name",
+        "HelpText": "The name of the pre-existing subnet in the pre-existing VNET to attach the VM to",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "ddb727ee-0e65-4ff8-b047-a9aa700f3fba",
+        "Name": "CreateVM.Octopus.Thumbprint",
+        "Label": "Octopus Thumbprint",
+        "HelpText": "The thumbprint of the Octopus Server so the VM will trust it.",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "beb7c28c-39f8-460e-8535-e9983cf7a1d9",
+        "Name": "CreateVM.Chocolatey.Apps",
+        "Label": "Chocolatey Apps to Install",
+        "HelpText": "A csv list of [chocolatey apps](https://chocolatey.org) to pre-install",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "89e93eae-be45-45cf-a668-69087bdf5aae",
+        "Name": "CreateVM.Dism.Apps",
+        "Label": "DISM Features To Enable",
+        "HelpText": "The csv list of [DISM](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism---deployment-image-servicing-and-management-technical-reference-for-windows) features to enable",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      }
+    ],
+    "SpaceId": "Spaces-105",
+    "$Meta": {
+      "ExportedAt": "2020-04-13T15:11:29.924Z",
+      "OctopusVersion": "2020.1.10",
+      "Type": "ActionTemplate"
+    }
+  }
