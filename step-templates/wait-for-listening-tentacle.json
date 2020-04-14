@@ -1,0 +1,106 @@
+{
+    "Id": "ActionTemplates-323",
+    "Name": "Wait for Tentacle To Come Online",
+    "Description": "This step template will first check to see if the machine registration already exists, if it does not then it will hit the tentacle's IP address periodically until it comes online.  ",
+    "ActionType": "Octopus.Script",
+    "Version": 4,
+    "CommunityActionTemplateId": null,
+    "Packages": [],
+    "Properties": {
+      "Octopus.Action.RunOnServer": "true",
+      "Octopus.Action.Script.ScriptSource": "Inline",
+      "Octopus.Action.Script.Syntax": "PowerShell",
+      "Octopus.Action.Script.ScriptBody": "$IPAddress = $OctopusParameters[\"WaitForTentacle.Machine.Address\"]\n$OctopusAPIKey = $OctopusParameters[\"WaitForTentacle.Octopus.Api.Key\"]\n$OctopusUrl = $OctopusParameters[\"WaitForTentacle.Octopus.Url\"]\n$SpaceId = $OctopusParameters[\"Octopus.Space.Id\"]\n$MachineRegistrationName = $OctopusParameters[\"WaitForTentacle.Machine.Registration.Name\"]\n$InitialSleepSeconds = $OctopusParameters[\"WaitForTentacle.Wait.InitialSleep\"]\n$TimeoutSeconds = $OctopusParameters[\"WaitForTentacle.Timeout.Seconds\"]\n$TentacleType = $OctopusParameters[\"WaitForTentacle.Tentacle.Type\"]\n$PortNumber = $OctopusParameters[\"WaitForTentacle.Machine.PortNumber\"]\n\n$CurrentPowerShellVersion = (Get-Host).Version.Major\nWrite-Host \"Major PowerShell Version: $CurrentPowerShellVersion\"\n\nWrite-Host \"Address $IPAddress\"\nWrite-Host \"Octopus Url: $OctopusUrl\"\nWrite-Host \"Machine Registration Name: $MachineRegistrationName\"\nWrite-Host \"Initial Sleep Seconds: $InitialSleepSeconds\"\nWrite-Host \"Timeout Seconds: $TimeoutSeconds\"\nWrite-Host \"Tentacle Type: $TentacleType\"\n\n[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12\n\nif ($CurrentPowerShellVersion -lt 6)\n{\n  if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)\n  {\n\t$certCallback = @\"\n    using System;\n    using System.Net;\n    using System.Net.Security;\n    using System.Security.Cryptography.X509Certificates;\n    public class ServerCertificateValidationCallback\n    {\n        public static void Ignore()\n        {\n            if(ServicePointManager.ServerCertificateValidationCallback ==null)\n            {\n                ServicePointManager.ServerCertificateValidationCallback += \n                    delegate\n                    (\n                        Object obj, \n                        X509Certificate certificate, \n                        X509Chain chain, \n                        SslPolicyErrors errors\n                    )\n                    {\n                        return true;\n                    };\n            }\n        }\n    }\n\"@\n    Add-Type $certCallback\n \t}\n\t[ServerCertificateValidationCallback]::Ignore()\n}\n\n$header = New-Object \"System.Collections.Generic.Dictionary[[String],[String]]\"\n$header.Add(\"X-Octopus-ApiKey\", $OctopusAPIKey)\n\n$existingMachineResultsUrl = \"$OctopusUrl/api/$SpaceId/machines?skip=0&take=1000&partialName=$MachineRegistrationName\"\nif ($TentacleType -eq \"Worker\")\n{\n\t$existingMachineResultsUrl = \"$OctopusUrl/api/$SpaceId/workers?skip=0&take=1000&partialName=$MachineRegistrationName\"\n}\nWrite-Host \"Attempting to find existing machine with similar name at $existingMachineResultsUrl\"\n$existingMachineResponse = Invoke-RestMethod $existingMachineResultsUrl -Headers $header\n\n$machineFound = $false\nforeach ($item in $existingMachineResponse.Items)\n{\n\tif ($item.Name -eq $MachineRegistrationName)\n    {\n    \t$machineFound = $true\n        break\n    }\n}\n\nif ($machineFound)\n{\n\tWrite-Highlight \"Machine already exists, skipping waiting\"\n    Exit 0\n}\n\n$waitCount = 0\n$url = \"https://$($IPAddress):$($PortNumber)\"\nWrite-Highlight \"Waiting for 15 seconds before trying first hit $url\"\nStart-Sleep -Seconds $InitialSleepSeconds\n\nwhile ($waitCount -le 180)\n{\n\t$waitCount += 1\n    \n    try{\n        Write-Highlight \"Attempting to hit the server $url\"\n        if ($CurrentPowerShellVersion -lt 6)\n        {\n        \t$result = Invoke-RestMethod $url -TimeoutSec $TimeoutSeconds\n        }\n        else\n        {\n        \t$result = Invoke-RestMethod $url -TimeoutSec $TimeoutSeconds -SkipCertificateCheck\n        }\n        Write-Highlight \"Found tentacle\"\n        break\n    }\n    catch {        \n        Start-Sleep -Seconds 5\n        Write-Highlight \"15 Second Timeout\"        \n    }\n}"
+    },
+    "Parameters": [
+      {
+        "Id": "cf856d9d-6487-474d-8011-922253f51568",
+        "Name": "WaitForTentacle.Machine.Address",
+        "Label": "Machine URL or IP Address",
+        "HelpText": "Exclude the https or http from the address.  Only need samples.octopus.app, not https://samples.octopus.app",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "c97d0cf9-84b4-47f1-8966-c21f0a594194",
+        "Name": "WaitForTentacle.Machine.PortNumber",
+        "Label": "Port Number",
+        "HelpText": "The port number the tentacle is listening on.",
+        "DefaultValue": "10933",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "2f6994fb-02bb-485d-b95d-296a07f0a179",
+        "Name": "WaitForTentacle.Octopus.Url",
+        "Label": "Octopus Base URL",
+        "HelpText": "Example: https://samples.octopus.app",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "4ea88178-d5f2-443d-b767-e7e91e9aa860",
+        "Name": "WaitForTentacle.Octopus.Api.Key",
+        "Label": "Octopus API Key",
+        "HelpText": "The API Key of a user who can get a list of workers or targets",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Sensitive"
+        }
+      },
+      {
+        "Id": "0ced5a67-943a-4331-8476-45a262aa4e05",
+        "Name": "WaitForTentacle.Machine.Registration.Name",
+        "Label": "Octopus Registration Name",
+        "HelpText": "The name of the target.  This will be used to see if the target already exists.",
+        "DefaultValue": "",
+        "DisplaySettings": {
+          "Octopus.ControlType": "SingleLineText"
+        }
+      },
+      {
+        "Id": "b0e2d8fc-bd5d-4879-9202-f6913f67efe8",
+        "Name": "WaitForTentacle.Wait.InitialSleep",
+        "Label": "Initial Sleep Period",
+        "HelpText": "How long to wait before checking the tentacle the first time.",
+        "DefaultValue": "10",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Select",
+          "Octopus.SelectOptions": "10|10 Seconds\n20|20 Seconds\n30|30 Seconds\n40|40 Seconds\n50|50 Seconds\n60|60 Seconds"
+        }
+      },
+      {
+        "Id": "007b27ec-de56-4271-862b-9027b5f1de8c",
+        "Name": "WaitForTentacle.Timeout.Seconds",
+        "Label": "Timeout Period",
+        "HelpText": "How long each request should wait before timing out.",
+        "DefaultValue": "10",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Select",
+          "Octopus.SelectOptions": "5|5 Seconds\n10|10 Seconds\n15|15 Seconds\n20|20 Seconds\n25|25 Seconds\n30|30 Seconds"
+        }
+      },
+      {
+        "Id": "ba00c852-12a6-4f0e-bf8a-8035ccaf8dd3",
+        "Name": "WaitForTentacle.Tentacle.Type",
+        "Label": "Tentacle Type",
+        "HelpText": "Is the tentacle going to be a worker or a deployment target?",
+        "DefaultValue": "Target",
+        "DisplaySettings": {
+          "Octopus.ControlType": "Select",
+          "Octopus.SelectOptions": "Target|Deployment Target\nWorker|Worker"
+        }
+      }
+    ],
+    "SpaceId": "Spaces-105",
+    "$Meta": {
+      "ExportedAt": "2020-04-14T13:48:21.492Z",
+      "OctopusVersion": "2020.1.10",
+      "Type": "ActionTemplate"
+    }
+  }
