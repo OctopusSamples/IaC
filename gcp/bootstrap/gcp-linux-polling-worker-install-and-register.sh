@@ -22,7 +22,7 @@ else
   /opt/octopus/tentacle/Tentacle new-certificate --if-blank
   /opt/octopus/tentacle/Tentacle configure --noListen True --reset-trust --app "$applicationPath"
   echo "Registering the Tentacle $octopusMachineName with server $octopusServerUrl in worker pool $workerPoolName"
-  /opt/octopus/tentacle/Tentacle register-worker --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$octopusMachineName" --workerPool "$workerPoolName" --comms-style "TentacleActive" --server-comms-port $serverCommsPort
+  /opt/octopus/tentacle/Tentacle register-worker --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$octopusMachineName" --workerPool "$workerPoolName" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
   /opt/octopus/tentacle/Tentacle service --install --start
   
   sudo apt-get install -y curl apt-transport-https

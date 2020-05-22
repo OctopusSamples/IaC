@@ -40,7 +40,7 @@ else
   /opt/octopus/tentacle/Tentacle new-certificate --if-blank
   /opt/octopus/tentacle/Tentacle configure --noListen True --reset-trust --app "$applicationPath"
   echo "Registering the Tentacle $octopusMachineName with server $octopusServerUrl in environments '$octopusEnvironments' with roles '$octopusRoles'"
-  /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$name" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort
+  /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$name" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
   /opt/octopus/tentacle/Tentacle service --install --start
   
   sudo apt-get install -y curl apt-transport-https
