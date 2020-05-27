@@ -129,14 +129,14 @@ if ($OctoTentacleService -eq $null)
 		ForEach ($environment in ($environmentList.Split(",")))
 		{
 			# Add to environment string
-			$environmentString += "--environment='$environment' "
+			$environmentString += "--environment=$environment"
 		}
 
 		# Split the role list
 		ForEach ($role in ($roleList.Split(",")))
 		{
 			# add to role list
-			$roleString += "--role='$role' "
+			$roleString += "--role=$role"
 		}
 
 		# Register tentacle
