@@ -7,7 +7,7 @@ Param(
 	[string]$apiKey,
 	[string]$environmentList,
 	[string]$roleList,
-	[string]$spaceName = "Default"
+	[string]$spaceName
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -141,7 +141,7 @@ if ($OctoTentacleService -eq $null)
 
 		# Register tentacle
 		Write-Output "Registering tenacle to $octopusServerUrl with $(if(![string]::IsNullOrEmpty($environmentString)){" environments $environmentString"}) $(if(![string]::IsNullOrEmpty($roleString)){" roles $roleString"})"
-		& .\tentacle.exe register-with --instance "Tentacle" --server $octopusServerUrl --apiKey $apiKey --space $spaceName --tentacle-comms-port "10933" $environmentString $roleString
+		& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString
 	}
 } else {
   Write-Output "Tentacle already exists"
