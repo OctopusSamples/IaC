@@ -137,7 +137,7 @@ if ($OctoTentacleService -eq $null)
 			For ($i = 0; $i -lt $environmentArray.Count; $i++)
 			{
 				# Add to environment string
-				$environmentArray[$i] = "--environment='$($environmentArray[$i])'"
+				$environmentArray[$i] = "--environment=`"$($environmentArray[$i])`""
 			}
 
 			# Join to single string
@@ -155,16 +155,25 @@ if ($OctoTentacleService -eq $null)
 			For ($i = 0; $i -lt $roleArray.Count; $i++)
 			{
 				# add to role list
-				$roleArray[$i] = "--role='$($roleArray[$i])'"
+				$roleArray[$i] = "--role=`"$($roleArray[$i])`""
 			}
 
 			# Join to single string
 			$roleString = $roleArray -join " "
 		}
 
+		# Build switches
+		$switches = "--instance=`"Tentacle`" --server=`"$octopusServerUrl`" --apiKey=`"$apiKey`" --space=`"$spaceName`" --tentacle-comms-port=`"10933`""
+		$switches += $(if (![string]::IsNullOrEmpty($name)){"--name=$name"})
+		$switches += $(if (![string]::IsNullOrEmpty($publicHostName)) {"--publicHostName=$publicHostName"})
+		$switches += $environmentString
+		$switches += $roleString
+
+
 		# Register tentacle
 		Write-Output "Registering tenacle to $octopusServerUrl with $(if(![string]::IsNullOrEmpty($environmentString)){" environments $environmentString"}) $(if(![string]::IsNullOrEmpty($roleString)){" roles $roleString"})"
-		& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl $(if (![string]::IsNullOrEmpty($name)){"--name=$name"}) $(if (![string]::IsInterned($publicHostName)) {"--publicHostName=$publicHostName"}) --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString 
+		#& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl $(if (![string]::IsNullOrEmpty($name)){"--name=$name"}) $(if (![string]::IsNullOrEmpty($publicHostName)) {"--publicHostName=$publicHostName"}) --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString 
+		& .\tentacle.exe register-with $switches
 
 		if ($lastExitCode -ne 0) { 	   
 			$errorMessage = $error[0].Exception.Message	 
