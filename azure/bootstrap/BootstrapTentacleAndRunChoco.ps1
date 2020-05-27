@@ -2,7 +2,12 @@ Param(
     [string]$octopusServerThumbprint,    
     [string]$instanceName,		
     [string]$chocolateyAppList,
-    [string]$dismAppList	
+	[string]$dismAppList,
+	[string]$octopusServerUrl,
+	[string]$apiKey,
+	[string]$environmentList,
+	[string]$roleList,
+	[string]$spaceName = "Default"
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -111,7 +116,33 @@ if ($OctoTentacleService -eq $null)
 	  throw "Installation failed on service install: $errorMessage" 
 	} 
 		
-	Write-Output "Tentacle commands complete"     
+	Write-Output "Tentacle commands complete"
+	
+	# Check to see if a URL and API Key was supplied
+	if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
+	{
+		# Declare local working variables
+		$environmentString = [string]::Empty
+		$roleString = [string]::Empty
+		
+		# Split the environment list
+		ForEach ($environment in ($environmentList.Split(",")))
+		{
+			# Add to environment string
+			$environmentString += "--environment=$environment "
+		}
+
+		# Split the role list
+		ForEach ($role in ($roleList.Split(",")))
+		{
+			# add to role list
+			$roleString += "--role=$role "
+		}
+
+		# Register tentacle
+		Write-Output "Registering tenacle to $octopusServerUrl with $(if(![string]::IsNullOrEmpty($environmentString)){" environments $environmentString"}) $(if(![string]::IsNullOrEmpty($roleString)){" roles $roleString"})"
+		& .\tentacle.exe register-with --instance "Tentacle" --server $octopusServerUrl --apiKey $apiKey --space $spaceName --tentacle-comms-port "10933" $environmentString $roleString
+	}
 } else {
   Write-Output "Tentacle already exists"
 }    
