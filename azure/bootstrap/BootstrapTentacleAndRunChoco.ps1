@@ -137,7 +137,7 @@ if ($OctoTentacleService -eq $null)
 			For ($i = 0; $i -lt $environmentArray.Count; $i++)
 			{
 				# Add to environment string
-				$environmentArray[$i] = "--environment=$($environmentArray[$i])"
+				$environmentArray[$i] = "--environment='$($environmentArray[$i])'"
 			}
 
 			# Join to single string
@@ -155,7 +155,7 @@ if ($OctoTentacleService -eq $null)
 			For ($i = 0; $i -lt $roleArray.Count; $i++)
 			{
 				# add to role list
-				$roleArray[$i] = "--role=$($roleArray[$i])"
+				$roleArray[$i] = "--role='$($roleArray[$i])'"
 			}
 
 			# Join to single string
