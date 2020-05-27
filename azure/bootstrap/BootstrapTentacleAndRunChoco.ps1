@@ -7,7 +7,7 @@ Param(
 	[string]$apiKey,
 	[string]$environmentList,
 	[string]$roleList,
-	[string]$spaceName
+	[string]$spaceName = "Default"
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -125,23 +125,46 @@ if ($OctoTentacleService -eq $null)
 		$environmentString = [string]::Empty
 		$roleString = [string]::Empty
 		
-		# Split the environment list
-		ForEach ($environment in ($environmentList.Split(",")))
+		# Check for empty environments
+		if (![string]::IsNullOrEmpty($environmentList))
 		{
-			# Add to environment string
-			$environmentString += "--environment=$environment"
+			# Conver to array
+			$environmentArray = $environmentList.Split(",")
+			
+			# Split the environment list
+			For ($i = 0; $i -lt $environmentArray.Count; $i++)
+			{
+				# Add to environment string
+				$environmentArray[$i] = "--environment=$($environmentArray[$i])"
+			}
+
+			# Join to single string
+			$environmentString = $environmentArray -join " "
 		}
 
-		# Split the role list
-		ForEach ($role in ($roleList.Split(",")))
+		
+		# Check for empty roles
+		if (![string]::IsNullOrEmpty($roleList))
 		{
-			# add to role list
-			$roleString += "--role=$role"
+			# Convert to array
+			$roleArray = $roleList.Split(",")
+
+			# Split the role list
+			For ($i = 0; $i -lt $roleArray.Count; $i++)
+			{
+				# add to role list
+				$roleArray[$i] = "--role=$($roleArray[$i])"
+			}
 		}
 
 		# Register tentacle
 		Write-Output "Registering tenacle to $octopusServerUrl with $(if(![string]::IsNullOrEmpty($environmentString)){" environments $environmentString"}) $(if(![string]::IsNullOrEmpty($roleString)){" roles $roleString"})"
 		& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString
+
+		if ($lastExitCode -ne 0) { 	   
+			$errorMessage = $error[0].Exception.Message	 
+		   throw "Registration failed: $errorMessage" 
+		 } 	 
 	}
 } else {
   Write-Output "Tentacle already exists"
