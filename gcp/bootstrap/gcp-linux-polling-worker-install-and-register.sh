@@ -29,5 +29,9 @@ else
   
   echo "Installing Powershell core"
   snap install powershell --classic
+
+  echo "Installing Java (Open-JDK)"
+  apt-get update
+  sudo apt install default-jdk -y
   
 fi
