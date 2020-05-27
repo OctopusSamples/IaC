@@ -155,6 +155,9 @@ if ($OctoTentacleService -eq $null)
 				# add to role list
 				$roleArray[$i] = "--role=$($roleArray[$i])"
 			}
+
+			# Join to single string
+			$roleString = $roleArray -join " "
 		}
 
 		# Register tentacle
