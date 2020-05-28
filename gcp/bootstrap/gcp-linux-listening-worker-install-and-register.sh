@@ -11,8 +11,10 @@ else
   workerPoolName=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/workerPoolName -H "Metadata-Flavor: Google")
   octopusSpace=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusSpace -H "Metadata-Flavor: Google")
   additionalCommands=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/additionalCommands -H "Metadata-Flavor: Google")
+  
   externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
-
+  echo "Found external IP: $externalIpAddress"
+  
   applicationPath="/home/Octopus/Applications/"
     
   apt-key adv --fetch-keys https://apt.octopus.com/public.key
