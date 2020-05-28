@@ -49,7 +49,7 @@ else
   /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath"
   /opt/octopus/tentacle/Tentacle new-certificate --if-blank
   /opt/octopus/tentacle/Tentacle configure --port 10933 --noListen False --reset-trust --app "$applicationPath"
-  /opt/octopus/tentacle/Tentacle configure --trust $thumbprint
+  /opt/octopus/tentacle/Tentacle configure --trust $octopusThumbprint
   echo "Registering the Tentacle $octopusMachineName with server $octopusServerUrl in environments '$octopusEnvironments' with roles '$octopusRoles'"
   /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" -publicHostName "$externalIpAddress" --name "$octopusMachineName" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
   /opt/octopus/tentacle/Tentacle service --install --start
