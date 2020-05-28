@@ -15,7 +15,7 @@ else
   
   externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
   echo "Found external IP: $externalIpAddress"
-  
+
   applicationPath="/home/Octopus/Applications/"
 
   envs=()  
@@ -39,7 +39,8 @@ else
   add-apt-repository "deb https://apt.octopus.com/ stretch main"
   
   echo "Installing listening tentacle"
-  apt-get update && install tentacle -y
+  apt-get update 
+  apt-get install -y tentacle
 
   echo "Opening listening tcp-port of 10933 for tentacle"
   ufw allow 19033/tcp
