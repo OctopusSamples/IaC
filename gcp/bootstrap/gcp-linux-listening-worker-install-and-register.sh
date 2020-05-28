@@ -41,7 +41,7 @@ else
   
   if [[ ! -z "$additionalCommands" ]]; then 
     echo "Running additional commands: $additionalCommands"
-    "${additionalCommands[@]}"
+    eval "$additionalCommands"
   else
     echo "No additional commands specified to run"
   fi
