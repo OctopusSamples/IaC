@@ -24,7 +24,7 @@ else
   echo "Opening listening tcp-port of 10933 for tentacle"
   ufw allow 19033/tcp
    
-  echo "Configuring listening tentacle"
+  echo "Configuring listening tentacle worker"
   /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath"
   /opt/octopus/tentacle/Tentacle new-certificate --if-blank
   /opt/octopus/tentacle/Tentacle configure --port 10933 --noListen False --reset-trust --app "$applicationPath"

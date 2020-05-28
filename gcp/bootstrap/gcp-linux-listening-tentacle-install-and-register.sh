@@ -5,14 +5,15 @@ if [[ -f $configFilePath ]]; then
   echo "Tentacle already installed"
 else
   octopusServerUrl=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusServerUrl -H "Metadata-Flavor: Google")
-  octopusSpace=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusSpace -H "Metadata-Flavor: Google")
+  octopusThumbprint=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusThumbprint -H "Metadata-Flavor: Google")
   octopusApiKey=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusApiKey -H "Metadata-Flavor: Google")
   octopusMachineName=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusMachineName -H "Metadata-Flavor: Google")
+  octopusSpace=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusSpace -H "Metadata-Flavor: Google")
   octopusEnvironments=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusEnvironments -H "Metadata-Flavor: Google")
   octopusRoles=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusRoles -H "Metadata-Flavor: Google")
   additionalCommands=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/additionalCommands -H "Metadata-Flavor: Google")
-
-  serverCommsPort=10943            
+  
+  externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
   applicationPath="/home/Octopus/Applications/"
 
   envs=()  
@@ -29,19 +30,28 @@ else
       roles+=("--role=${role}")
   done
 
+  environment="Test"  # The environment to register the Tentacle in
+  role="web server"   # The role to assign to the Tentacle
+
   apt-key adv --fetch-keys https://apt.octopus.com/public.key
   add-apt-repository "deb https://apt.octopus.com/ stretch main"
-  apt-get update
-  apt-get install tentacle
+  
+  echo "Installing listening tentacle"
+  apt-get update && install tentacle -y
 
+  echo "Opening listening tcp-port of 10933 for tentacle"
+  ufw allow 19033/tcp
+
+  echo "Configuring listening tentacle target"
   /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath"
   /opt/octopus/tentacle/Tentacle new-certificate --if-blank
-  /opt/octopus/tentacle/Tentacle configure --noListen True --reset-trust --app "$applicationPath"
+  /opt/octopus/tentacle/Tentacle configure --port 10933 --noListen False --reset-trust --app "$applicationPath"
+  /opt/octopus/tentacle/Tentacle configure --trust $thumbprint
   echo "Registering the Tentacle $octopusMachineName with server $octopusServerUrl in environments '$octopusEnvironments' with roles '$octopusRoles'"
-  /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$octopusMachineName" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
+  /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" -publicHostName "$externalIpAddress" --name "$octopusMachineName" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
   /opt/octopus/tentacle/Tentacle service --install --start
   
-  echo "Installing Powershell core"
+  echo "Installing Powershell Core"
   snap install powershell --classic
 
   if [[ ! -z "$additionalCommands" ]]; then 
