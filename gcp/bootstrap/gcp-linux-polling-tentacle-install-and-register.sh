@@ -10,7 +10,8 @@ else
   octopusMachineName=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusMachineName -H "Metadata-Flavor: Google")
   octopusEnvironments=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusEnvironments -H "Metadata-Flavor: Google")
   octopusRoles=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusRoles -H "Metadata-Flavor: Google")
-  
+  additionalCommands=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/additionalCommands -H "Metadata-Flavor: Google")
+
   serverCommsPort=10943            
   applicationPath="/home/Octopus/Applications/"
 
@@ -43,9 +44,14 @@ else
   /opt/octopus/tentacle/Tentacle register-with --server "$octopusServerUrl" --space "$octopusSpace" --apiKey "$octopusApiKey" --name "$name" "${envs[@]}" "${roles[@]}" --comms-style "TentacleActive" --server-comms-port $serverCommsPort --force
   /opt/octopus/tentacle/Tentacle service --install --start
   
-  sudo apt-get install -y curl apt-transport-https
-  
   echo "Installing Powershell core"
   snap install powershell --classic
+
+  if [[ ! -z "$additionalCommands" ]]; then 
+    echo "Running additional commands: $additionalCommands"
+    "${additionalCommands[@]}"
+  else
+    echo "No additional commands specified to run"
+  fi
   
 fi

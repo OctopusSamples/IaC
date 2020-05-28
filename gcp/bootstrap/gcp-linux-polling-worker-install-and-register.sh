@@ -9,6 +9,7 @@ else
   octopusApiKey=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusApiKey -H "Metadata-Flavor: Google")
   workerPoolName=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/workerPoolName -H "Metadata-Flavor: Google")
   octopusMachineName=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusMachineName -H "Metadata-Flavor: Google")
+  additionalCommands=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/additionalCommands -H "Metadata-Flavor: Google")
   serverCommsPort=10943            
   applicationPath="/home/Octopus/Applications/"
     
@@ -30,8 +31,11 @@ else
   echo "Installing Powershell core"
   snap install powershell --classic
 
-  echo "Installing Java (Open-JDK)"
-  apt-get update
-  sudo apt install default-jdk -y
+  if [[ ! -z "$additionalCommands" ]]; then 
+    echo "Running additional commands: $additionalCommands"
+    "${additionalCommands[@]}"
+  else
+    echo "No additional commands specified to run"
+  fi
   
 fi
