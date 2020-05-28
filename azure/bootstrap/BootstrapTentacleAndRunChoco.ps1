@@ -2,7 +2,14 @@ Param(
     [string]$octopusServerThumbprint,    
     [string]$instanceName,		
     [string]$chocolateyAppList,
-    [string]$dismAppList	
+	[string]$dismAppList,
+	[string]$octopusServerUrl,
+	[string]$apiKey,
+	[string]$environmentList,
+	[string]$roleList,
+	[string]$spaceName = "Default",
+	[string]$publicHostName,
+	[string]$name
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -111,7 +118,66 @@ if ($OctoTentacleService -eq $null)
 	  throw "Installation failed on service install: $errorMessage" 
 	} 
 		
-	Write-Output "Tentacle commands complete"     
+	Write-Output "Tentacle commands complete"
+	
+	# Check to see if a URL and API Key was supplied
+	if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
+	{
+		# Declare switches array
+		$argumentSwitches = @()
+		$argumentSwitches += "register-with"
+
+		# Check for empty environments
+		if (![string]::IsNullOrEmpty($environmentList))
+		{
+			# Split the environment list
+			ForEach ($environment in $environmentList.Split(","))
+			{
+				# Add to environment string
+				$argumentSwitches += "--environment=`"$environment`""
+			}
+		}
+
+		
+		# Check for empty roles
+		if (![string]::IsNullOrEmpty($roleList))
+		{
+			# Split the role list
+			ForEach ($role in $roleList.Split(","))
+			{
+				# add to role list
+				$argumentSwitches += "--role=`"$role`""
+			}
+		}
+
+		# Build switches
+		$argumentSwitches += "--instance=`"Tentacle`""
+		$argumentSwitches += "--server=`"$octopusServerUrl`""
+		$argumentSwitches += "--apiKey=`"$apiKey`""
+		$argumentSwitches += "--space=`"$spaceName`"" 
+		$argumentSwitches += "--tentacle-comms-port=`"10933`""
+
+		if (![string]::IsNullOrEmpty($name))
+		{
+			$argumentSwitches += "--name=`"$name`""
+		}
+
+		if (![string]::IsNullOrEmpty($publicHostName)) 
+		{
+			$argumentSwitches += "--publicHostName=$publicHostName"
+		}
+
+
+		# Register tentacle
+		Write-Output "Registering tenacle to $octopusServerUrl with $argumentSwitches"
+		#& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl $(if (![string]::IsNullOrEmpty($name)){"--name=$name"}) $(if (![string]::IsNullOrEmpty($publicHostName)) {"--publicHostName=$publicHostName"}) --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString 
+		& .\tentacle.exe $argumentSwitches
+
+		if ($lastExitCode -ne 0) { 	   
+			$errorMessage = $error[0].Exception.Message	 
+		   throw "Registration failed: $errorMessage" 
+		 } 	 
+	}
 } else {
   Write-Output "Tentacle already exists"
 }    
