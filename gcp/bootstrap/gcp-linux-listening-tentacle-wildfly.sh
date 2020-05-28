@@ -11,7 +11,10 @@ else
   octopusSpace=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusSpace -H "Metadata-Flavor: Google")
   octopusEnvironments=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusEnvironments -H "Metadata-Flavor: Google")
   octopusRoles=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusRoles -H "Metadata-Flavor: Google")
-  
+  wildflyUser=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyUser -H "Metadata-Flavor: Google")
+  wildflyPass=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPass -H "Metadata-Flavor: Google")
+  wildflyPort=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPort -H "Metadata-Flavor: Google")
+
   externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
   echo "Found external IP: $externalIpAddress"
 
@@ -55,5 +58,30 @@ else
   
   echo "Installing Powershell Core"
   snap install powershell --classic
-  
+
+  echo "Installing JDK"
+  sudo apt install default-jdk -y
+
+  # Install Wildfly
+  sudo groupadd -r wildfly
+  sudo useradd -r -g wildfly -d /opt/wildfly -s /sbin/nologin wildfly
+  WILDFLY_VERSION=18.0.1.Final
+  wget https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz -P /tmp
+  sudo tar xf /tmp/wildfly-$WILDFLY_VERSION.tar.gz -C /opt/
+  sudo ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
+  sudo chown -RH wildfly: /opt/wildfly
+  sudo mkdir -p /etc/wildfly
+  sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+  sudo cp /opt/wildfly/docs/contrib/scripts/systemd/launch.sh /opt/wildfly/bin/
+  sudo sh -c 'chmod +x /opt/wildfly/bin/*.sh'
+  sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/
+
+  sudo systemctl daemon-reload
+  sudo systemctl start wildfly
+  sudo systemctl enable wildfly
+  sudo ufw allow $wildflyPort/tcp
+
+  echo "Adding wildfly admin user"
+  sudo /opt/wildfly/bin/add-user.sh "$wildflyUser" "$wildflyPass"
+
 fi
