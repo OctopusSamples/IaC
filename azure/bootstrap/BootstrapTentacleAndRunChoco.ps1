@@ -123,57 +123,55 @@ if ($OctoTentacleService -eq $null)
 	# Check to see if a URL and API Key was supplied
 	if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
 	{
-		# Declare local working variables
-		$environmentString = [string]::Empty
-		$roleString = [string]::Empty
-		
+		# Declare switches array
+		$argumentSwitches = @()
+		$argumentSwitches += "register-with"
+
 		# Check for empty environments
 		if (![string]::IsNullOrEmpty($environmentList))
 		{
-			# Conver to array
-			$environmentArray = $environmentList.Split(",")
-			
 			# Split the environment list
-			For ($i = 0; $i -lt $environmentArray.Count; $i++)
+			ForEach ($environment in $environmentList.Split(","))
 			{
 				# Add to environment string
-				$environmentArray[$i] = "--environment=`"$($environmentArray[$i])`""
+				$argumentSwitches += "--environment=`"$environment`""
 			}
-
-			# Join to single string
-			$environmentString = $environmentArray -join " "
 		}
 
 		
 		# Check for empty roles
 		if (![string]::IsNullOrEmpty($roleList))
 		{
-			# Convert to array
-			$roleArray = $roleList.Split(",")
-
 			# Split the role list
-			For ($i = 0; $i -lt $roleArray.Count; $i++)
+			ForEach ($role in $roleList.Split(","))
 			{
 				# add to role list
-				$roleArray[$i] = "--role=`"$($roleArray[$i])`""
+				$argumentSwitches += "--role=`"$role`""
 			}
-
-			# Join to single string
-			$roleString = $roleArray -join " "
 		}
 
 		# Build switches
-		$switches = "--instance=`"Tentacle`" --server=`"$octopusServerUrl`" --apiKey=`"$apiKey`" --space=`"$spaceName`" --tentacle-comms-port=`"10933`""
-		$switches += $(if (![string]::IsNullOrEmpty($name)){"--name=$name"})
-		$switches += $(if (![string]::IsNullOrEmpty($publicHostName)) {"--publicHostName=$publicHostName"})
-		$switches += $environmentString
-		$switches += $roleString
+		$argumentSwitches += "--instance=`"Tentacle`""
+		$argumentSwitches += "--server=`"$octopusServerUrl`""
+		$argumentSwitches += "--apiKey=`"$apiKey`""
+		$argumentSwitches += "--space=`"$spaceName`"" 
+		$argumentSwitches += "--tentacle-comms-port=`"10933`""
+
+		if (![string]::IsNullOrEmpty($name))
+		{
+			$argumentSwitches += "--name=`"$name`""
+		}
+
+		if (![string]::IsNullOrEmpty($publicHostName)) 
+		{
+			$argumentSwitches += "--publicHostName=$publicHostName"
+		}
 
 
 		# Register tentacle
-		Write-Output "Registering tenacle to $octopusServerUrl with $(if(![string]::IsNullOrEmpty($environmentString)){" environments $environmentString"}) $(if(![string]::IsNullOrEmpty($roleString)){" roles $roleString"})"
+		Write-Output "Registering tenacle to $octopusServerUrl with $argumentSwitches"
 		#& .\tentacle.exe register-with --instance="Tentacle" --server=$octopusServerUrl $(if (![string]::IsNullOrEmpty($name)){"--name=$name"}) $(if (![string]::IsNullOrEmpty($publicHostName)) {"--publicHostName=$publicHostName"}) --apiKey=$apiKey --space=$spaceName --tentacle-comms-port="10933" $environmentString $roleString 
-		& .\tentacle.exe register-with $switches
+		& .\tentacle.exe $argumentSwitches
 
 		if ($lastExitCode -ne 0) { 	   
 			$errorMessage = $error[0].Exception.Message	 
