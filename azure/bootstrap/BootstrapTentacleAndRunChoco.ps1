@@ -199,8 +199,21 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){
 
 	foreach ($app in $appsToInstall)
 	{
-		Write-Host "Installing $app"
-		& choco install $app /y | Write-Output
+		# Create arguments array
+		$argumentSwitches = @()
+		$argumentSwitches += "install"
+
+		# Add the arguments -- this will support things like a specific chocolately version specified
+		foreach ($option in $app.Split(" "))
+		{
+			$argumentSwitches += $option
+		}
+
+		# Add the /y for acceptance
+		$argumentSwitches += "/y"
+
+		Write-Host "Installing $argumentSwitches"
+		& choco $argumentSwitches | Write-Output
 	}
 }
 
