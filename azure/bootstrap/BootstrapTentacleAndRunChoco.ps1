@@ -229,4 +229,32 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){
 	}
 }
 
+# Check to see if there was firewall rules supplied
+if ([string]::IsNullOrEmpty($firewallRuleList))
+{
+	# Loop through list
+	foreach ($firewallRule in $firewallRuleList.Split(","))
+	{
+		# Get number and description
+		$firewallRule = $firewallRule.Split(" ")
+
+		# Make sure there's stuff there
+		if ($firewallRule.Count -eq 2)
+		{
+			$firewallRulePort = $firewallRule[0]
+			$firewallRuleName = $firewallRule[1]
+
+			# Ensure both elements are present
+			if (![string]::IsNullOrEmpty($firewallRulePort) -and ![string]::IsNullOrEmpty($firewallRuleName))
+			{
+				Write-Output "Open port $firewallRulePort on Windows Firewall" 
+				& netsh.exe firewall add portopening TCP $firewallRulePort $firewallRuleName
+				if ($lastExitCode -ne 0) { 
+					throw "Installation failed when modifying firewall rules" 
+				} 		
+			}
+		}
+	}
+}
+
 Write-Output "Bootstrap commands complete"  
