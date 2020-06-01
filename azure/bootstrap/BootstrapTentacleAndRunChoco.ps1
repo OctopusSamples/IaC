@@ -230,7 +230,7 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){
 }
 
 # Check to see if there was firewall rules supplied
-if ([string]::IsNullOrEmpty($firewallRuleList))
+if (![string]::IsNullOrEmpty($firewallRuleList))
 {
 	# Loop through list
 	foreach ($firewallRule in $firewallRuleList.Split(","))
