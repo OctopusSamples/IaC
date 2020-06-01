@@ -192,6 +192,18 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false -or [string]::Is
 	}
 }
 
+if ([string]::IsNullOrWhiteSpace($dismAppList) -eq $false){
+	Write-Host "DISM Apps Specified, installing chocolatey and applications"	
+
+	$appsToInstall = $dismAppList -split "," | foreach { "$($_.Trim())" }
+
+	foreach ($app in $appsToInstall)
+	{
+		Write-Host "Installing $app"
+		& choco install $app /y /source windowsfeatures | Write-Output
+	}
+}
+
 if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){	
 	Write-Host "Chocolatey Apps Specified, installing chocolatey and applications"	
 	
@@ -214,18 +226,6 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){
 
 		Write-Host "Installing $argumentSwitches"
 		& choco $argumentSwitches | Write-Output
-	}
-}
-
-if ([string]::IsNullOrWhiteSpace($dismAppList) -eq $false){
-	Write-Host "DISM Apps Specified, installing chocolatey and applications"	
-
-	$appsToInstall = $dismAppList -split "," | foreach { "$($_.Trim())" }
-
-	foreach ($app in $appsToInstall)
-	{
-		Write-Host "Installing $app"
-		& choco install $app /y /source windowsfeatures | Write-Output
 	}
 }
 
