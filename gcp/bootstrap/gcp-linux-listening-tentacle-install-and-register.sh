@@ -31,9 +31,6 @@ else
       roles+=("--role=${role}")
   done
 
-  environment="Test"  # The environment to register the Tentacle in
-  role="web server"   # The role to assign to the Tentacle
-
   apt-key adv --fetch-keys https://apt.octopus.com/public.key
   add-apt-repository "deb https://apt.octopus.com/ stretch main"
   

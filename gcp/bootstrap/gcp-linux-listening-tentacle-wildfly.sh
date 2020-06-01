@@ -14,6 +14,7 @@ else
   wildflyUser=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyUser -H "Metadata-Flavor: Google")
   wildflyPass=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPass -H "Metadata-Flavor: Google")
   wildflyPort=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPort -H "Metadata-Flavor: Google")
+  redirectHttpToWildfly=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/redirectHttpToWildfly -H "Metadata-Flavor: Google")
 
   externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
   echo "Found external IP: $externalIpAddress"
@@ -33,9 +34,6 @@ else
   do
       roles+=("--role=${role}")
   done
-
-  environment="Test"  # The environment to register the Tentacle in
-  role="web server"   # The role to assign to the Tentacle
 
   apt-key adv --fetch-keys https://apt.octopus.com/public.key
   add-apt-repository "deb https://apt.octopus.com/ stretch main"
@@ -84,4 +82,12 @@ else
   echo "Adding wildfly admin user"
   sudo /opt/wildfly/bin/add-user.sh "$wildflyUser" "$wildflyPass"
 
+  redirectHttpToWildfly=$(echo "$redirectHttpToWildfly" | tr '[:upper:]' '[:lower:]')
+  
+  if [[ ! -z "${redirectHttpToWildfly}" ]] && [[ "${redirectHttpToWildfly}" == "true" ]]; then 
+      echo "Adding redirect from port 80 to wildfly port: $wildflyPort"
+      sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port $wildflyPort
+  fi
+  
 fi
+
