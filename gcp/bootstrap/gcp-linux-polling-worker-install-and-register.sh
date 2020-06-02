@@ -31,6 +31,9 @@ else
   echo "Installing Powershell core"
   snap install powershell --classic
 
+  echo "Installing Azure CLI"
+  curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
   if [[ ! -z "$additionalCommands" ]]; then 
     echo "Running additional commands: $additionalCommands"
     eval "$additionalCommands"
