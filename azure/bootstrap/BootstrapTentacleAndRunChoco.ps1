@@ -234,8 +234,10 @@ if ([string]::IsNullOrWhiteSpace($chocolateyAppList) -eq $false){
 # Check to see if there was firewall rules supplied
 if (![string]::IsNullOrEmpty($firewallRuleList))
 {
+	$firewallRules = $firewallRuleList -split "," | foreach { "$($_.Trim())" }
+	
 	# Loop through list
-	foreach ($firewallRule in $firewallRuleList.Split(","))
+	foreach ($firewallRule in $firewallRules)
 	{
 		# Get number and description
 		$firewallRule = $firewallRule.Split(" ")
