@@ -9,7 +9,8 @@ Param(
 	[string]$roleList,
 	[string]$spaceName = "Default",
 	[string]$publicHostName,
-	[string]$name
+	[string]$name,
+	[string]$firewallRuleList
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
