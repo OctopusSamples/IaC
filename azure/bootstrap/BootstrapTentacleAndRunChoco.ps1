@@ -19,6 +19,7 @@ Write-Output "Thumbprint: $octopusServerThumbprint"
 Write-Output "InstanceName: $instanceName"
 Write-Output "ChocolateyAppList: $chocolateyAppList"
 Write-Output "DismAppList: $dismAppList"
+Write-Output "FirewallRuleList: $firewallRuleList"
 
 function Get-FileFromServer 
 { 
