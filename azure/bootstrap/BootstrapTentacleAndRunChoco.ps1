@@ -261,4 +261,6 @@ if (![string]::IsNullOrEmpty($firewallRuleList))
 	}
 }
 
-Write-Output "Bootstrap commands complete"  
+Write-Output "Bootstrap commands complete, rebooting system."  
+
+Restart-Computer
