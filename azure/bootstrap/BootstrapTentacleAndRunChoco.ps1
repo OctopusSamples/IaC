@@ -11,7 +11,7 @@ Param(
 	[string]$publicHostName,
 	[string]$name,
 	[string]$firewallRuleList,
-	[bool]$rebootComputer
+	[bool]$rebootComputer = $false
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
