@@ -15,9 +15,7 @@ else
   wildflyPass=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPass -H "Metadata-Flavor: Google")
   wildflyPort=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/wildflyPort -H "Metadata-Flavor: Google")
   redirectHttpToWildfly=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/redirectHttpToWildfly -H "Metadata-Flavor: Google")
-
-  externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
-  echo "Found external IP: $externalIpAddress"
+  externalIpAddress=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
 
   applicationPath="/home/Octopus/Applications/"
 

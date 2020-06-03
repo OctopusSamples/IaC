@@ -11,8 +11,8 @@ else
   octopusSpace=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusSpace -H "Metadata-Flavor: Google")
   octopusEnvironments=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusEnvironments -H "Metadata-Flavor: Google")
   octopusRoles=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/octopusRoles -H "Metadata-Flavor: Google")
+  externalIpAddress=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
   
-  externalIpAddress=$(dig +short myip.opendns.com @resolver1.opendns.com)
   echo "Found external IP: $externalIpAddress"
 
   applicationPath="/home/Octopus/Applications/"
