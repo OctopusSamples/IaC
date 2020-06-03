@@ -10,7 +10,8 @@ Param(
 	[string]$spaceName = "Default",
 	[string]$publicHostName,
 	[string]$name,
-	[string]$firewallRuleList
+	[string]$firewallRuleList,
+	[bool]$rebootComputer
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -261,6 +262,11 @@ if (![string]::IsNullOrEmpty($firewallRuleList))
 	}
 }
 
-Write-Output "Bootstrap commands complete, rebooting system."  
+Write-Output "Bootstrap commands complete."  
 
-Restart-Computer
+# Check to see if a reboot was requested
+if ($rebootComputer -eq $true)
+{
+	Write-Output "Rebooting machine."
+	Restart-Computer
+}
