@@ -11,16 +11,21 @@ Param(
 	[string]$publicHostName,
 	[string]$name,
 	[string]$firewallRuleList,
-	[bool]$rebootComputer = $false
+	$rebootComputer = "false"
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
+
+# Convert string to boolean
+$rebootComputer = [Convert]::ToBoolean($rebootComputer)
 
 Write-Output "Thumbprint: $octopusServerThumbprint"  
 Write-Output "InstanceName: $instanceName"
 Write-Output "ChocolateyAppList: $chocolateyAppList"
 Write-Output "DismAppList: $dismAppList"
 Write-Output "FirewallRuleList: $firewallRuleList"
+Write-Output "Reboot computer: $rebootComputer"
+
 
 function Get-FileFromServer 
 { 
