@@ -62,12 +62,56 @@ if ($OctoTentacleService -eq $null)
 
 	Set-Location "${env:ProgramFiles}\Octopus Deploy\Tentacle" 
 
-	& .\Tentacle.exe create-instance --instance "Tentacle" --config "C:\Octopus\Tentacle.config"
-	& .\Tentacle.exe new-certificate --instance "Tentacle" --if-blank
-	& .\Tentacle.exe configure --instance "Tentacle" --reset-trust
-	& .\Tentacle.exe configure --instance "Tentacle" --app "C:\Octopus\Applications" --port "10933" --noListen "True"
-	& .\Tentacle.exe polling-proxy --instance "Tentacle" --proxyEnable "False" --proxyUsername "" --proxyPassword "" --proxyHost "" --proxyPort ""
+	Write-Output "Creating the octopus instance"
+	& .\tentacle.exe create-instance --instance "Tentacle" --config $tentacleConfigFile --console | Write-Output
+	if ($lastExitCode -ne 0) { 	 
+	 $errorMessage = $error[0].Exception.Message	 
+	 throw "Installation failed on create-instance: $errorMessage" 
+	} 
+	
+	Write-Output "Configuring the home directory"
+	& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --console | Write-Output
+	if ($lastExitCode -ne 0) { 	  
+	  $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on configure: $errorMessage" 
+	} 
+	
+	Write-Output "Configuring the app directory"
+	& .\tentacle.exe configure --instance "Tentacle" --app $tentacleAppDirectory --console | Write-Output
+	if ($lastExitCode -ne 0) { 	  
+	  $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on configure: $errorMessage" 
+	} 
+	
+	Write-Output "Configuring the listening port"
+	& .\tentacle.exe configure --instance "Tentacle" --port $tentacleListenPort --noListen "True" --console | Write-Output
+	if ($lastExitCode -ne 0) { 	  
+	  $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on configure: $errorMessage" 
+	} 
+	
+	Write-Output "Creating a certificate for the tentacle"
+	& .\tentacle.exe new-certificate --instance "Tentacle" --console | Write-Output
+	if ($lastExitCode -ne 0) { 	  
+	  $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on creating new certificate: $errorMessage" 
+	} 
+	
+	Write-Output "Trusting the certificate $octopusServerThumbprint"
+	& .\tentacle.exe configure --instance "Tentacle" --trust $octopusServerThumbprint --console | Write-Output
+	if ($lastExitCode -ne 0) { 	  
+	  $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on configure: $errorMessage" 
+	} 	                
 
+	Write-Output "Finally, installing the tentacle"
+	& .\tentacle.exe service --instance "Tentacle" --install --start --console | Write-Output
+	if ($lastExitCode -ne 0) { 	   
+	   $errorMessage = $error[0].Exception.Message	 
+	  throw "Installation failed on service install: $errorMessage" 
+	} 
+		
+	Write-Output "Tentacle commands complete"	
 
 	# Declare switches array
 	$argumentSwitches = @()
