@@ -113,7 +113,7 @@ if ($OctoTentacleService -eq $null)
 		$argumentSwitches += "--publicHostName=$publicHostName"
 	}
 
-	$argumentSwitches += "--comms-style `"TentacleActive`""
+	$argumentSwitches += "--comms-style=`"TentacleActive`""
 
 
 	& .\Tentacle.exe $argumentSwitches
