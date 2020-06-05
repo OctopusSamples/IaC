@@ -1,25 +1,46 @@
 #!/bin/bash
 # https://linuxize.com/post/how-to-install-wildfly-on-ubuntu-18-04/
 
+# Set field seperator
+IFS="="
+
 # Get the arguments that were passed
-while getopts s:t:a:n:p:w:c: argument
+for var in "$@"
 do
-  case "${argument}"
-  in 
-    s) serverUrl=${OPTARG};;
-    t) thumbprint=${OPTARG};;
-    a) apiKey=${OPTARG};;
-    n) name=${OPTARG};;
-    p) publicHostName=${OPTARG};;
-    w) workerPoolName=${OPTARG};;
-    c) spaceName=${OPTARG};;
-  esac
+    # Split the var
+    read -a argument <<<"$var"
+    echo "$var"
+    # Assign variables
+    case "${argument[0]}" in
+      "server")
+        serverUrl=${argument[1]}
+        ;;
+      "thumbprint")
+        thumbprint=${argument[1]}
+        ;;
+      "apikey")
+        apiKey=${argument[1]}
+        ;;
+      "name")
+        name=${argument[1]}
+        ;;
+      "publichostname")
+        publicHostName=${argument[1]}
+        ;;
+      "workerpool")
+        workerPoolName=${argument[1]}
+        ;;
+      "space")
+        spaceName=${argument[1]}
+        ;;
+    esac
+
 done
 
 configFilePath="/etc/octopus/default/tentacle-default.config"
 applicationPath="/home/Octopus/Applications/"
 
-sudo apt install --no-install-recommends gnupg curl ca-certificates apt-transport-https && \
+sudo apt install --no-install-recommends gnupg curl ca-certificates apt-transport-https -y && \
 curl -sSfL https://apt.octopus.com/public.key | sudo apt-key add - && \
 sudo sh -c "echo deb https://apt.octopus.com/ stable main > /etc/apt/sources.list.d/octopus.com.list" && \
 sudo apt update && sudo apt install tentacle -y
@@ -31,31 +52,3 @@ sudo /opt/octopus/tentacle/Tentacle configure --trust $thumbprint
 echo "Registering the Tentacle $name as a worker with server $serverUrl in $workerPoolName"
 sudo /opt/octopus/tentacle/Tentacle register-worker --server "$serverUrl" --apiKey "$apiKey" --name "$name" --space "$spaceName" --publicHostName "$publicHostName" --workerpool "$workerPoolName"
 
-
-# Download the Microsoft repository GPG keys
-wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-
-# Register the Microsoft repository GPG keys
-sudo dpkg -i packages-microsoft-prod.deb
-
-# Update the list of products
-sudo apt-get update
-
-# Enable the "universe" repositories
-sudo add-apt-repository universe
-
-# Install PowerShell
-sudo apt-get install -y powershell
-
-# Install az module
-echo "Installing az module ..."
-pwsh -Command "& {Install-Module az -Scope AllUsers -Force}" > /tmp/azModuleInstall.log
-
-# Install Az cli
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-# Install aws cli
-sudo apt-get install awscli -y
-
-# Install and start the service
-sudo /opt/octopus/tentacle/Tentacle service --install --start
