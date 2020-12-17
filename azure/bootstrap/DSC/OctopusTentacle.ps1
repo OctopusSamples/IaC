@@ -1,6 +1,6 @@
 configuration OctopusTentacle
 {
-    param ($ApiKey, $OctopusServerUrl, $Environments, $Roles, $ServerPort, $CommunicationMode, $Space)
+    param ($ApiKey, $OctopusServerUrl, $Environments, $Roles, $ServerPort, $CommunicationMode, $Space, $WorkerPools)
 
     Import-DscResource -Module OctopusDSC
 
@@ -21,6 +21,7 @@ configuration OctopusTentacle
             Environments = $Environments
             Roles = $Roles
             Space = $Space
+            WorkerPools = $WorkerPools
 
 
             # How Tentacle will communicate with the server
