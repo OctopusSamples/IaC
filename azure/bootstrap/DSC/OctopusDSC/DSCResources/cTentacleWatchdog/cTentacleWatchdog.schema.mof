@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0"), FriendlyName("cTentacleWatchdog")]
+class cTentacleWatchdog : OMI_BaseResource
+{
+  [Key, Description("Name of the Octopus Server instance")] string InstanceName;
+  [Write, Required, Description("True to enable watchdog, false to disable")] boolean Enabled;
+  [Write, Description("The interval in minutes. Defaults to checking every 15 minutes.")] UInt32 Interval;
+  [Write, Description("Which instances to check. Use '*' to check all instances.")] string Instances;
+};

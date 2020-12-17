@@ -1,0 +1,32 @@
+[ClassVersion("1.0.0"), FriendlyName("cOctopusServer")]
+class cOctopusServer : OMI_BaseResource
+{
+  [Key, Description("Name of the Octopus Server instance")] string Name;
+  [Write, ValueMap{"Present", "Absent"}, Values{"Present", "Absent"}] string Ensure;
+  [Write, ValueMap{"Started", "Stopped", "Installed"}, Values{"Started", "Stopped", "Installed"}] string State;
+  [Write] string WebListenPrefix;
+  [Write] string SqlDbConnectionString;
+  [Write, EmbeddedInstance ("MSFT_Credential")] string OctopusAdminCredential;
+  [Write] boolean AllowUpgradeCheck;
+  [Write] boolean AllowCollectionOfUsageStatistics;
+  [Write] string DownloadUrl;
+  [Write] uint16 ListenPort;
+  [Write] boolean ForceSSL;
+  [Write] boolean HSTSEnabled;
+  [Write] uint64 HSTSMaxAge;
+  [Write, ValueMap{"UsernamePassword", "Domain", "Ignore"}, Values{"UsernamePassword", "Domain", "Ignore"}] string LegacyWebAuthenticationMode;
+  [Write] boolean AutoLoginEnabled;
+  [Write, EmbeddedInstance ("MSFT_Credential")] string OctopusServiceCredential;
+  [Write] string HomeDirectory;
+  [Write, EmbeddedInstance ("MSFT_Credential")] string OctopusMasterKey;
+  [Write] string LicenseKey;
+  [Write] boolean SkipLicenseCheck;
+  [Write] boolean GrantDatabasePermissions;
+  [Write, EmbeddedInstance ("MSFT_Credential")] string OctopusBuiltInWorkerCredential;
+  [Write] string PackagesDirectory;
+  [Write] string ArtifactsDirectory;
+  [Write] string TaskLogsDirectory;
+  [Write] boolean LogTaskMetrics;
+  [Write] boolean LogRequestMetrics;
+  [Write] uint64 TaskCap;
+};

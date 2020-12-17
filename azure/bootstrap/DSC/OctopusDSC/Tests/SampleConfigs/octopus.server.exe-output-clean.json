@@ -1,0 +1,108 @@
+{
+  "Octopus": {
+    "Communications": {
+      "ServicesPort": 10943,
+      "WebSocketPrefix": null
+    },
+    "Storage": {
+      "ExternalDatabaseConnectionString": "Data Source=sqlserverinstance.doesnotexist.com;Initial Catalog=4ed0bf7f-c2cc-4fbe-b2dc-6630b60f9a66;User ID=4ed0bf7f-c2cc-4fbe-b2dc-6630b60f9a66;Password=SuperSecr3tP4ssword!!"
+    },
+    "Server": {
+      "NodeName": "EC2AMAZ-16C2OU9",
+      "TaskCap": 5,
+      "MaintenanceMode": false,
+      "License": "THISISANOBFUSCATEDLICENCEKEY=="
+    },
+    "Home": "C:\\Octopus",
+    "Node": {
+      "Cache": "C:\\Octopus\\OctopusServer"
+    },
+    "PackageCache": {
+      "DaysToCachePackages": 1
+    },
+    "Tasks": {
+      "MaxConcurrentTasks": 0,
+      "RecordTaskMetrics": true
+    },
+    "Upgrades": {
+      "AllowChecking": false,
+      "IncludeStatistics": false,
+      "NotificationMode": "NeverShow"
+    },
+    "Azure": {
+      "PowerShellModule": null
+    },
+    "Deployment": {
+      "CustomBundledPackageDirectory": null
+    },
+    "Watchdog": {
+      "Enabled": false,
+      "Interval": 0,
+      "Instances": "*"
+    },
+    "BuiltInWorker": {
+      "CustomAccountUserName": "svcScriptRunner",
+      "CustomAccountDomain": null
+    },
+    "WebPortal": {
+      "ListenPrefixes": "http://NONEXISTENTINSTANCE.octopus.app:80,https://NONEXISTENTINSTANCE.octopus.app:443",
+      "ForceSSL": "True",
+      "RequestLoggingEnabled": "False",
+      "RequestMetricLoggingEnabled": "True",
+      "CorsWhitelist": null,
+      "XFrameOptionAllowFrom": null,
+      "HttpStrictTransportSecurityEnabled": "True",
+      "HttpStrictTransportSecurityMaxAge": "31536000",
+      "ContentSecurityPolicyEnabled": "True",
+      "ReferrerPolicy": "no-referrer",
+      "TrustedRedirectUrls": null,
+      "AutoLoginEnabled": "False"
+    },
+    "Folders": {
+      "LogDirectory": "E:\\Octopus\\TaskLogs",
+      "ArtifactsDirectory": "E:\\Octopus\\Artifacts",
+      "PackagesDirectory": "E:\\Octopus\\Packages"
+    },
+    "Proxy": {
+      "UseDefaultProxy": "False",
+      "ProxyHost": null,
+      "ProxyPort": null,
+      "ProxyUsername": null,
+      "ProxyPassword": null
+    },
+    "AzureAD": {
+      "IsEnabled": "False",
+      "Issuer": null,
+      "ClientId": null,
+      "Scope": "openid%20profile%20email",
+      "RedirectUri": "/api/users/authenticatedToken/AzureAD",
+      "NameClaimType": "name",
+      "AllowAutoUserCreation": "True",
+      "RoleClaimType": "roles"
+    },
+    "GoogleApps": {
+      "IsEnabled": "False",
+      "Issuer": "https://accounts.google.com",
+      "ClientId": null,
+      "Scope": "openid%20profile%20email",
+      "RedirectUri": "/api/users/authenticatedToken/GoogleApps",
+      "NameClaimType": "name",
+      "AllowAutoUserCreation": "True",
+      "HostedDomain": null
+    },
+    "Okta": {
+      "IsEnabled": "False",
+      "Issuer": null,
+      "ClientId": null,
+      "Scope": "openid%20profile%20email%20groups",
+      "RedirectUri": "/api/users/authenticatedToken/Okta",
+      "NameClaimType": "name",
+      "AllowAutoUserCreation": "True",
+      "RoleClaimType": "groups",
+      "UsernameClaimType": "preferred_username"
+    },
+    "UsernamePassword": {
+      "IsEnabled": "True"
+    }
+  }
+}
