@@ -248,7 +248,7 @@ if (![string]::IsNullOrEmpty($firewallRuleList))
 			if (![string]::IsNullOrEmpty($firewallRulePort) -and ![string]::IsNullOrEmpty($firewallRuleName))
 			{
 				Write-Output "Open port $firewallRulePort on Windows Firewall" 
-				& netsh.exe firewall add portopening TCP $firewallRulePort $firewallRuleName
+				& netsh advfirewall firewall add rule name="$firewallRuleName" dir="in" action="allow" protocol="TCP" localport=$firewallRulePort profile="Any"
 				if ($lastExitCode -ne 0) { 
 					throw "Installation failed when modifying firewall rules" 
 				} 		
