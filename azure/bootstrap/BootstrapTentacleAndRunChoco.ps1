@@ -11,7 +11,8 @@ Param(
 	[string]$publicHostName,
 	[string]$name,
 	[string]$firewallRuleList,
-	$rebootComputer = "false"
+	$rebootComputer = "false",
+	[string]$workerPool
 )
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
@@ -133,31 +134,41 @@ if ($OctoTentacleService -eq $null)
 	{
 		# Declare switches array
 		$argumentSwitches = @()
-		$argumentSwitches += "register-with"
 
-		# Check for empty environments
-		if (![string]::IsNullOrEmpty($environmentList))
+		# Check to see if it's a worker or a target
+		if (![string]::IsNullOrWhiteSpace($workerPool))
 		{
-			# Split the environment list
-			ForEach ($environment in $environmentList.Split(","))
+			$argumentSwitches += "register-worker"
+			$argumentSwitches += "workerpool=$workerPool"
+		}
+		else 
+		{
+			$argumentSwitches += "register-with"
+
+			# Check for empty environments
+			if (![string]::IsNullOrEmpty($environmentList))
 			{
-				# Add to environment string
-				$argumentSwitches += "--environment=`"$environment`""
+				# Split the environment list
+				ForEach ($environment in $environmentList.Split(","))
+				{
+					# Add to environment string
+					$argumentSwitches += "--environment=`"$environment`""
+				}
+			}
+
+			
+			# Check for empty roles
+			if (![string]::IsNullOrEmpty($roleList))
+			{
+				# Split the role list
+				ForEach ($role in $roleList.Split(","))
+				{
+					# add to role list
+					$argumentSwitches += "--role=`"$role`""
+				}
 			}
 		}
-
 		
-		# Check for empty roles
-		if (![string]::IsNullOrEmpty($roleList))
-		{
-			# Split the role list
-			ForEach ($role in $roleList.Split(","))
-			{
-				# add to role list
-				$argumentSwitches += "--role=`"$role`""
-			}
-		}
-
 		# Build switches
 		$argumentSwitches += "--instance=`"Tentacle`""
 		$argumentSwitches += "--server=`"$octopusServerUrl`""
