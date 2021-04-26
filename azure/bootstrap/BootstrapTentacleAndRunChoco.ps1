@@ -139,7 +139,7 @@ if ($OctoTentacleService -eq $null)
 		if (![string]::IsNullOrWhiteSpace($workerPool))
 		{
 			$argumentSwitches += "register-worker"
-			$argumentSwitches += "workerpool=$workerPool"
+			$argumentSwitches += "workerpool=`"$workerPool`""
 		}
 		else 
 		{
