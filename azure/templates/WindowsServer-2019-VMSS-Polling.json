@@ -23,6 +23,13 @@
                 "description": "The name of the VM scale set"
             }
         },
+        "virtualMachinePrefix": {
+            "defaultValue": "Your_Prefix",
+            "type": "string",
+            "metadata": {
+                "description": "The name of the VM Prefix"
+            }
+        },
         "virtualNetworkName": {
             "defaultValue": "Your_VNetName",
             "type": "string",
@@ -95,7 +102,7 @@
         }
     },
     "variables": {
-        "computerNamePrefix": "[concat(parameters('virtualMachineScaleSetsName'),'i')]",
+        "computerNamePrefix": "[concat(parameters('virtualMachinePrefix'),'i')]",
         "nicName": "[concat(parameters('virtualMachineScaleSetsName'), 'Nic')]", 
         "nicIpConfigName": "[concat(parameters('virtualMachineScaleSetsName'), 'IpConfig')]",
         "vnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
