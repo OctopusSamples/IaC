@@ -61,10 +61,8 @@ if ($null -eq $OctoTentacleService)
 	& .\tentacle.exe configure --instance "Tentacle" --reset-trust --console | Write-Output
     Write-Output "Configuring the home directory"
 	& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --app $tentacleAppDirectory --noListen "True" --console | Write-Output
-    Write-Output "Creating the tentacle instance"
-    & .\Tentacle.exe service --instance "Tentacle" --install --start --console
 
-    if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
+	if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
 	{
 		# Declare switches array
 		$argumentSwitches = @()
@@ -116,4 +114,7 @@ if ($null -eq $OctoTentacleService)
 		Write-Output "Registering tenacle to $octopusServerUrl with $argumentSwitches"		
 		& .\tentacle.exe $argumentSwitches 
 	}
+
+	Write-Output "Creating the tentacle instance"
+    & .\Tentacle.exe service --instance "Tentacle" --install --start --console
 }
