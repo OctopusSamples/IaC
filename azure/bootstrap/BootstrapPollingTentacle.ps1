@@ -11,6 +11,13 @@ $ErrorActionPreference = "Stop"
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
 
+try{
+	choco config get cacheLocation
+}catch{
+	Write-Output "Chocolatey not detected, trying to install now"
+	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+}
+
 function Get-FileFromServer 
 { 
 	param ( 
@@ -117,11 +124,4 @@ if ($null -eq $OctoTentacleService)
 
 	Write-Output "Creating the tentacle instance"
     & .\Tentacle.exe service --instance "Tentacle" --install --start --console
-}
-
-try{
-	choco config get cacheLocation
-}catch{
-	Write-Output "Chocolatey not detected, trying to install now"
-	iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 }
