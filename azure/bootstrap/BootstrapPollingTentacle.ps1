@@ -11,13 +11,6 @@ $ErrorActionPreference = "Stop"
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
 
-try{
-	choco config get cacheLocation
-}catch{
-	Write-Output "Chocolatey not detected, trying to install now"
-	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-}
-
 function Get-FileFromServer 
 { 
 	param ( 
@@ -61,13 +54,13 @@ if ($null -eq $OctoTentacleService)
     Set-Location "${env:ProgramFiles}\Octopus Deploy\Tentacle" 
 
 	Write-Output "Creating the octopus instance"
-	& .\tentacle.exe create-instance --instance "Tentacle" --config $tentacleConfigFile --console | Write-Output
+	(& .\tentacle.exe create-instance --instance "Tentacle" --config $tentacleConfigFile --console) | Write-Output
     Write-Output "Creating a new certificate"
-	& .\tentacle.exe new-certificate --instance "Tentacle" --if-blank --console | Write-Output
+	(& .\tentacle.exe new-certificate --instance "Tentacle" --if-blank --console) | Write-Output
     Write-Output "Resetting the trust"
-	& .\tentacle.exe configure --instance "Tentacle" --reset-trust --console | Write-Output
+	(& .\tentacle.exe configure --instance "Tentacle" --reset-trust --console) | Write-Output
     Write-Output "Configuring the home directory"
-	& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --app $tentacleAppDirectory --noListen "True" --console | Write-Output
+	(& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --app $tentacleAppDirectory --noListen "True" --console) | Write-Output
 
 	if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($apiKey))
 	{
@@ -119,9 +112,9 @@ if ($null -eq $OctoTentacleService)
 
 		# Register tentacle
 		Write-Output "Registering tenacle to $octopusServerUrl with $argumentSwitches"		
-		& .\tentacle.exe $argumentSwitches 
+		(& .\tentacle.exe $argumentSwitches) | Write-Output
 	}
 
 	Write-Output "Creating the tentacle instance"
-    & .\Tentacle.exe service --instance "Tentacle" --install --start --console
+    (& .\Tentacle.exe service --instance "Tentacle" --install --start --console) | Write-Output
 }
