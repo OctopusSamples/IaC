@@ -118,3 +118,10 @@ if ($null -eq $OctoTentacleService)
 	Write-Output "Creating the tentacle instance"
     & .\Tentacle.exe service --instance "Tentacle" --install --start --console
 }
+
+try{
+	choco config get cacheLocation
+}catch{
+	Write-Output "Chocolatey not detected, trying to install now"
+	iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+}
