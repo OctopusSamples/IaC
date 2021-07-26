@@ -4,10 +4,12 @@ Param(
 	[string]$environmentList,
 	[string]$roleList,
 	[string]$spaceName = "Default",
-    [string]$workerPool
+    [string]$workerPool,
+	[string]$octopusServerThumbprint
 )
 
 $ErrorActionPreference = "Stop"
+$tentacleListenPort = 10933 
 
 Start-Transcript -path "C:\Bootstrap.txt" -append  
 
@@ -67,9 +69,8 @@ if (![string]::IsNullOrEmpty($octopusServerUrl) -and ![string]::IsNullOrEmpty($a
 	$registrationArgumentSwitches += "--instance=`"Tentacle`""
 	$registrationArgumentSwitches += "--server=`"$octopusServerUrl`""
 	$registrationArgumentSwitches += "--apiKey=`"$apiKey`""
-	$registrationArgumentSwitches += "--space=`"$spaceName`"" 
-	$registrationArgumentSwitches += "--comms-style=`"TentacleActive`"" 
-	$registrationArgumentSwitches += "--server-comms-port=`"10943`""
+	$registrationArgumentSwitches += "--space=`"$spaceName`"" 	
+	$registrationArgumentSwitches += "--server-comms-port=`"$tentacleListenPort`""
 	$registrationArgumentSwitches += "--console"
 	$registrationArgumentSwitches += "--force"
 }
@@ -100,6 +101,12 @@ if ($null -eq $OctoTentacleService)
     if ($msiExitCode -ne 0) { 
         throw "Installation aborted" 
     } 
+
+	Write-Output "Open port $tentacleListenPort on Windows Firewall" 
+    & netsh.exe firewall add portopening TCP $tentacleListenPort "Octopus Tentacle" 
+    if ($lastExitCode -ne 0) { 
+        throw "Installation failed when modifying firewall rules" 
+    }
     
     Set-Location "${env:ProgramFiles}\Octopus Deploy\Tentacle" 
 
@@ -109,8 +116,14 @@ if ($null -eq $OctoTentacleService)
 	(& .\tentacle.exe new-certificate --instance "Tentacle" --if-blank --console) | Write-Output
     Write-Output "Resetting the trust"
 	(& .\tentacle.exe configure --instance "Tentacle" --reset-trust --console) | Write-Output
+	Write-Output "Setting the tentacle to trust the octopus instance"
+	(& .\tentacle.exe configure --instance "Tentacle" --trust $octopusServerThumbprint --console) | Write-Output
     Write-Output "Configuring the home directory"
-	(& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --app $tentacleAppDirectory --noListen "True" --console) | Write-Output
+	(& .\tentacle.exe configure --instance "Tentacle" --home $tentacleHomeDirectory --app $tentacleAppDirectory --noListen "False" --console) | Write-Output
+	Write-Output "Setting the port"
+	(& .\tentacle.exe configure --instance "Tentacle" --port $tentacleListenPort --console) | Write-Output
+	Write-Output "Creating the tentacle instance"
+    (& .\Tentacle.exe service --instance "Tentacle" --install --start --console) | Write-Output
 
 	if ($registrationArgumentSwitches.Length -gt 0)
 	{		
@@ -118,16 +131,11 @@ if ($null -eq $OctoTentacleService)
 		Write-Output "Registering tenacle to $octopusServerUrl with $registrationArgumentSwitches"		
 		(& .\tentacle.exe $registrationArgumentSwitches) | Write-Output
 	}
-
-	Write-Output "Creating the tentacle instance"
-    (& .\Tentacle.exe service --instance "Tentacle" --install --start --console) | Write-Output
 }
 elseif ($registrationArgumentSwitches.Length -gt 0)
 {
 	Write-Output "The tentacle already exists, going to reforce the registration in the event the machine got somehow deleted from Octopus."
 
 	Write-Output "Registering tenacle to $octopusServerUrl with $registrationArgumentSwitches"		
-	(& .\tentacle.exe $registrationArgumentSwitches) | Write-Output	
-
-	(& .\Tentacle.exe service --instance "Tentacle" --stop --start --console) | Write-Output	
+	(& .\tentacle.exe $registrationArgumentSwitches) | Write-Output			
 }
