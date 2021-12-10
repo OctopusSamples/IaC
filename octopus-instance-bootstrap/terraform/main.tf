@@ -19,7 +19,7 @@ resource "octopusdeploy_environment" "test" {
     name = "Test"
 }
 
-resource "octopusdeploy_environment" "test" {
+resource "octopusdeploy_environment" "production" {
     name = "Production"
 }
 
