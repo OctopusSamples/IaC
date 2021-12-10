@@ -11,7 +11,6 @@ provider "octopusdeploy" {
   # configuration options
   address    = var.octopus_address
   api_key    = var.octopus_api_key
-  space_id   = var.octopus_space_id
   space_name = var.octopus_space_name
 }
 
