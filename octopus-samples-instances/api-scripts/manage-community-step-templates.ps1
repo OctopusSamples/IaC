@@ -119,6 +119,8 @@ foreach ($space in $spacesList.Items)
 
                     $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplateToInstall.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "PUT"
                     Write-Host "Succesfully updated the step template.  The version is now $($actionTemplate.Version)"
+
+                    $installStepTemplate = $false
                 }
                 
                 break
