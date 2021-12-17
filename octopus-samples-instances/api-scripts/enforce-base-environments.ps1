@@ -75,7 +75,7 @@ function Invoke-OctopusApi
 }
 
 $spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
-$environmentsToCheckList = $EnvironmentsCsv
+$environmentsToCheckList = @($EnvironmentsCsv -split ",")
 foreach ($space in $spacesList.Items)
 {
     $environmentsList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments?skip=0&take=1000" -spaceId $space.Id -apiKey $OctopusApiKey -item $null -method "GET"
