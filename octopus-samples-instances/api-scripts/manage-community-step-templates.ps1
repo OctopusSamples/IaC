@@ -117,7 +117,7 @@ foreach ($space in $spacesList.Items)
                 {
                     Write-Host "The step template $($stepTemplate.Name) is on version $($stepTemplate.Version) while the matching community template is on version $($communityActionTemplate.Version).  Updating the step template."
 
-                    $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplateToInstall.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "PUT"
+                    $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplate.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "PUT"
                     Write-Host "Succesfully updated the step template.  The version is now $($actionTemplate.Version)"
 
                     $installStepTemplate = $false
