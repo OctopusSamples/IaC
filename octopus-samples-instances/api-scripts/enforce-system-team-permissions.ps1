@@ -112,6 +112,11 @@ $teamScopedUserRoles = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "team
 $spaceIdList = @()
 foreach ($userRole in $teamScopedUserRoles.Items)
 {
+    if ($null -eq $userRole.SpaceId)
+    {
+        continue
+    }
+    
 	if ($spaceIdList -notcontains $userRole.SpaceId)
     {
     	Write-Verbose "Adding the space $($userRole.SpaceId) to the space list"
