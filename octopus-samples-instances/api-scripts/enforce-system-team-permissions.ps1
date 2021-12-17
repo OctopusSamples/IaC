@@ -116,7 +116,7 @@ foreach ($userRole in $teamScopedUserRoles.Items)
     {
         continue
     }
-    
+
 	if ($spaceIdList -notcontains $userRole.SpaceId)
     {
     	Write-Verbose "Adding the space $($userRole.SpaceId) to the space list"
@@ -206,7 +206,7 @@ foreach ($spaceId in $spaceIdList)
     
     Write-Verbose "Now that we've verified all the roles that need to be assigned are there, let's make sure there are no additional roles."
     foreach ($matchingUserRole in $matchingSpaceUserRoleList)
-    {
+    {        
     	Write-Verbose "Making sure $($matchingUserRole.UserRoleId) for $($matchingUserRole.Id) is in the role allowed list."
     	$allowedRole = $false
     	foreach ($roleAllowed in $rolesAllowedList)
