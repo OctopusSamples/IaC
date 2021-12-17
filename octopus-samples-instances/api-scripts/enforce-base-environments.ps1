@@ -83,7 +83,7 @@ foreach ($space in $spacesList.Items)
     foreach ($environmentToCheck in $environmentsToCheckList)
     {
         $found = $false
-        foreach ($environment in $environmentsList)
+        foreach ($environment in $environmentsList.Items)
         {
             Write-Verbose "Checking $($environment.Name) with $environmentToCheck"
             if ($environment.Name.ToLower().Trim() -eq $environmentToCheck.ToLower().Trim())
