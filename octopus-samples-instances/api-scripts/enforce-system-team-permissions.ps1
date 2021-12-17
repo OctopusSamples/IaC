@@ -1,10 +1,10 @@
 param 
-{
+(
     $OctopusUrl,
     $OctopusApiKey,
     $RolesAllowedCsv,
     $TeamName
-}
+)
 
 function Invoke-OctopusApi
 {
