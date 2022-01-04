@@ -6,7 +6,7 @@ variable "octopus_api_key" {
     type = string
 }
 
-variable "octopus_space_name" {
+variable "octopus_space_id" {
     type = string
 }
 
