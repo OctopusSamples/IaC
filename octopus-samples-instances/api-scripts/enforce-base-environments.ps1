@@ -97,7 +97,7 @@ foreach ($space in $spacesList.Items)
         if ($found -eq $false)
         {
             $environmentToAdd = @{
-                Name = $environmentToCheck
+                Name = $environmentToCheck.Trim()
             }
 
             $newEnvironment = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments" -spaceId $space.Id -apiKey $OctopusApiKey -item $environmentToAdd -method "POST"
