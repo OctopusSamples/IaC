@@ -14,24 +14,10 @@ provider "octopusdeploy" {
   space_name = var.octopus_space_name
 }
 
-resource "octopusdeploy_environment" "test" {
-    name = "Test"
-}
-
-resource "octopusdeploy_environment" "production" {
-    name = "Production"
-}
-
-resource "octopusdeploy_lifecycle" "default_lifecycle" {
-    name = "Default"
-
-    release_retention_policy {
-        quantity_to_keep = 5
-        unit = "Days"        
-    }
-
-    tentacle_retention_policy {
-        quantity_to_keep = 5
-        unit = "Days"
-    }
+resource "octopusdeploy_feed" "github" {
+  name = "GitHub TF Feed"
+  feed_type = "GitHub"
+  feed_uri = "https://api.github.com"
+  username = var.octopus_github_username
+  password = var.octopus_github_password
 }
