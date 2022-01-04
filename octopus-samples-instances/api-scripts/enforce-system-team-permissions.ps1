@@ -145,7 +145,7 @@ foreach ($spaceId in $spaceIdList)
     	$found = $false
         foreach ($matchingSpaceUserRole in $matchingSpaceUserRoleList)
         {
-        	if ($matchingSpaceUserRole.UserRoleId -eq $roleAllowed.Id)
+        	if ($matchingSpaceUserRole.UserRoleId -eq $roleAllowed.Id -and $spaceId -eq $matchingSpaceUserRole.SpaceId)
             {
             	Write-Host "User role $($roleAllowed.Name) has been assigned to $teamName for $spaceId.  Checking if it is scoped to anything."
             	$found = $true
