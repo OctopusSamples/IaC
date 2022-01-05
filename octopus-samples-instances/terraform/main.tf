@@ -5,6 +5,12 @@ terraform {
       version = "0.7.63" # example: 0.7.62
     }
   }
+
+  backend "s3" {
+    bucket = "#{Project.AWS.Backend.Bucket}"
+    key = "#{Project.AWS.Backend.Key}"
+    region = "#{Project.AWS.Backend.Region}"
+  }
 }
 
 provider "octopusdeploy" {
