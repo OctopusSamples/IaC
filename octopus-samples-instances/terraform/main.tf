@@ -24,6 +24,5 @@ resource "octopusdeploy_feed" "github" {
   name = "GitHub TF Feed"
   feed_type = "GitHub"
   feed_uri = "https://api.github.com"
-  username = var.octopus_github_username
   password = var.octopus_github_password
 }
