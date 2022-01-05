@@ -15,6 +15,11 @@ variable "octopus_github_password" {
     sensitive = true
 }
 
-variable "octopus_github_username" {
+variable "octopus_feedz_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_feedz_username" {
     type = string
 }

@@ -26,3 +26,11 @@ resource "octopusdeploy_feed" "github" {
   feed_uri = "https://api.github.com"
   password = var.octopus_github_password
 }
+
+resource "octopusdeploy_feed" "feedz" {
+  name = "Feedz TF Feed"
+  feed_type = "NuGet"
+  feed_uri = "https://f.feedz.io/octopus-deploy-samples/shared-repo"
+  password = var.octopus_feedz_password
+  username = var.octopus_feedz_username
+}
