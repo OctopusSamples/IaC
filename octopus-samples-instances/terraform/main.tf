@@ -30,7 +30,7 @@ resource "octopusdeploy_feed" "github" {
 resource "octopusdeploy_feed" "feedz" {
   name = "Feedz TF Feed"
   feed_type = "NuGet"
-  feed_uri = "https://f.feedz.io/octopus-deploy-samples/shared-repo"
+  feed_uri = "https://f.feedz.io/octopus-deploy-samples/shared-repo/nuget/index.json"
   password = var.octopus_feedz_password
   username = var.octopus_feedz_username
 }
