@@ -74,9 +74,3 @@ resource "octopusdeploy_azure_service_principal" "azure_service_principal" {
   tenant_id = var.octopus_azure_account_tenant_id
   password = var.octopus_azure_account_password
 }
-
-resource "octopusdeploy_gcp_account" "gcp_account" {
-  name = "GCP Account TF"
-  description = "Account to access the GCP Customer Solutions sandbox.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
-  json_key = var.octopus_gcp_account_json_key
-}
