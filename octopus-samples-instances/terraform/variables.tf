@@ -35,8 +35,3 @@ variable "octopus_azure_account_password" {
     type = string
     sensitive = true
 }
-
-variable "octopus_gcp_account_json_key" {
-    type = string
-    sensitive = true
-}
