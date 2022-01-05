@@ -10,16 +10,33 @@ variable "octopus_space_id" {
     type = string
 }
 
-variable "octopus_github_password" {
+variable "octopus_aws_account_access_key" {
+    type = string
+}
+
+variable "octopus_aws_account_access_secret" {
     type = string
     sensitive = true
 }
 
-variable "octopus_feedz_password" {
+variable "octopus_azure_account_application_id" {
+    type = string
+}
+
+variable "octopus_azure_account_subscription_id" {
+    type = string
+}
+
+variable "octopus_azure_account_tenant_id" {
+    type = string
+}
+
+variable "octopus_azure_account_password" {
     type = string
     sensitive = true
 }
 
-variable "octopus_feedz_username" {
+variable "octopus_gcp_account_json_key" {
     type = string
+    sensitive = true
 }
