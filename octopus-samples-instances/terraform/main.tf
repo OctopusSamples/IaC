@@ -21,42 +21,36 @@ provider "octopusdeploy" {
 }
 
 resource "octopusdeploy_feed" "github" {
-  name = "GitHub Feed TF"
-  description = "External Feed to access scripts stored in GitHub.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
+  name = "GitHub Feed TF"  
   feed_type = "GitHub"
   feed_uri = "https://api.github.com"
 }
 
 resource "octopusdeploy_feed" "feedz" {
-  name = "Feedz Feed TF"
-  description = "External Feed to access packages stored in Feedz.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
+  name = "Feedz Feed TF"  
   feed_type = "NuGet"
   feed_uri = "https://f.feedz.io/octopus-deploy-samples/octopus-samples/nuget/index.json"
 }
 
 resource "octopusdeploy_feed" "docker" {
   name = "Docker Feed TF"
-  description = "External Feed to access Docker Images stored on Docker Hub.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
   feed_type = "Docker"
   feed_uri = "https://index.docker.io"
 }
 
-resource "octopusdeploy_worker_pool" "aws_worker_pool" {
+resource "octopusdeploy_static_worker_pool" "aws_worker_pool" {
   name = "AWS Worker Pool TF"
-  description = "Worker pool to access AWS resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
-  worker_pool_type = "StaticWorkerPool"
+  description = "Worker pool to access AWS resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."  
 }
 
-resource "octopusdeploy_worker_pool" "azure_worker_pool" {
+resource "octopusdeploy_static_worker_pool" "azure_worker_pool" {
   name = "Azure Worker Pool TF"
-  description = "Worker pool to access Azure resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
-  worker_pool_type = "StaticWorkerPool"
+  description = "Worker pool to access Azure resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."  
 }
 
-resource "octopusdeploy_worker_pool" "gcp_worker_pool" {
+resource "octopusdeploy_static_worker_pool" "gcp_worker_pool" {
   name = "GCP Worker Pool TF"
-  description = "Worker pool to access GCP resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."
-  worker_pool_type = "StaticWorkerPool"
+  description = "Worker pool to access GCP resources.  This is managed by the Octopus Terraform Provider.  Please do not make changes in the UI, update the TF file instead."  
 }
 
 resource "octopusdeploy_aws_account" "aws_account" {
