@@ -4,7 +4,7 @@ param
     $OctopusApiKey,
     $AdminInstanceUrl,
     $AdminInstanceApiKey,
-    $AdminEnvrionmentName,
+    $AdminEnvironmentName,
     $AdminSpaceName
 )
 
@@ -78,8 +78,8 @@ function Invoke-OctopusApi
 }
 
 $spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
-foreach ($space in $spacesList.Item)
+foreach ($space in $spacesList.Items)
 {
     Write-Host "Queing a runbook run for $($space.Name) using the space id $($space.Id)"
-    octo run-runbook --project "Standards" --runbook "Enforce Space Standards" --environment $AdminEnvrionmentName --variable="Project.SpaceStandard.SpaceId:$($space.Id)" --server="$AdminInstanceUrl" --apiKey="$AdminInstanceApiKey" --space="$AdminSpaceName"
+    octo run-runbook --project "Standards" --runbook "Enforce Space Standards" --environment $AdminEnvironmentName --variable="Project.SpaceStandard.SpaceId:$($space.Id)" --server="$AdminInstanceUrl" --apiKey="$AdminInstanceApiKey" --space="$AdminSpaceName"
 }
