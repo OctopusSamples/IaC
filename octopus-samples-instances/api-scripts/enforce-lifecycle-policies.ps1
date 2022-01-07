@@ -66,4 +66,4 @@ foreach ($lifecycle in $lifecycleList)
     }
 }	
 
-Write-Hosted "Finished checking lifecycle policies for $($space.Name)"
+Write-Host "Finished checking lifecycle policies for $($space.Name)"
