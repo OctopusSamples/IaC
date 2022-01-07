@@ -104,4 +104,4 @@ foreach ($environmentToCheck in $environmentsToCheckList)
     }
 }
 
-Write-Host "Finished checking environments for all spaces"
+Write-Host "Finished checking environments for $($space.Name)"

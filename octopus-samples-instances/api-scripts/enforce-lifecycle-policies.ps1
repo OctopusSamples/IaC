@@ -65,3 +65,5 @@ foreach ($lifecycle in $lifecycleList)
         $lifecycleResponse = Invoke-RestMethod -Method Put -Uri "$octopusURL/api/$($space.Id)/lifecycles/$($lifecycle.Id)" -Body ($lifecycle | ConvertTo-Json -Depth 10) -Headers $header
     }
 }	
+
+Write-Hosted "Finished checking lifecycle policies for $($space.Name)"

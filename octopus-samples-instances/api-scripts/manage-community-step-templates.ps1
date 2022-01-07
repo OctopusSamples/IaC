@@ -151,4 +151,4 @@ foreach ($expectedCommunityStepTemplate in $expectedCommunityStepTemplatesList)
 }
 
 
-Write-Host "Finished verifying the community step templates have all been installed."
+Write-Host "Finished verifying the community step templates have all been installed for $($space.Name)"

@@ -44,3 +44,5 @@ foreach ($project in $projects) {
         }
     }
 }
+
+Write-Output "Finished checking the runbook retention policies for space $($space.Name)"
