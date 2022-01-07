@@ -103,7 +103,7 @@ $spaceToCreate = @{
     IsDefault = $false
     Name = $SpaceName
     SpaceManagersTeamMembers = @()
-    SpaceManagerTeams = @($teamToInclude.Id)
+    SpaceManagersTeams = @($teamToInclude.Id)
     TaskQueuesStopped = $false
 }
 
