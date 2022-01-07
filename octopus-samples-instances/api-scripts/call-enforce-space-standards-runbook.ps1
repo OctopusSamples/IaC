@@ -89,6 +89,6 @@ if ([string]::IsNullOrWhiteSpace($OptionalSpaceId) -eq $false -and $OptionalSpac
 foreach ($space in $spacesList)
 {
     Write-Host "Queueing a runbook run for $($space.Name) using the space id $($space.Id).  The runbook will run on $AdminInstanceUrl for the environment $AdminEnvironmentName in the space $AdminSpaceName"
-    Write-Host "Running command: octo run-runbook --project ""Standards"" --runbook ""Enforce Space Standards"" --environment ""$AdminEnvironmentName"" --variable=""Project.SpaceStandard.SpaceId:$($space.Id)"" --server=""$AdminInstanceUrl"" --apiKey=""$AdminInstanceApiKey"" --space=""$AdminSpaceName"" to queue the runbook"
-    octo run-runbook --project "Standards" --runbook "Enforce Space Standards" --environment "$AdminEnvironmentName" --variable="Project.SpaceStandard.SpaceId:$($space.Id)" --server="$AdminInstanceUrl" --apiKey="$AdminInstanceApiKey" --space="$AdminSpaceName"
+    Write-Host "Running command: octo run-runbook --project ""Standards"" --runbook ""Enforce Space Standards"" --environment ""$AdminEnvironmentName"" --variable=""Project.Standards.SpaceId:$($space.Id)"" --server=""$AdminInstanceUrl"" --apiKey=""$AdminInstanceApiKey"" --space=""$AdminSpaceName"" to queue the runbook"
+    octo run-runbook --project "Standards" --runbook "Enforce Space Standards" --environment "$AdminEnvironmentName" --variable="Project.Standards.SpaceId:$($space.Id)" --server="$AdminInstanceUrl" --apiKey="$AdminInstanceApiKey" --space="$AdminSpaceName"
 }
