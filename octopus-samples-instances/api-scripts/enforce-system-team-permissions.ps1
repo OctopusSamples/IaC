@@ -3,7 +3,8 @@ param
     $OctopusUrl,
     $OctopusApiKey,
     $RolesAllowedCsv,
-    $TeamName
+    $TeamName,
+    $OptionalSpaceId
 )
 
 function Invoke-OctopusApi
@@ -110,29 +111,37 @@ foreach ($team in $teamList.Items)
 $teamScopedUserRoles = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "teams/$($teamToUpdate.Id)/scopeduserroles?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
 
 $spaceIdList = @()
-foreach ($userRole in $teamScopedUserRoles.Items)
+
+if ([string]::IsNullOrWhiteSpace($OptionalSpaceId) -eq $false -and $OptionalSpaceId.ToLower().Trim() -ne "all")
 {
-    if ($null -eq $userRole.SpaceId)
-    {
-        continue
-    }
-
-	if ($spaceIdList -notcontains $userRole.SpaceId)
-    {
-    	Write-Verbose "Adding the space $($userRole.SpaceId) to the space list"
-    	$spaceIdList += $userRole.SpaceId
-    }
+    $spaceIdList += $OptionalSpaceId
 }
-
-$spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
-foreach ($space in $spacesList.Items)
-{    	
- 	Write-Verbose "Checking to see if $($space.Id) is already in the list"
-	if ($spaceIdList -notcontains $space.Id)
+else
+{
+    foreach ($userRole in $teamScopedUserRoles.Items)
     {
-    	Write-Verbose "Adding the space $($space.SpaceId) to the space list"
-        $spaceIdList += $space.Id
+        if ($null -eq $userRole.SpaceId)
+        {
+            continue
+        }
+
+        if ($spaceIdList -notcontains $userRole.SpaceId)
+        {
+            Write-Verbose "Adding the space $($userRole.SpaceId) to the space list"
+            $spaceIdList += $userRole.SpaceId
+        }
     }
+
+    $spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
+    foreach ($space in $spacesList.Items)
+    {    	
+        Write-Verbose "Checking to see if $($space.Id) is already in the list"
+        if ($spaceIdList -notcontains $space.Id)
+        {
+            Write-Verbose "Adding the space $($space.SpaceId) to the space list"
+            $spaceIdList += $space.Id
+        }
+    }    
 }
 
 foreach ($spaceId in $spaceIdList)

@@ -2,7 +2,8 @@ param
 (
     $OctopusUrl,
     $OctopusApiKey,
-    $CommunityStepTemplatesCsv
+    $CommunityStepTemplatesCsv,
+    $SpaceIdFilter
 )
 
 function Invoke-OctopusApi
@@ -75,81 +76,79 @@ function Invoke-OctopusApi
 }
 
 $communityActionTemplatesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
-$spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
+$space = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces/$SpaceIdFilter" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
 $expectedCommunityStepTemplatesList = @($CommunityStepTemplatesCsv -split ",")
 
-foreach ($space in $spacesList.Items)
-{
-    Write-Verbose "Checking $($space.Name) for the expected pre-installed community step templates"
-    
-    foreach ($expectedCommunityStepTemplate in $expectedCommunityStepTemplatesList)
-    {
-        $installStepTemplate = $true
-        $stepTemplatesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "actiontemplates?skip=0&take=1000&partialName=$([uri]::EscapeDataString($expectedCommunityStepTemplate.Name))" -spaceId $space.Id -apiKey $OctopusApiKey -item $null -method "GET"
+Write-Verbose "Checking $($space.Name) for the expected pre-installed community step templates"
 
-        foreach ($stepTemplate in $stepTemplatesList.Items)
+foreach ($expectedCommunityStepTemplate in $expectedCommunityStepTemplatesList)
+{
+    $installStepTemplate = $true
+    $stepTemplatesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "actiontemplates?skip=0&take=1000&partialName=$([uri]::EscapeDataString($expectedCommunityStepTemplate.Name))" -spaceId $space.Id -apiKey $OctopusApiKey -item $null -method "GET"
+
+    foreach ($stepTemplate in $stepTemplatesList.Items)
+    {
+        if ($null -eq $stepTemplate.CommunityActionTemplateId)
         {
-            if ($null -eq $stepTemplate.CommunityActionTemplateId)
+            Write-Host "The step template $($stepTemplate.Name) is not a community step template, moving on."
+            continue
+        }
+
+        if ($stepTemplate.Name.ToLower().Trim() -eq $expectedCommunityStepTemplate.ToLower().Trim())
+        {
+            Write-Host "The step template $($stepTemplate.Name) matches $expectedCommunityStepTemplate.  No need to install the step template."
+
+            $communityActionTemplate = $communityActionTemplatesList.Items | Where-Object {$_.Id -eq $stepTemplate.CommunityActionTemplateId}                
+
+            if ($null -eq $communityActionTemplate)
             {
-                Write-Host "The step template $($stepTemplate.Name) is not a community step template, moving on."
-                continue
+                Write-Host "Unable to find the community step template in the library, skipping the version check."
+                $installStepTemplate = $false
+                break
             }
 
-            if ($stepTemplate.Name.ToLower().Trim() -eq $expectedCommunityStepTemplate.ToLower().Trim())
+            if ($communityActionTemplate.Version -eq $stepTemplate.Version)
             {
-                Write-Host "The step template $($stepTemplate.Name) matches $expectedCommunityStepTemplate.  No need to install the step template."
+                Write-Host "The step template $($stepTemplate.Name) is on version $($stepTemplate.Version) while the matching community template is on version $($communityActionTemplate.Version).  The versions match.  Leaving the step template alone."
+                $installStepTemplate = $false
+            }
+            else
+            {
+                Write-Host "The step template $($stepTemplate.Name) is on version $($stepTemplate.Version) while the matching community template is on version $($communityActionTemplate.Version).  Updating the step template."
 
-                $communityActionTemplate = $communityActionTemplatesList.Items | Where-Object {$_.Id -eq $stepTemplate.CommunityActionTemplateId}                
+                $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplate.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "PUT"
+                Write-Host "Succesfully updated the step template.  The version is now $($actionTemplate.Version)"
 
-                if ($null -eq $communityActionTemplate)
-                {
-                    Write-Host "Unable to find the community step template in the library, skipping the version check."
-                    $installStepTemplate = $false
-                    break
-                }
+                $installStepTemplate = $false
+            }
+            
+            break
+        }
+    }
 
-                if ($communityActionTemplate.Version -eq $stepTemplate.Version)
-                {
-                    Write-Host "The step template $($stepTemplate.Name) is on version $($stepTemplate.Version) while the matching community template is on version $($communityActionTemplate.Version).  The versions match.  Leaving the step template alone."
-                    $installStepTemplate = $false
-                }
-                else
-                {
-                    Write-Host "The step template $($stepTemplate.Name) is on version $($stepTemplate.Version) while the matching community template is on version $($communityActionTemplate.Version).  Updating the step template."
-
-                    $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplate.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "PUT"
-                    Write-Host "Succesfully updated the step template.  The version is now $($actionTemplate.Version)"
-
-                    $installStepTemplate = $false
-                }
-                
+    if ($installStepTemplate -eq $true)
+    {
+        $communityActionTemplateToInstall = $null
+        foreach ($communityStepTemplate in $communityActionTemplatesList.Items)
+        {
+            if ($communityStepTemplate.Name.ToLower().Trim() -eq $expectedCommunityStepTemplate.ToLower().Trim())
+            {
+                $communityActionTemplateToInstall = $communityStepTemplate
                 break
             }
         }
 
-        if ($installStepTemplate -eq $true)
+        if ($null -eq $communityActionTemplateToInstall)
         {
-            $communityActionTemplateToInstall = $null
-            foreach ($communityStepTemplate in $communityActionTemplatesList.Items)
-            {
-                if ($communityStepTemplate.Name.ToLower().Trim() -eq $expectedCommunityStepTemplate.ToLower().Trim())
-                {
-                    $communityActionTemplateToInstall = $communityStepTemplate
-                    break
-                }
-            }
-
-            if ($null -eq $communityActionTemplateToInstall)
-            {
-                Write-Host -Message "Unable to find $expectedCommunityStepTemplate.  Please either re-sync the community library or check the names.  Exiting." -ForegroundColor Red
-                exit 1
-            }
-
-            Write-Host "Installing the step template $expectedCommunityStepTemplate to $($space.Name)."
-            $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplateToInstall.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "POST"
-            Write-Host "Succesfully installed the step template.  The Id of the new action template is $($actionTemplate.Id)"
+            Write-Host -Message "Unable to find $expectedCommunityStepTemplate.  Please either re-sync the community library or check the names.  Exiting." -ForegroundColor Red
+            exit 1
         }
+
+        Write-Host "Installing the step template $expectedCommunityStepTemplate to $($space.Name)."
+        $actionTemplate = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "communityactiontemplates/$($communityActionTemplateToInstall.Id)/installation/$($space.Id)" -spaceId $null -apiKey $OctopusApiKey -item $null -method "POST"
+        Write-Host "Succesfully installed the step template.  The Id of the new action template is $($actionTemplate.Id)"
     }
 }
+
 
 Write-Host "Finished verifying the community step templates have all been installed."

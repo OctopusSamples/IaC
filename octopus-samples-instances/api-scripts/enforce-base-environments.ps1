@@ -2,7 +2,8 @@ param
 (
     $OctopusUrl,
     $OctopusApiKey,
-    $EnvironmentsCsv
+    $EnvironmentsCsv,
+    $SpaceIdFilter
 )
 
 function Invoke-OctopusApi
@@ -74,35 +75,32 @@ function Invoke-OctopusApi
     }    
 }
 
-$spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
+$space = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces/$SpaceIdFilter" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
 $environmentsToCheckList = @($EnvironmentsCsv -split ",")
-foreach ($space in $spacesList.Items)
+$environmentsList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments?skip=0&take=1000" -spaceId $space.Id -apiKey $OctopusApiKey -item $null -method "GET"
+
+foreach ($environmentToCheck in $environmentsToCheckList)
 {
-    $environmentsList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments?skip=0&take=1000" -spaceId $space.Id -apiKey $OctopusApiKey -item $null -method "GET"
-
-    foreach ($environmentToCheck in $environmentsToCheckList)
+    $found = $false
+    foreach ($environment in $environmentsList.Items)
     {
-        $found = $false
-        foreach ($environment in $environmentsList.Items)
+        Write-Verbose "Checking $($environment.Name) with $environmentToCheck"
+        if ($environment.Name.ToLower().Trim() -eq $environmentToCheck.ToLower().Trim())
         {
-            Write-Verbose "Checking $($environment.Name) with $environmentToCheck"
-            if ($environment.Name.ToLower().Trim() -eq $environmentToCheck.ToLower().Trim())
-            {
-                Write-Host "Environment $environmentToCheck already exists on space $($space.Name)"
-                $found = $true
-                break
-            }
+            Write-Host "Environment $environmentToCheck already exists on space $($space.Name)"
+            $found = $true
+            break
+        }
+    }
+
+    if ($found -eq $false)
+    {
+        $environmentToAdd = @{
+            Name = $environmentToCheck.Trim()
         }
 
-        if ($found -eq $false)
-        {
-            $environmentToAdd = @{
-                Name = $environmentToCheck.Trim()
-            }
-
-            $newEnvironment = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments" -spaceId $space.Id -apiKey $OctopusApiKey -item $environmentToAdd -method "POST"
-            Write-Host "Added the environment $environmentToCheck with the new id $($newEnvironment.Id)"
-        }
+        $newEnvironment = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "environments" -spaceId $space.Id -apiKey $OctopusApiKey -item $environmentToAdd -method "POST"
+        Write-Host "Added the environment $environmentToCheck with the new id $($newEnvironment.Id)"
     }
 }
 
