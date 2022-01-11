@@ -38,6 +38,8 @@ resource "octopusdeploy_feed" "docker" {
   feed_type = "Docker"
   feed_uri = "https://index.docker.io"
   is_enhanced_mode = false
+  download_attempts = 0
+  download_retry_backoff_seconds = 0
 }
 
 resource "octopusdeploy_static_worker_pool" "aws_worker_pool" {
