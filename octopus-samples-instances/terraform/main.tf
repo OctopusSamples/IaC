@@ -20,22 +20,10 @@ provider "octopusdeploy" {
   space_id   = var.octopus_space_id
 }
 
-resource "octopusdeploy_feed" "github" {
-  name = "GitHub Feed TF"  
-  feed_type = "GitHub"
-  feed_uri = "https://api.github.com"
-}
-
 resource "octopusdeploy_feed" "feedz" {
   name = "Feedz Feed TF"  
   feed_type = "NuGet"
   feed_uri = "https://f.feedz.io/octopus-deploy-samples/octopus-samples/nuget/index.json"
-}
-
-resource "octopusdeploy_feed" "docker" {
-  name = "Docker Feed TF"
-  feed_type = "Docker"
-  feed_uri = "https://index.docker.io"
 }
 
 resource "octopusdeploy_static_worker_pool" "aws_worker_pool" {
