@@ -1,13 +1,13 @@
 #!/bin/bash
-serverUrl="#{Project.Octopus.Server.Url}"
-serverCommsPort="#{Project.Octopus.Server.PollingPort}"
-apiKey="#{Project.Octopus.Server.ApiKey}"
+serverUrl="#{Samples.Octopus.Url}"
+serverCommsPort="10943"
+apiKey="#{Samples.Octopus.Api.Key}"
 name=$HOSTNAME
 configFilePath="/etc/octopus/default/tentacle-default.config"
 applicationPath="/home/Octopus/Applications/"
-workerPool="#{Project.Octopus.Server.WorkerPool}"
-machinePolicy="#{Project.Octopus.Server.MachinePolicy}"
-space="#{Project.Octopus.Server.Space}"
+workerPool="#{Octopus.Action[Get Samples Spaces].Output.WorkerPoolName}"
+machinePolicy="Default Machine Policy"
+space="#{Octopus.Action[Get Samples Spaces].Output.InitialSpaceName}"
 
 # Install Tentacle
 sudo apt-key adv --fetch-keys "https://apt.octopus.com/public.key"
@@ -36,6 +36,9 @@ sudo apt-get update
 # Install PowerShell
 sudo apt-get install -y powershell
 
+# Pull worker tools image
+sudo docker pull octopusdeploy/worker-tools:3-ubuntu.18.04
+
 # Configure and register worker
 sudo /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath" --instance "$name"
 sudo /opt/octopus/tentacle/Tentacle new-certificate --if-blank
@@ -43,4 +46,4 @@ sudo /opt/octopus/tentacle/Tentacle configure --noListen True --reset-trust --ap
 echo "Registering the worker $name with server $serverUrl"
 sudo /opt/octopus/tentacle/Tentacle service --install --start
 sudo /opt/octopus/tentacle/Tentacle register-worker --server "$serverUrl" --apiKey "$apiKey" --name "$name"  --comms-style "TentacleActive" --server-comms-port $serverCommsPort --workerPool "$workerPool" --policy "$machinePolicy" --space "$space"
-
+sudo /opt/octopus/tentacle/Tentacle service --restart
