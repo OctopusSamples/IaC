@@ -81,6 +81,7 @@ resource "octopusdeploy_library_variable_set" "api_keys" {
 resource "octopusdeploy_variable" "azurevmss_api_key" {
   name = "APIKeys.AzureVMSS"
   type = "Sensitive"
+  is_sensitive = true
   value = var.octopus_azurevmss_api_key
   owner_id = octopusdeploy_library_variable_set.api_keys.variable_set_id
 }
