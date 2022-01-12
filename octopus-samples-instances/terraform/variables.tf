@@ -35,3 +35,7 @@ variable "octopus_azure_account_password" {
     type = string
     sensitive = true
 }
+
+variable "octopus_azurevmss_api_key" {
+    type = string
+}

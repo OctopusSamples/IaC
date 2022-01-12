@@ -72,3 +72,15 @@ resource "octopusdeploy_azure_service_principal" "azure_service_principal" {
   tenant_id = var.octopus_azure_account_tenant_id
   password = var.octopus_azure_account_password
 }
+
+resource "octopusdeploy_library_variable_set" "api_keys" {
+  name = "API Keys TF"
+  description = "API keys for the Octopus Deploy service accounts."
+}
+
+resource "octopusdeploy_variable" "azurevmss_api_key" {
+  name = "APIKeys.AzureVMSS"
+  type = "Sensitive"
+  value = var.octopus_azurevmss_api_key
+  owner_id = octopusdeploy_library_variable_set.api_keys.variable_set_id
+}
