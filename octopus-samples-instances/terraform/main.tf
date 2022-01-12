@@ -83,5 +83,5 @@ resource "octopusdeploy_variable" "azurevmss_api_key" {
   type = "Sensitive"
   is_sensitive = true
   value = var.octopus_azurevmss_api_key
-  owner_id = octopusdeploy_library_variable_set.api_keys.variable_set_id
+  owner_id = octopusdeploy_library_variable_set.api_keys.id
 }
