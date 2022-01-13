@@ -38,5 +38,4 @@ variable "octopus_azure_account_password" {
 
 variable "octopus_api_keys" {
     type = map(string)
-    sensitive = true
 }
