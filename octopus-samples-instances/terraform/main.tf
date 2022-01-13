@@ -83,6 +83,6 @@ resource "octopusdeploy_variable" "azurevmss_api_key" {
   type = "Sensitive"
   is_editable = true
   is_sensitive = true
-  sensative_value = var.octopus_azurevmss_api_key
+  sensitive_value = var.octopus_azurevmss_api_key
   owner_id = octopusdeploy_library_variable_set.api_keys.id
 }
