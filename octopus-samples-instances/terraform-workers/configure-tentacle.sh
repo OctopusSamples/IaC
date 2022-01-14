@@ -11,7 +11,7 @@ space="#{Octopus.Action[Get Samples Spaces].Output.InitialSpaceName}"
 
 # Install Tentacle
 sudo apt-key adv --fetch-keys "https://apt.octopus.com/public.key"
-sudo add-apt-repository "deb https://apt.octopus.com/ stretch main"
+sudo add-apt-repository "deb https://apt.octopus.com/ focal main"
 sudo apt-get update
 sudo apt-get install tentacle -y
 
