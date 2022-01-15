@@ -37,7 +37,7 @@ sudo apt-get update
 sudo apt-get install -y powershell
 
 # Pull worker tools image
-sudo docker pull octopusdeploy/worker-tools:3-ubuntu.18.04
+sudo docker pull octopusdeploy/worker-tools:#{Project.Docker.WorkerToolImageTag}
 
 # Configure and register worker
 sudo /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath" --instance "$name"

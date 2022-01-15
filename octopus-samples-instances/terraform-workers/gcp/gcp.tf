@@ -12,9 +12,6 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     network = "default" #google_compute_network.vpc_network.name
-    access_config {
-      // Ephemeral public IP
-    }
   }
 
   metadata_startup_script = file("../configure-tentacle.sh")
