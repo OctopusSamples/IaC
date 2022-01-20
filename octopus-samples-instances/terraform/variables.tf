@@ -36,6 +36,22 @@ variable "octopus_azure_account_password" {
     sensitive = true
 }
 
-variable "octopus_api_keys" {
-    type = map(string)
+variable "octopus_gcp_account_json_key" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_static_aws_worker_pool_name" {
+    type = string
+    default = "AWS Worker Pool TF"
+}
+
+variable "octopus_static_azure_worker_pool_name" {
+    type = string
+    default = "Azure Worker Pool TF"
+}
+
+variable "octopus_static_gcp_worker_pool_name" {
+    type = string
+    default = "GCP Worker Pool TF"
 }
