@@ -1,6 +1,6 @@
 resource "octopusdeploy_library_variable_set" "worker_pool_variable_set" {
   name = "Worker Pools TF"
-  description = "Library variable set storing worker Pools names and ids created by the Terraform Provider to use with any scripts."
+  description = "Library variable set storing worker Pools names and ids created by the Terraform Provider to use with API scripts."
 }
 
 resource "octopusdeploy_variable" "aws_worker_pool_id_variable" {
