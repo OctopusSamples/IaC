@@ -3,7 +3,7 @@ resource "octopusdeploy_library_variable_set" "gcp_variable_set" {
   description = "Library variable set storing GCP specific items you can leverage in your deployment process."
 }
 
-resource "octopusdeploy_variable" "azure_worker_pool_id_variable" {
+resource "octopusdeploy_variable" "gcp_variable_set_worker_pool" {
   name = "GCP.WorkerPool"
   type = "WorkerPool"
   is_editable = true
