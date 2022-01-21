@@ -94,7 +94,7 @@ resource "octopusdeploy_variable" "gcp_variable_linux_default_vm_size" {
 }
 
 resource "octopusdeploy_variable" "gcp_variable_windows_os_image" {
-  name = "GCP.Instance.Linux.Image"
+  name = "GCP.Instance.Windows.Image"
   type = "String"
   is_editable = true
   is_sensitive = false
