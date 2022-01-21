@@ -7,6 +7,12 @@ resource "aws_launch_configuration" "linux-worker-launchconfig" {
   
     # script to run when created
     user_data = "${file("../configure-tentacle.sh")}"
+
+    # root disk
+    root_block_device {
+        volume_size           = "30"
+        delete_on_termination = true
+    }
 }
 
 resource "aws_autoscaling_group" "linux-worker-autoscaling" {
