@@ -1,5 +1,5 @@
 resource "octopusdeploy_library_variable_set" "azure_variable_set" {
-  name = "GCP TF"
+  name = "Azure TF"
   description = "Library variable set storing Azure specific items you can leverage in your deployment process."
 }
 

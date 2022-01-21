@@ -1,5 +1,5 @@
 resource "octopusdeploy_library_variable_set" "aws_variable_set" {
-  name = "GCP TF"
+  name = "AWS TF"
   description = "Library variable set storing AWS specific items you can leverage in your deployment process."
 }
 
