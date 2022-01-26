@@ -39,31 +39,6 @@ resource "octopusdeploy_variable" "azure_network_subnet_default_name" {
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
-resource "octopusdeploy_variable" "azure_samples_name_prod" {
-  name = "Azure.Samples.Name"
-  type = "String"
-  is_editable = true
-  is_sensitive = false
-  value = "samples"
-  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-  scope {
-    environments = ["Production"]  
-  }
-  
-}
-
-resource "octopusdeploy_variable" "azure_samples_name_test" {
-  name = "Azure.Samples.Name"
-  type = "String"
-  is_editable = true
-  is_sensitive = false
-  value = "sandbox"
-  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-  scope {
-    environments = ["Test"]
-  }  
-}
-
 resource "octopusdeploy_variable" "azure_sql_server_admin_password" {
   name = "Azure.SqlServer.Admin.Password"
   type = "Sensitive"
@@ -124,7 +99,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_uksouth_#{Azure.Samples.Name}"
+  value = "solutions_pem_uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -133,7 +108,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_#{Azure.Samples.Name}_uksouth"
+  value = "octopus_solutions_uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -179,7 +154,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_uksouth_#{Azure.Samples.Name}"
+  value = "solutions_pem_uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -188,7 +163,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_#{Azure.Samples.Name}_uksouth"
+  value = "octopus_solutions_uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -234,7 +209,7 @@ resource "octopusdeploy_variable" "azure_us_primary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_ussouth_#{Azure.Samples.Name}"
+  value = "solutions_pem_ussouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -243,7 +218,7 @@ resource "octopusdeploy_variable" "azure_us_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_#{Azure.Samples.Name}_ussouth"
+  value = "octopus_solutions_ussouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -289,7 +264,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_ussouth_#{Azure.Samples.Name}"
+  value = "solutions_pem_ussouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -298,6 +273,6 @@ resource "octopusdeploy_variable" "azure_us_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_#{Azure.Samples.Name}_ussouth"
+  value = "octopus_solutions_ussouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
