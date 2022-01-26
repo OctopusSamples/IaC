@@ -41,6 +41,16 @@ variable "octopus_gcp_account_json_key" {
     sensitive = true
 }
 
+variable "octopus_sql_server_sample_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_sql_server_sample_admin_username" {
+    type = string
+    sensitive = true
+}
+
 variable "octopus_static_aws_worker_pool_name" {
     type = string
     default = "AWS Worker Pool TF"

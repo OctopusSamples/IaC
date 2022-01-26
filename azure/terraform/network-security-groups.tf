@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "permanent" {
-    name                        = format("%s_nsg", azurerm_resource_group.permanent.name)
+    name                        = var.azure_network_security_group_name
     resource_group_name         = azurerm_resource_group.permanent.name
     location                    = azurerm_resource_group.permanent.location
 

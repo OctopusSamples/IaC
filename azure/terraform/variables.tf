@@ -6,7 +6,23 @@ variable "azure_resource_group_location_name" {
     type = string
 }
 
+variable "azure_virtual_network_name" {
+    type = string
+}
+
+variable "azure_network_security_group_name" {
+    type = string
+}
+
 variable "azure_sql_name" {
+    type = string
+}
+
+variable "azure_virtual_network_default_subnet_name" {
+    type = string
+}
+
+variable "azure_virtual_network_acs_subnet_name" {
     type = string
 }
 

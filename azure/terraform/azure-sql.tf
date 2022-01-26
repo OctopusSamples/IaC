@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "permanent" {
-    name                        = format("permenant_sql_%s", azurerm_resource_group.permanent.name)
+    name                        = format("permenant_sql_%s", var.azure_sql_name)
     resource_group_name         = azurerm_resource_group.permanent.name
     location                    = azurerm_resource_group.permanent.location
     account_tier                = "Standard"

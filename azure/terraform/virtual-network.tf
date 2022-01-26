@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "permanent" {
-    name                            = format("%s_VNET", azurerm_resource_group.permanent.name)
+    name                            = var.azure_virtual_network_name
     resource_group_name             = azurerm_resource_group.permanent.name
     location                        = azurerm_resource_group.permanent.location
     address_space                   = var.azure_virtual_network_address_space
@@ -10,7 +10,7 @@ resource "azurerm_virtual_network" "permanent" {
 }
 
 resource "azurerm_subnet" "default" {
-    name                            = "default"
+    name                            = var.azure_virtual_network_default_subnet_name
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     network_security_group_name     = azurerm_network_security_group.permanent.name
@@ -19,7 +19,7 @@ resource "azurerm_subnet" "default" {
 }
 
 resource "azurerm_subnet" "acs" {
-    name                            = "acs"
+    name                            = var.azure_virtual_network_acs_subnet_name
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     network_security_group_name     = azurerm_network_security_group.permanent.name
