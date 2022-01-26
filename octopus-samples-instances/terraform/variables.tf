@@ -65,3 +65,25 @@ variable "octopus_static_gcp_worker_pool_name" {
     type = string
     default = "GCP Worker Pool TF"
 }
+
+variable "octopus_azurevmss_api_key" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_awsautoscaling_api_key" {
+    type = string
+    sensitive = true
+}
+variable "octopus_releaseconductor_api_key" {
+    type = string
+    sensitive = true
+}
+variable "octopus_certificateuser_api_key" {
+    type = string
+    sensitive = true
+}
+variable "octopus_infrastructureuser_api_key" {
+    type = string
+    sensitive = true
+}
