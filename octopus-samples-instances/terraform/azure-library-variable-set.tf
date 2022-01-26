@@ -46,7 +46,10 @@ resource "octopusdeploy_variable" "azure_samples_name_prod" {
   is_sensitive = false
   value = "samples"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-  environments = ["Production"]
+  scope {
+    environments = ["Production"]  
+  }
+  
 }
 
 resource "octopusdeploy_variable" "azure_samples_name_test" {
@@ -56,7 +59,9 @@ resource "octopusdeploy_variable" "azure_samples_name_test" {
   is_sensitive = false
   value = "sandbox"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-  environments = ["Test"]
+  scope {
+    environments = ["Test"]
+  }  
 }
 
 resource "octopusdeploy_variable" "azure_sql_server_admin_password" {
