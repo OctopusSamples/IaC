@@ -94,6 +94,42 @@ resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_name" {
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
+resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_address_space" {
+  name = "Azure.UK.Primary.VirtualNetwork.AddressSpace"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.1.0.0/16\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_default_subnet_address" {
+  name = "Azure.UK.Primary.VirtualNetwork.DefaultSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.1.1.0/24\",\"10.1.2.0/24\"\"10.1.3.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_acs_subnet_address" {
+  name = "Azure.UK.Primary.VirtualNetwork.ACSSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.1.100.0/24\",\"10.1.101.0/24\"\"10.1.102.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
+  name = "Azure.UK.Primary.ResourceGroup.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "solutions_pem_uksouth"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
 resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
   name = "Azure.UK.Primary.ResourceGroup.Name"
   type = "String"
@@ -146,6 +182,33 @@ resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_name" {
   is_editable = true
   is_sensitive = false
   value = "#{Azure.UK.Secondary.ResourceGroup.Name}_vnet"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_address_space" {
+  name = "Azure.UK.Secondary.VirtualNetwork.AddressSpace"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.2.0.0/16\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_default_subnet_address" {
+  name = "Azure.UK.Secondary.VirtualNetwork.DefaultSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.2.1.0/24\",\"10.2.2.0/24\"\"10.2.3.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_acs_subnet_address" {
+  name = "Azure.UK.Secondary.VirtualNetwork.ACSSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.2.100.0/24\",\"10.2.101.0/24\"\"10.2.102.0/24\"]"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -204,6 +267,33 @@ resource "octopusdeploy_variable" "azure_us_primary_virtual_network_name" {
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
+resource "octopusdeploy_variable" "azure_us_primary_virtual_network_address_space" {
+  name = "Azure.US.Primary.VirtualNetwork.AddressSpace"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.3.0.0/16\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_primary_virtual_network_default_subnet_address" {
+  name = "Azure.US.Primary.VirtualNetwork.DefaultSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.3.1.0/24\",\"10.3.2.0/24\"\"10.3.3.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_primary_virtual_network_acs_subnet_address" {
+  name = "Azure.US.Primary.VirtualNetwork.ACSSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.3.100.0/24\",\"10.3.101.0/24\"\"10.3.102.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
 resource "octopusdeploy_variable" "azure_us_primary_resource_group_name" {
   name = "Azure.US.Primary.ResourceGroup.Name"
   type = "String"
@@ -256,6 +346,33 @@ resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_name" {
   is_editable = true
   is_sensitive = false
   value = "#{Azure.US.Secondary.ResourceGroup.Name}_vnet"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_address_space" {
+  name = "Azure.US.Secondary.VirtualNetwork.AddressSpace"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.4.0.0/16\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_default_subnet_address" {
+  name = "Azure.US.Secondary.VirtualNetwork.DefaultSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.4.1.0/24\",\"10.4.2.0/24\"\"10.4.3.0/24\"]"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_acs_subnet_address" {
+  name = "Azure.US.Secondary.VirtualNetwork.ACSSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "[\"10.4.100.0/24\",\"10.4.101.0/24\"\"10.4.102.0/24\"]"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
