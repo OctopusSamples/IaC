@@ -130,15 +130,6 @@ resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
-resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
-  name = "Azure.UK.Primary.ResourceGroup.Name"
-  type = "String"
-  is_editable = true
-  is_sensitive = false
-  value = "solutions_pem_uksouth"
-  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-}
-
 resource "octopusdeploy_variable" "azure_uk_primary_sql_server_Name" {
   name = "Azure.UK.Primary.SqlServer.Name"
   type = "String"
