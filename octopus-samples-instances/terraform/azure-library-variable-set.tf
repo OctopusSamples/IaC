@@ -135,7 +135,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_uksouth"
+  value = "od-solutions-uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -208,7 +208,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_uksouth"
+  value = "solutions_pem_ukwest"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -217,7 +217,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_uksouth"
+  value = "od-solutions-ukwest"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
