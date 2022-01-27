@@ -10,7 +10,7 @@ resource "azurerm_storage_account" "permanent" {
     }
 }
 
-resource "azurerm_sql_server" "permanent" {
+resource "azurerm_mssql_server" "permanent" {
     name                         = var.azure_sql_name
     resource_group_name          = azurerm_resource_group.permanent.name
     location                     = azurerm_resource_group.permanent.location
