@@ -27,13 +27,11 @@ variable "azure_virtual_network_acs_subnet_name" {
 }
 
 variable "azure_sql_administrator_name" {
-    type = string
-    sensitive = true
+    type = string    
 }
 
 variable "azure_sql_administrator_password" {
-    type = string
-    sensitive = true
+    type = string    
 }
 
 variable "azure_virtual_network_address_space" {
