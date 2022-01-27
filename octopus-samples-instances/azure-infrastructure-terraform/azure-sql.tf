@@ -26,7 +26,7 @@ resource "azurerm_mssql_server" "permanent" {
 }
 
 resource "azurerm_mssql_virtual_network_rule" "permanent" {
-    name                            = format("%s-vnet-rule", var.azure_sql_name, "-", "")
+    name                            = format("%s-vnet-rule", var.azure_sql_name)
     server_id                       = azurerm_mssql_server.permanent.id
     subnet_id                       = azurerm_subnet.default.id
 }
