@@ -18,7 +18,7 @@ resource "azurerm_mssql_server" "permanent" {
     administrator_login             = var.azure_sql_administrator_name
     administrator_login_password    = var.azure_sql_administrator_password
     minimum_tls_version             = "1.2"
-    public_network_access_enabled   = false
+    public_network_access_enabled   = true
 
     tags = {
         LifetimeInDays = 365

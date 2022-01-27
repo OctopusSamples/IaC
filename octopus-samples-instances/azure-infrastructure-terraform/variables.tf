@@ -35,13 +35,13 @@ variable "azure_sql_administrator_password" {
 }
 
 variable "azure_virtual_network_address_space" {
-    type = list(string)
+    type = string
 }
 
 variable "azure_virtual_network_address_space_default_subnet" {
-    type = list(string)
+    type = string
 }
 
 variable "azure_virtual_network_address_space_acs_subnet" {
-    type = list(string)
+    type = string
 }

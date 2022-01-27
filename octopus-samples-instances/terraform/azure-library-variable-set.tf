@@ -99,7 +99,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_address_spac
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.1.0.0/16\"]"
+  value = "10.1.0.0/16"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -108,7 +108,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_default_subn
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.1.1.0/24\"]"
+  value = "10.1.1.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -117,7 +117,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_acs_subnet_a
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.1.100.0/24\"]"
+  value = "10.1.100.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -181,7 +181,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_address_sp
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.2.0.0/16\"]"
+  value = "10.2.0.0/16"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -190,7 +190,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_default_su
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.2.1.0/24\"]"
+  value = "10.2.1.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -199,7 +199,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_acs_subnet
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.2.100.0/24\"]"
+  value = "10.2.100.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -263,7 +263,7 @@ resource "octopusdeploy_variable" "azure_us_primary_virtual_network_address_spac
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.3.0.0/16\"]"
+  value = "10.3.0.0/16"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -272,7 +272,7 @@ resource "octopusdeploy_variable" "azure_us_primary_virtual_network_default_subn
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.3.1.0/24\"]"
+  value = "10.3.1.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -281,7 +281,7 @@ resource "octopusdeploy_variable" "azure_us_primary_virtual_network_acs_subnet_a
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.3.100.0/24\"]"
+  value = "10.3.100.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -290,7 +290,7 @@ resource "octopusdeploy_variable" "azure_us_primary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_ussouth"
+  value = "solutions_pem_uscentral"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -299,7 +299,7 @@ resource "octopusdeploy_variable" "azure_us_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_ussouth"
+  value = "od-solutions-uscentral"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -345,7 +345,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_address_sp
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.4.0.0/16\"]"
+  value = "10.4.0.0/16"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -354,7 +354,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_default_su
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.4.1.0/24\"]"
+  value = "10.4.1.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -363,7 +363,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_acs_subnet
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "[\"10.4.100.0/24\"]"
+  value = "10.4.100.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -372,7 +372,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_resource_group_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "solutions_pem_ussouth"
+  value = "solutions_pem_useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -381,6 +381,6 @@ resource "octopusdeploy_variable" "azure_us_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "octopus_solutions_ussouth"
+  value = "od-solutions-useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
