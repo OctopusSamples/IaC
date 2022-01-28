@@ -6,11 +6,7 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket = "#{Project.AWS.Backend.Bucket}"
-    key = "#{Project.AWS.Backend.Key}"
-    region = "#{Project.AWS.Backend.Region}"
-  }
+  backend "s3" { }
 }
 
 provider "azurerm" {
