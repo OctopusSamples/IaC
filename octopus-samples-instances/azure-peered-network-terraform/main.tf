@@ -59,12 +59,12 @@ data "azurerm_virtual_network" "us_east" {
     resource_group_name             = var.azure_us_east_resource_group_name
 }
 
-data "azurerm_virtual_network" "us_south" {
+data "azurerm_virtual_network" "uk_south" {
     name                            = var.azure_uk_south_virtual_network_name
     resource_group_name             = var.azure_uk_south_resource_group_name
 }
 
-data "azurerm_virtual_network" "us_west" {
+data "azurerm_virtual_network" "uk_west" {
     name                            = var.azure_uk_west_virtual_network_name
     resource_group_name             = var.azure_uk_west_resource_group_name
 }
@@ -113,7 +113,7 @@ resource "azurerm_virtual_network_peering" "us_central_uk_west" {
     name                            = "peering-us-central-to-uk-west"
     resource_group_name             = var.azure_us_central_resource_group_name
     virtual_network_name            = var.azure_us_central_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.uk_west.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.uk_west.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -123,7 +123,7 @@ resource "azurerm_virtual_network_peering" "uk_west_us_central" {
     name                            = "peering-uk-west-to-us-central"
     resource_group_name             = var.azure_uk_west_resource_group_name
     virtual_network_name            = var.azure_uk_west_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.us_central.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.us_central.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -133,7 +133,7 @@ resource "azurerm_virtual_network_peering" "us_east_uk_south" {
     name                            = "peering-us-east-to-uk-south"
     resource_group_name             = var.azure_us_east_resource_group_name
     virtual_network_name            = var.azure_us_east_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.uk_south.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.uk_south.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -143,7 +143,7 @@ resource "azurerm_virtual_network_peering" "uk_south_us_east" {
     name                            = "peering-uk-south-to-us-east"
     resource_group_name             = var.azure_uk_south_resource_group_name
     virtual_network_name            = var.azure_uk_south_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.us_east.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.us_east.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -153,7 +153,7 @@ resource "azurerm_virtual_network_peering" "us_east_uk_west" {
     name                            = "peering-us-east-to-uk-west"
     resource_group_name             = var.azure_us_east_resource_group_name
     virtual_network_name            = var.azure_us_east_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.uk_west.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.uk_west.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -163,7 +163,7 @@ resource "azurerm_virtual_network_peering" "uk_west_us_east" {
     name                            = "peering-uk-west-to-us-east"
     resource_group_name             = var.azure_uk_west_resource_group_name
     virtual_network_name            = var.azure_uk_west_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.us_east.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.us_east.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -173,7 +173,7 @@ resource "azurerm_virtual_network_peering" "uk_south_uk_west" {
     name                            = "peering-uk-south-to-uk-west"
     resource_group_name             = var.azure_uk_south_resource_group_name
     virtual_network_name            = var.azure_uk_south_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.uk_west.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.uk_west.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
@@ -183,7 +183,7 @@ resource "azurerm_virtual_network_peering" "uk_west_uk_south" {
     name                            = "peering-uk-west-to-uk-south"
     resource_group_name             = var.azure_uk_west_resource_group_name
     virtual_network_name            = var.azure_uk_west_virtual_network_name
-    remote_virtual_network_id       = azurerm_virtual_network.uk_south.id
+    remote_virtual_network_id       = data.azurerm_virtual_network.uk_south.id
     allow_virtual_network_access    = true
     allow_forwarded_traffic         = true
     allow_gateway_transit           = false
