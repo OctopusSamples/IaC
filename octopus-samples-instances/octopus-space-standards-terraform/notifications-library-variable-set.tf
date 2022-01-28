@@ -104,7 +104,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_status_runboo
 
 resource "octopusdeploy_variable" "notification_variable_set_slack_webhook" {
   name = "Notification.Slack.Status.Runbook.Title"
-  type = "String"
+  type = "Sensitive"
   is_editable = false
   is_sensitive = true
   value = var.octopus_notification_slack_webhook
