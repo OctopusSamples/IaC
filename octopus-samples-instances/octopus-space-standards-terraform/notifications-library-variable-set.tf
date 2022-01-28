@@ -8,7 +8,7 @@ resource "octopusdeploy_variable" "notification_variable_set_deep_link" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{Octopus.Web.ServerUri}/app#/#{Octopus.Space.Id}/tasks/#{Octopus.Task.Id}"
+  value = "##{Octopus.Web.ServerUri}/app#/##{Octopus.Space.Id}/tasks/##{Octopus.Task.Id}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -44,7 +44,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_color" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{if Octopus.Deployment.Error}danger#{else}good#{/if}"
+  value = "##{if Octopus.Deployment.Error}danger##{else}good##{/if}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -53,7 +53,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_pending_deplo
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = ":sleuth_or_spy: #{Octopus.Project.Name} #{Octopus.Release.Number} to #{Octopus.Environment.Name} is awaiting approval."
+  value = ":sleuth_or_spy: ##{Octopus.Project.Name} ##{Octopus.Release.Number} to ##{Octopus.Environment.Name} is awaiting approval."
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -62,7 +62,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_pending_messa
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{Notification.Deep.Link}"
+  value = "##{Notification.Deep.Link}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -71,7 +71,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_pending_runbo
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = ":sleuth_or_spy: #{Octopus.Project.Name} #{Octopus.Runbook.Name} to #{Octopus.Environment.Name} is awaiting approval."
+  value = ":sleuth_or_spy: ##{Octopus.Project.Name} ##{Octopus.Runbook.Name} to ##{Octopus.Environment.Name} is awaiting approval."
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -80,7 +80,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_status_deploy
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{if Octopus.Deployment.Error}@channel :boom:#{else}:tada:#{/if} #{Octopus.Project.Name} #{Octopus.Release.Number} to #{Octopus.Environment.Name} has #{if Octopus.Deployment.Error}failed#{else}completed successfully#{/if}"
+  value = "##{if Octopus.Deployment.Error}@channel :boom:##{else}:tada:##{/if} ##{Octopus.Project.Name} ##{Octopus.Release.Number} to ##{Octopus.Environment.Name} has ##{if Octopus.Deployment.Error}failed##{else}completed successfully##{/if}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -89,7 +89,7 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_status_messag
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{Notification.Deep.Link}"
+  value = "##{Notification.Deep.Link}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
@@ -98,12 +98,12 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_status_runboo
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "#{if Octopus.Deployment.Error}@channel :boom:#{else}:tada:#{/if} #{Octopus.Project.Name} #{Octopus.Runbook.Name} to #{Octopus.Environment.Name} has #{if Octopus.Deployment.Error}failed#{else}completed successfully#{/if}"
+  value = "##{if Octopus.Deployment.Error}@channel :boom:##{else}:tada:##{/if} ##{Octopus.Project.Name} ##{Octopus.Runbook.Name} to ##{Octopus.Environment.Name} has ##{if Octopus.Deployment.Error}failed##{else}completed successfully##{/if}"
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
 
 resource "octopusdeploy_variable" "notification_variable_set_slack_webhook" {
-  name = "Notification.Slack.Status.Runbook.Title"
+  name = "Notification.Slack.Webhook"
   type = "Sensitive"
   is_editable = false
   is_sensitive = true
