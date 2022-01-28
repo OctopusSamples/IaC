@@ -75,15 +75,23 @@ variable "octopus_awsautoscaling_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_releaseconductor_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_certificateuser_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_infrastructureuser_api_key" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_notification_slack_webhook" {
     type = string
     sensitive = true
 }
