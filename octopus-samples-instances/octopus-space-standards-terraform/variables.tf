@@ -93,5 +93,4 @@ variable "octopus_infrastructureuser_api_key" {
 
 variable "octopus_notification_slack_webhook" {
     type = string
-    sensitive = true
 }
