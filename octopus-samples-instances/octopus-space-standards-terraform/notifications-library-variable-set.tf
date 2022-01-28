@@ -104,7 +104,8 @@ resource "octopusdeploy_variable" "notification_variable_set_slack_status_runboo
 
 resource "octopusdeploy_variable" "notification_variable_set_slack_webhook" {
   name = "Notification.Slack.Webhook"
-  type = "Sensitive"  
+  type = "Sensitive" 
+  is_sensitive = true 
   value = var.octopus_notification_slack_webhook
   owner_id = octopusdeploy_library_variable_set.notifications_variable_set.id
 }
