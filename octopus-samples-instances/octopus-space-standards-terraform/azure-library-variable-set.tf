@@ -384,3 +384,93 @@ resource "octopusdeploy_variable" "azure_us_secondary_sql_server_Name" {
   value = "od-solutions-useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
+
+resource "octopusdeploy_variable" "azure_postgresql_server_admin_username" {
+  name = "Azure.PostgreSql.Admin.UserName"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  value = var.octopus_postgresql_server_sample_admin_username
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_postgresql_server_admin_password" {
+  name = "Azure.PostgreSql.Admin.Password"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  value = var.octopus_postgresql_server_sample_admin_password
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_primary_postgresql_server_name" {
+  name = "Azure.US.Primary.PostgreSql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-uscentral"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_postgresql_server_name" {
+  name = "Azure.US.Secondary.PostgreSql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-uksouth"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_primary_postgresql_server_name" {
+  name = "Azure.UK.Primary.PostgreSql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-ukwest"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_secondary_postgresql_server_name" {
+  name = "Azure.UK.Secondary.PostgreSql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-useast"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_mysql_server_admin_username" {
+  name = "Azure.MySql.Admin.UserName"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  value = var.octopus_mysql_server_sample_admin_username
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_mysql_server_admin_password" {
+  name = "Azure.MySql.Admin.Password"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  value = var.octopus_mysql_server_sample_admin_password
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_primary_mysql_server_name" {
+  name = "Azure.US.Primary.MySql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-uksouth"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_mysql_server_name" {
+  name = "Azure.US.Secondary.MySql.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-ukwest"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}

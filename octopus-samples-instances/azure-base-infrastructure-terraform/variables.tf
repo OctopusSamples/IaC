@@ -45,3 +45,27 @@ variable "azure_virtual_network_address_space_default_subnet" {
 variable "azure_virtual_network_address_space_acs_subnet" {
     type = string
 }
+
+variable "azure_postgresql_administrator_name" {
+    type = string
+}
+
+variable "azure_postgresql_administrator_password" {
+    type = string
+}
+
+variable "azure_postresql_name" {
+    type = string
+}
+
+variable "azure_mysql_name" {
+    type = string
+}
+
+variable "azure_mysql_administrator_name" {
+    type = string
+}
+
+variable "azure_mysql_administrator_password" {
+    type = string
+}
