@@ -135,7 +135,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uksouth"
+  value = "od-solutions-sqlserver-uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -217,7 +217,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-ukwest"
+  value = "od-solutions-sqlserver-ukwest"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -299,7 +299,7 @@ resource "octopusdeploy_variable" "azure_us_primary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uscentral"
+  value = "od-solutions-sqlserver-uscentral"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -381,7 +381,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_sql_server_Name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-useast"
+  value = "od-solutions-sqlserver-useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -408,7 +408,7 @@ resource "octopusdeploy_variable" "azure_us_primary_postgresql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uscentral"
+  value = "od-solutions-postgresql-uscentral"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -417,7 +417,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_postgresql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-useast"
+  value = "od-solutions-postgresql-useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -426,7 +426,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_postgresql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uksouth"
+  value = "od-solutions-postgresql-uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -435,7 +435,7 @@ resource "octopusdeploy_variable" "azure_uk_secondary_postgresql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-ukwest"
+  value = "od-solutions-postgresql-ukwest"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -462,7 +462,7 @@ resource "octopusdeploy_variable" "azure_us_primary_mysql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uscentral"
+  value = "od-solutions-mysql-uscentral"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -471,7 +471,7 @@ resource "octopusdeploy_variable" "azure_us_secondary_mysql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-useast"
+  value = "od-solutions-mysql-useast"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 resource "octopusdeploy_variable" "azure_uk_primary_mysql_server_name" {
@@ -479,7 +479,7 @@ resource "octopusdeploy_variable" "azure_uk_primary_mysql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-uksouth"
+  value = "od-solutions-mysql-uksouth"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -488,6 +488,6 @@ resource "octopusdeploy_variable" "azure_uk_secondary_mysql_server_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "od-solutions-ukwest"
+  value = "od-solutions-mysql-ukwest"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
