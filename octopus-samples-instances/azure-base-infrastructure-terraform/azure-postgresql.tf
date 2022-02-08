@@ -20,3 +20,11 @@ resource "azurerm_postgresql_server" "permanent" {
         LifetimeInDays = 365
     }    
 }
+
+resource "azurerm_postgresql_firewall_rule" "all_azure_resources" {
+  name                = "All Azure Resources"
+  resource_group_name = azurerm_resource_group.permanent.name
+  server_name         = azurerm_postgresql_server.permanent.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
