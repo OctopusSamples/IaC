@@ -444,7 +444,7 @@ resource "octopusdeploy_variable" "azure_mysql_server_admin_username" {
   type = "Sensitive"
   is_editable = false
   is_sensitive = true
-  value = var.octopus_mysql_server_sample_admin_username
+  sensitive_value = var.octopus_mysql_server_sample_admin_username
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
