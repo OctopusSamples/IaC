@@ -399,7 +399,7 @@ resource "octopusdeploy_variable" "azure_postgresql_server_admin_password" {
   type = "Sensitive"
   is_editable = false
   is_sensitive = true
-  value = var.octopus_postgresql_server_sample_admin_password
+  sensitive_value = var.octopus_postgresql_server_sample_admin_password
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
