@@ -28,3 +28,10 @@ resource "azurerm_mysql_firewall_rule" "all_azure_resources" {
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
+
+resource "azurerm_mysql_configuration" "log_bin_trust_function_creators" {
+  name                = "log_bin_trust_function_creators"
+  resource_group_name = azurerm_resource_group.permanent.name
+  server_name         = azurerm_mysql_server.permanent.name
+  value               = "ON"
+}
