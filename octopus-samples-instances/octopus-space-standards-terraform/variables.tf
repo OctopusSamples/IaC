@@ -51,6 +51,26 @@ variable "octopus_sql_server_sample_admin_username" {
     sensitive = true
 }
 
+variable "octopus_postgresql_server_sample_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_postgresql_server_sample_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_mysql_server_sample_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_mysql_server_sample_admin_username" {
+    type = string
+    sensitive = true
+}
+
 variable "octopus_static_aws_worker_pool_name" {
     type = string
     default = "AWS Worker Pool TF"
@@ -75,15 +95,22 @@ variable "octopus_awsautoscaling_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_releaseconductor_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_certificateuser_api_key" {
     type = string
     sensitive = true
 }
+
 variable "octopus_infrastructureuser_api_key" {
     type = string
     sensitive = true
+}
+
+variable "octopus_notification_slack_webhook" {
+    type = string
 }
