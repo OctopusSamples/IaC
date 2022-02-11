@@ -6,7 +6,7 @@ resource "azurerm_mysql_server" "permanent" {
     administrator_login              = var.azure_mysql_administrator_name
     administrator_login_password     = var.azure_mysql_administrator_password
 
-    sku_name                         = "B_Gen5_1"
+    sku_name                         = "B_Gen5_2"
     version                          = "8.0"
     storage_mb                       = 5120
     backup_retention_days            = 7
@@ -34,11 +34,4 @@ resource "azurerm_mysql_configuration" "log_bin_trust_function_creators" {
   resource_group_name = azurerm_resource_group.permanent.name
   server_name         = azurerm_mysql_server.permanent.name
   value               = "ON"
-}
-
-resource "azurerm_mysql_configuration" "max_connections" {
-  name                = "max_connections"
-  resource_group_name = azurerm_resource_group.permanent.name
-  server_name         = azurerm_mysql_server.permanent.name
-  value               = "100"  
 }
