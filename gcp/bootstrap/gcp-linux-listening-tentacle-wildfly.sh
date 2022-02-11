@@ -41,7 +41,7 @@ else
   apt-get install -y tentacle
 
   echo "Opening listening tcp-port of 10933 for tentacle"
-  ufw allow 19033/tcp
+  ufw allow 10933/tcp
 
   echo "Configuring listening tentacle target"
   /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath"
