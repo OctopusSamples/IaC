@@ -35,3 +35,10 @@ resource "azurerm_mysql_configuration" "log_bin_trust_function_creators" {
   server_name         = azurerm_mysql_server.permanent.name
   value               = "ON"
 }
+
+resource "azurerm_mysql_configuration" "max_connections" {
+  name                = "max_connections"
+  resource_group_name = azurerm_resource_group.permanent.name
+  server_name         = azurerm_mysql_server.permanent.name
+  value               = "100"  
+}
