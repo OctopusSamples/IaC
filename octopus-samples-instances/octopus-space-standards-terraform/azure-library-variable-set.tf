@@ -44,7 +44,7 @@ resource "octopusdeploy_variable" "azure_network_subnet_nosqlendpoint_name" {
   type = "String"
   is_editable = true
   is_sensitive = false
-  value = "default"
+  value = "nosqlendpoint"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
