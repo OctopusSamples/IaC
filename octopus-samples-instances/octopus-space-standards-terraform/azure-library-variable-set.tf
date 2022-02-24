@@ -39,6 +39,15 @@ resource "octopusdeploy_variable" "azure_network_subnet_default_name" {
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
+resource "octopusdeploy_variable" "azure_network_subnet_nosqlendpoint_name" {
+  name = "Azure.Network.Subnet.NoSqlEndpoint.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "default"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
 resource "octopusdeploy_variable" "azure_sql_server_admin_password" {
   name = "Azure.SqlServer.Admin.Password"
   type = "Sensitive"
