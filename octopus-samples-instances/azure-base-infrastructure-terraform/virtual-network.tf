@@ -42,3 +42,16 @@ resource "azurerm_subnet_network_security_group_association" "default_acs_securi
     subnet_id = azurerm_subnet.acs.id
     network_security_group_id = azurerm_network_security_group.permanent.id
 }
+
+resource "azurerm_subnet" "nosqlendpoint" {
+    name                            = var.azure_virtual_network_nosqlendpoint_subnet_name
+    resource_group_name             = azurerm_resource_group.permanent.name
+    virtual_network_name            = azurerm_virtual_network.permanent.name
+    address_prefixes                = tolist([var.azure_virtual_network_address_space_nosqlendpoint_subnet])
+    service_endpoints               = ["Microsoft.AzureCosmosDB", "Microsoft.KeyVault", "Microsoft.Storage", "Microsoft.Web"]
+}
+
+resource "azurerm_subnet_network_security_group_association" "nosqlendpoint_subnet_security_group" {
+    subnet_id = azurerm_subnet.nosqlendpoint.id
+    network_security_group_id = azurerm_network_security_group.permanent.id
+}

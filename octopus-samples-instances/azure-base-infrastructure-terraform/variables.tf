@@ -26,6 +26,10 @@ variable "azure_virtual_network_acs_subnet_name" {
     type = string
 }
 
+variable "azure_virtual_network_nosqlendpoint_subnet_name" {
+    type = string
+}
+
 variable "azure_sql_administrator_name" {
     type = string    
 }
