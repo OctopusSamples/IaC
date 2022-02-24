@@ -121,6 +121,15 @@ resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_acs_subnet_a
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
+resource "octopusdeploy_variable" "azure_uk_primary_virtual_network_nosqlendpoint_subnet_address" {
+  name = "Azure.UK.Primary.VirtualNetwork.NoSqlEndpointSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "10.1.200.0/24"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
 resource "octopusdeploy_variable" "azure_uk_primary_resource_group_name" {
   name = "Azure.UK.Primary.ResourceGroup.Name"
   type = "String"
@@ -200,6 +209,15 @@ resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_acs_subnet
   is_editable = true
   is_sensitive = false
   value = "10.2.100.0/24"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_uk_secondary_virtual_network_nosqlendpoint_subnet_address" {
+  name = "Azure.UK.Secondary.VirtualNetwork.NoSqlEndpointSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "10.2.200.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
@@ -285,6 +303,15 @@ resource "octopusdeploy_variable" "azure_us_primary_virtual_network_acs_subnet_a
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
+resource "octopusdeploy_variable" "azure_us_primary_virtual_network_nosqlendpoint_subnet_address" {
+  name = "Azure.US.Primary.VirtualNetwork.NoSqlEndpointSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "10.3.200.0/24"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
 resource "octopusdeploy_variable" "azure_us_primary_resource_group_name" {
   name = "Azure.US.Primary.ResourceGroup.Name"
   type = "String"
@@ -364,6 +391,15 @@ resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_acs_subnet
   is_editable = true
   is_sensitive = false
   value = "10.4.100.0/24"
+  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
+}
+
+resource "octopusdeploy_variable" "azure_us_secondary_virtual_network_nosqlendpoint_subnet_address" {
+  name = "Azure.US.Secondary.VirtualNetwork.NoSqlEndpointSubnet.Address"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "10.4.200.0/24"
   owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
 }
 
