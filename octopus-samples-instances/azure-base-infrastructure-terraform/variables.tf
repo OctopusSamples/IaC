@@ -50,6 +50,10 @@ variable "azure_virtual_network_address_space_acs_subnet" {
     type = string
 }
 
+variable "azure_virtual_network_address_space_nosqlendpoint_subnet" {
+    type = string
+}
+
 variable "azure_postgresql_administrator_name" {
     type = string
 }
