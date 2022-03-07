@@ -77,7 +77,8 @@ function Invoke-OctopusApi
 
 $documentTypesToSearchFor = "Spaces,Lifecycles,Runbooks,Environments"
 $rightNow = Get-Date
-$end = "$($rightNow.Year)-$($rightNow.Month)-$($rightNow.Day)"
+$tomorrow = $rightNow.AddDays(1)
+$end = "$($tomorrow.Year)-$($tomorrow.Month)-$($tomorrow.Day)"
 
 $startDate = $rightNow.AddDays(-3)
 $start = "$($startDate.Year)-$($startDate.Month)-$($startDate.Day)"
