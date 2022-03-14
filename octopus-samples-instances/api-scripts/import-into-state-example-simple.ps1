@@ -49,5 +49,5 @@ $dockerFeedOctopusId = $OctopusParameters["SpaceStandard.Octopus.DockerFeedOctop
 terraform import "octopusdeploy_feed.docker" $dockerFeedOctopusId
 
 Write-Host "Importing the existing GitHub feed into Terraform State"
-$githubFeedOctopusId = $OctopusParameters["SpaceStandard.Octopus.GidHubFeedOctopusId"]
+$githubFeedOctopusId = $OctopusParameters["SpaceStandard.Octopus.GitHubFeedOctopusId"]
 terraform import "octopusdeploy_feed.github" $githubFeedOctopusId  
