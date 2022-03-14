@@ -1,7 +1,3 @@
-# Get the working directory for Terraform
-$extractedDirectory = $OctopusParameters["Octopus.Action.Package[IaC].ExtractedPath"]
-$terraformDirectory = "$extractedDirectory/octopus-samples-instances/terraform"
-
 # Backend Authentication
 $backendAccountAccessKey = $OctopusParameters["Project.AWS.Backend.Account.AccessKey"]
 $backendAccountSecretKey = $OctopusParameters["Project.AWS.Backend.Account.SecretKey"]
@@ -34,17 +30,24 @@ $env:TF_VAR_octopus_azure_account_subscription_id = $azureSubscriptionId
 $env:TF_VAR_octopus_azure_account_tenant_id = $azureTenantId
 $env:TF_VAR_octopus_azure_account_password = $azurePassword
 
-Write-Host "Setting the current location to $terraformDirectory"
+# Get the working directory for Terraform
+$extractedDirectory = $OctopusParameters["Octopus.Action.Package[IaC].ExtractedPath"]
+$terraformDirectory = "$extractedDirectory/octopus-samples-instances/terraform"
+
+Write-Host "Setting the current location to $terraformDirectory because that has all the TF files"
 set-location $terraformDirectory
 
+# Initialize Terraform with the same backend parameters as what is being used in Octopus when running Terraform Apply
 $backendAwsS3Key = $OctopusParameters["Project.AWS.Backend.Key"]
 $backendAwsS3Region = $OctopusParameters["Terraform.Init.S3.Region"]
 $backendAwsS3Bucket = $OctopusParameters["Terraform.Init.S3.Bucket"]
 
 terraform init -no-color -backend-config="key=$backendAwsS3Key" -backend-config="region=$backendAwsS3Region" -backend-config="bucket=$backendAwsS3Bucket"
 
+Write-Host "Importing the existing Docker Feed into Terraform State"
 $dockerFeedOctopusId = $OctopusParameters["SpaceStandard.Octopus.DockerFeedOctopusId"]
 terraform import "octopusdeploy_feed.docker" $dockerFeedOctopusId
 
+Write-Host "Importing the existing GitHub feed into Terraform State"
 $githubFeedOctopusId = $OctopusParameters["SpaceStandard.Octopus.GidHubFeedOctopusId"]
 terraform import "octopusdeploy_feed.github" $githubFeedOctopusId  
