@@ -16,7 +16,7 @@ resource "aws_launch_configuration" "linux-worker-launchconfig" {
 }
 
 resource "aws_autoscaling_group" "linux-worker-autoscaling" {
-    name = "linux-worker-autoscaling"
+    name = var.auto_scaling_group_name
     vpc_zone_identifier = var.octopus_aws_subnets
     launch_configuration = "${aws_launch_configuration.linux-worker-launchconfig.name}"
     min_size = var.octopus_aws_autoscalinggroup_size

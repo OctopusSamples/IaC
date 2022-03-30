@@ -40,3 +40,8 @@ variable "octopus_aws_ec2_instance_type" {
     type = string
     default = "#{Project.AWS.EC2.Instance.Type}"
 }
+
+variable "auto_scaling_group_name" {
+    type = string
+    default = "#{Project.AWS.AutoscalingGroupName}"
+}
