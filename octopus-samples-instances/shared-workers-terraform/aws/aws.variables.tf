@@ -45,3 +45,12 @@ variable "auto_scaling_group_name" {
     type = string
     default = "#{Project.AWS.AutoscalingGroupName}"
 }
+
+variable "octopus_aws_role_name" {
+    type = string
+    default = "#{Project.AWS.EC2.Role.Name}"
+}
+variable "octopus_aws_policy_arn" {
+    type = string
+    default = "#{Project.AWS.Policy.Arn}"
+}
