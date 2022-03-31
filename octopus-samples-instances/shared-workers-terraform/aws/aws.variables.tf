@@ -54,3 +54,13 @@ variable "octopus_aws_policy_arn" {
     type = string
     default = "#{Project.AWS.Policy.Arn}"
 }
+
+variable "octopus_aws_instance_profile_name" {
+    type = string
+    default = "#{Project.AWS.InstanceProfile.Name}"
+}
+
+variable "octopus_aws_launch_configuration_name" {
+    type = string
+    default = "#{Project.AWS.LaunchConfiguration.Name}"
+}

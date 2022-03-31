@@ -1,13 +1,13 @@
 
 
 resource "aws_iam_instance_profile" "linux-worker-profile" {
-    name = "worker_profile"
+    name = var.octopus_aws_instance_profile_name
     role = var.octopus_aws_role_name
 }
 
 
 resource "aws_launch_configuration" "linux-worker-launchconfig" {
-    name_prefix = "linux-worker-launchconfig"
+    name_prefix = var.octopus_aws_launch_configuration_name
     image_id = "${var.octopus_aws_linux_ami_id}"
     instance_type = var.octopus_aws_ec2_instance_type
 
