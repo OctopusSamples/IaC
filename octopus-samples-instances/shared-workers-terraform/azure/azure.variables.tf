@@ -63,3 +63,8 @@ variable "octopus_azure_vm_instance_count" {
     default = "#{Project.Azure.VM.Instance.Count}"
 }
 
+variable "octopus_azure_scaleset_name" {
+    type = string
+    default = "#{Project.Azure.ScaleSet.Name}"
+}
+

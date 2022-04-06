@@ -31,7 +31,7 @@ resource "azurerm_subnet" "octopus-samples-workers-subnet" {
 
 // Define azure scale set
 resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
-  name                = "samples-azure-workers-vmss"
+  name                = var.octopus_azure_scaleset_name
   resource_group_name = var.octopus_azure_resourcegroup_name
   location            = var.octopus_azure_location
   sku                 = var.octopus_azure_vm_size
@@ -41,6 +41,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
   disable_password_authentication = false
   user_data = "${base64encode(file("../configure-tentacle.sh"))}"
   
+  identity {
+    type = "SystemAssigned"
+  }
 
   source_image_reference {
     publisher = "Canonical"
