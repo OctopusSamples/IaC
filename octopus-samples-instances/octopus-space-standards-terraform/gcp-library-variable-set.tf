@@ -110,3 +110,66 @@ resource "octopusdeploy_variable" "gcp_variable_windows_default_vm_size" {
   value = "n1-standard-1"
   owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
 }
+
+resource "octopusdeploy_variable" "gcp_database_service_account_name" {
+  name = "GCP.Database.ServiceAccount.Name"
+  type = "String"
+  is_editable = false
+  is_sensitive = false
+  value = var.octopus_gcp_database_service_account_name
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id  
+}
+
+resource "octopusdeploy_variable" "gcp_postgresql_admin_username" {
+  name = "GCP.Postgresql.Admin.Username"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_postgresql_admin_username
+}
+
+resource "octopusdeploy_variable" "gcp_postgresql_admin_password" {
+  name = "GCP.Postgresql.Admin.Password"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_postgresql_admin_password
+}
+
+resource "octopusdeploy_variable" "gcp_mysql_admin_username" {
+  name = "GCP.Mysql.Admin.Username"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_mysql_admin_username
+}
+
+resource "octopusdeploy_variable" "gcp_mysql_admin_password" {
+  name = "GCP.Mysql.Admin.Password"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_mysql_admin_password
+}
+  
+resource "octopusdeploy_variable" "gcp_mssql_admin_username" {
+  name = "GCP.Mssql.Admin.Username"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_mssql_admin_username
+}
+
+resource "octopusdeploy_variable" "gcp_mssql_admin_password" {
+  name = "GCP.Mssql.Admin.Password"
+  type = "String"
+  is_editable = false
+  is_sensitive = true
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+  sensitive_value = var.octopus_gcp_mssql_admin_password
+}

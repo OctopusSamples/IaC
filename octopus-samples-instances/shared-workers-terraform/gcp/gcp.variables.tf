@@ -39,3 +39,8 @@ variable "instance_osimage" {
   type        = string
   default     = "#{Project.GCP.Instance.OSImage}"
 }
+
+variable "database_service_account_name" {
+  description = "Name of the service account to access databases"
+  type = string
+}

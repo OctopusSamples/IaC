@@ -114,3 +114,38 @@ variable "octopus_infrastructureuser_api_key" {
 variable "octopus_notification_slack_webhook" {
     type = string
 }
+
+variable "octopus_gcp_database_service_account_name" {
+    type = string
+    default = "db-service-account"
+}
+
+variable "octopus_gcp_postgresql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_gcp_postgresql_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_gcp_mysql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_gcp_mysql_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_gcp_mssql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_gcp_mssql_admin_password" {
+    type = string
+    sensitive = true
+}

@@ -20,6 +20,11 @@ resource "google_compute_instance" "vm_instance" {
 
   metadata_startup_script = file("../configure-tentacle.sh")
 
+  service_account {
+    email = google_service_account.database_service_account.email
+    scopes = ["cloud-platform"]
+  }
+
   tags = ["octopus-samples-worker"]
 }
 
