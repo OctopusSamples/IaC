@@ -15,12 +15,6 @@ resource "google_sql_database_instance" "postgresql" {
   }
 }
 
-resource "google_sql_user" "postgresql_google_user_shawn_sesna" {
-  name     = "shawn.sesna@octopus.com"
-  instance = google_sql_database_instance.postgresql.name
-  type     = "CLOUD_IAM_USER"
-}
-
 resource "google_sql_user" "postgres" {
   name = var.postgres_admin_username
   password = var.postgres_admin_password
@@ -29,7 +23,7 @@ resource "google_sql_user" "postgres" {
 }
 
 resource "google_sql_user" "postgresql_service_account" {
-  name = "db-service-account@octopus-samples.iam" # Service account created in shared workers for GCP
+  name = "${var.database_service_account_name}@${var.octopus_gcp_project}.iam" # Service account created in shared workers for GCP
   instance = google_sql_database_instance.postgresql.name
   type = "CLOUD_IAM_SERVICE_ACCOUNT"
 }

@@ -1,7 +1,6 @@
 resource "google_sql_database_instance" "mysql" {
   database_version = var.mysql_version
   region = var.octopus_gcp_region
-  #root_password = var.octopus_gcp_admin_password
   deletion_protection = false
 
   settings {
@@ -16,12 +15,6 @@ resource "google_sql_database_instance" "mysql" {
   }
 }
 
-resource "google_sql_user" "mysql_google_user_shawn_sesna" {
-  name     = "shawn.sesna@octopus.com"
-  instance = google_sql_database_instance.mysql.name
-  type     = "CLOUD_IAM_USER"
-}
-
 resource "google_sql_user" "mysql_root" {
   name = var.mysql_admin_username
   host = "%"
@@ -31,7 +24,7 @@ resource "google_sql_user" "mysql_root" {
 }
 
 resource "google_sql_user" "mysql_service_account" {
-  name = "db-service-account@octopus-samples.iam.gserviceaccount.com" # Service account created in shared workers for GCP
+  name = "${var.database_service_account_name}@${var.octopus_gcp_project}.iam.gserviceaccount.com" # Service account created in shared workers for GCP
   instance = google_sql_database_instance.mysql.name
   type = "CLOUD_IAM_SERVICE_ACCOUNT"
 }

@@ -67,3 +67,8 @@ variable "mssql_admin_password" {
     type = string
     sensitive = true
 }
+
+variable "database_service_account_name" {
+  description = "Name of the service account to access databases"
+  type = string
+}
