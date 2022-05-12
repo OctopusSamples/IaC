@@ -37,5 +37,7 @@ resource "google_compute_firewall" "allow-mysql" {
     ports    = ["3306"]
   }
 
+  source_service_accounts = [ "${var.database_service_account_name}@${var.octopus_gcp_project}.iam.gserviceaccount.com" ]
+
   target_tags = ["mysql"]
 }
