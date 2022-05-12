@@ -38,5 +38,4 @@ resource "google_compute_firewall" "allow-postgresql" {
 
   source_service_accounts = [ "${var.database_service_account_name}@${var.octopus_gcp_project}.iam.gserviceaccount.com" ]
 
-  target_tags = ["postgresql"]
 }
