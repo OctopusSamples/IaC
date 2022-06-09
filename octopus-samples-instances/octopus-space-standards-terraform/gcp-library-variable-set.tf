@@ -183,11 +183,3 @@ resource "octopusdeploy_variable" "gcp_mssql_admin_password" {
   sensitive_value = var.octopus_gcp_mssql_admin_password
 }
 
-resource "octopusdeploy_variable" "gcp_variable_account" {
-  name = "GCP.Account"
-  type = "AzureAccount"
-  is_editable = true
-  is_sensitive = false
-  value = octopusdeploy_gcp_account.gcp_account.id
-  owner_id = octopusdeploy_library_variable_set.azure_variable_set.id
-}
