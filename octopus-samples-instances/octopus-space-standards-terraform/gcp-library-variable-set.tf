@@ -16,7 +16,7 @@ resource "octopusdeploy_variable" "gcp_variable_account" {
   name = "GCP.Account"
   type = "GoogleCloudAccount"
   is_editable = true
-  is_sensitive = true
+  is_sensitive = false
   value = octopusdeploy_gcp_account.gcp_account.id
   owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
 }
