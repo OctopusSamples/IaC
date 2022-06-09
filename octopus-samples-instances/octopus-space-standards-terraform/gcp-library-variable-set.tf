@@ -12,6 +12,15 @@ resource "octopusdeploy_variable" "gcp_variable_set_worker_pool" {
   owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
 }
 
+resource "octopusdeploy_variable" "gcp_variable_account" {
+  name = "GCP.Account"
+  type = "GoogleCloudAccount"
+  is_editable = true
+  is_sensitive = true
+  value = octopusdeploy_gcp_account.gcp_account.id
+  owner_id = octopusdeploy_library_variable_set.gcp_variable_set.id
+}
+
 resource "octopusdeploy_variable" "gcp_variable_project_name" {
   name = "GCP.Project.Name"
   type = "String"
