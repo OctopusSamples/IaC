@@ -29,7 +29,7 @@ resource "google_sql_user" "postgresql_service_account" {
 }
 
 resource "google_compute_firewall" "allow-postgresql" {
-  name    = "fw-allow-postgresql"
+  name    = "fw-allow-postgresql-${google_sql_database_instance.postgresql.name}"
   network = "default"
   allow {
     protocol = "tcp"

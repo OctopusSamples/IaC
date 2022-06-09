@@ -30,7 +30,7 @@ resource "google_sql_user" "mysql_service_account" {
 }
 
 resource "google_compute_firewall" "allow-mysql" {
-  name    = "fw-allow-mysql"
+  name    = "fw-allow-mysql-${google_sql_database_instance.mysql.name}"
   network = "default"
   allow {
     protocol = "tcp"

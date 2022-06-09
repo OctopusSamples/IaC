@@ -12,7 +12,7 @@ resource "google_sql_database_instance" "mssql" {
 }
 
 resource "google_compute_firewall" "allow-mssql" {
-  name    = "fw-allow-mssql"
+  name    = "fw-allow-mssql-${google_sql_database_instance.mssql.name}"
   network = "default"
   allow {
     protocol = "tcp"
