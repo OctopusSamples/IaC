@@ -1,7 +1,7 @@
 resource "google_sql_database_instance" "mssql" {
   database_version = var.mssql_version
   region = var.octopus_gcp_region
-  root_password = var.mysql_admin_password
+  root_password = var.mssql_admin_password
   deletion_protection = false
 
   settings {
