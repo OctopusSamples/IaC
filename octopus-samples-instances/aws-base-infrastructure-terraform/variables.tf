@@ -15,25 +15,3 @@ variable "azs" {
 	type = list
 	default = ["us-east-1a", "us-east-1b"]
 }
-
-variable "cidr_blocks" {
-  type = list(string)
-}
-
-variable "egress_rules" {
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    description = string
-  }))
-}
-
-variable "ingress_rules" {
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    description = string
-  }))
-}

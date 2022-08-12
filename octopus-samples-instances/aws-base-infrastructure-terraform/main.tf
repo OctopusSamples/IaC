@@ -9,7 +9,3 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-provider "aws" {
-  profile = "DeveloperAccess"
-  region  = "us-west-2"
-}
