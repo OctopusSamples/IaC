@@ -129,6 +129,33 @@ resource "octopusdeploy_variable" "aws_variable_uk_primary_postgresql_name" {
   owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
 }
 
+resource "octopusdeploy_variable" "aws_variable_us_primary_sqlserver_name" {
+  name = "AWS.US.Primary.SQLServer.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-mssql-uswest"
+  owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
+}
+
+resource "octopusdeploy_variable" "aws_variable_us_secondary_sqlserver_name" {
+  name = "AWS.US.Secondary.SQLServer.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-mssql-useast"
+  owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
+}
+
+resource "octopusdeploy_variable" "aws_variable_uk_primary_sqlserver_name" {
+  name = "AWS.UK.Primary.SQLServer.Name"
+  type = "String"
+  is_editable = true
+  is_sensitive = false
+  value = "od-solutions-mssql-euwest"
+  owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
+}
+
 resource "octopusdeploy_variable" "aws_variable_mariadb_server_admin_username" {
   name = "AWS.MariaDB.Admin.Username"
   type = "Sensitive"
