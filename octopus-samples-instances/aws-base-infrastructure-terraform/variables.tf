@@ -56,7 +56,7 @@ variable "aws_mariadb_administrator_password" {
     type = string
 }
 
-variable "aws_sqlsever_administrator_name" {
+variable "aws_sqlserver_administrator_name" {
     type = string
 }
 
