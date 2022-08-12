@@ -15,3 +15,51 @@ variable "azs" {
 	type = list
 	default = ["us-east-1a", "us-east-1b"]
 }
+
+variable "aws_postresql_name" {
+    type = string
+}
+
+variable "aws_mysql_name" {
+    type = string
+}
+
+variable "aws_sqlserver_name" {
+	type = string
+}
+
+variable "aws_mariadb_name" {
+	type = string
+}
+
+variable "aws_mysql_administrator_name" {
+    type = string
+}
+
+variable "aws_mysql_administrator_password" {
+    type = string
+}
+
+variable "aws_postgresql_administrator_name" {
+    type = string
+}
+
+variable "aws_postgresql_administrator_password" {
+    type = string
+}
+
+variable "aws_mariadb_administrator_name" {
+    type = string
+}
+
+variable "aws_mariadb_administrator_password" {
+    type = string
+}
+
+variable "aws_sqlsever_administrator_name" {
+    type = string
+}
+
+variable "aws_sqlserver_administrator_password" {
+    type = string
+}

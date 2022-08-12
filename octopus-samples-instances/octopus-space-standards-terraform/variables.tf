@@ -149,3 +149,43 @@ variable "octopus_gcp_mssql_admin_password" {
     type = string
     sensitive = true
 }
+
+variable "octopus_aws_postgresql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_postgresql_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mysql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mysql_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mssql_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mssql_admin_password" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mariadb_admin_username" {
+    type = string
+    sensitive = true
+}
+
+variable "octopus_aws_mariadb_admin_password" {
+    type = string
+    sensitive = true
+}
