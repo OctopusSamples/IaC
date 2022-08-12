@@ -1,5 +1,5 @@
 
 provider "aws" {
-  profile = "DeveloperAccess"
+  #profile = "DeveloperAccess"
   region  = "us-west-2"
 }
