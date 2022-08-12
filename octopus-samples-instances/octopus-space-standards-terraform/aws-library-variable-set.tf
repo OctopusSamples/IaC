@@ -192,6 +192,24 @@ resource "octopusdeploy_variable" "aws_variable_mysql_server_admin_password" {
   owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
 }
 
+resource "octopusdeploy_variable" "aws_variable_postgresql_server_admin_username" {
+  name = "AWS.PostgreSQL.Admin.Username"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  sensitive_value = var.octopus_aws_postgresql_admin_username
+  owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
+}
+
+resource "octopusdeploy_variable" "aws_variable_postgresql_server_admin_password" {
+  name = "AWS.PostgreSQL.Admin.Password"
+  type = "Sensitive"
+  is_editable = false
+  is_sensitive = true
+  sensitive_value = var.octopus_aws_postgresql_admin_password
+  owner_id = octopusdeploy_library_variable_set.aws_variable_set.id
+}
+
 resource "octopusdeploy_variable" "aws_variable_sql_server_admin_username" {
   name = "AWS.SQL.Admin.Username"
   type = "Sensitive"
