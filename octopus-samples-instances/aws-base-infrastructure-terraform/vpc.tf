@@ -2,7 +2,7 @@
 resource "aws_vpc" "solutions_vpc" {
   cidr_block       = var.vpc_cidr
   tags = {
-    Name = "solutions-vpc"
+    Name = "samples-vpc"
   }
 }
 
@@ -10,7 +10,7 @@ resource "aws_vpc" "solutions_vpc" {
 resource "aws_internet_gateway" "solutions_igw" {
   vpc_id = aws_vpc.solutions_vpc.id
   tags = {
-    Name = "solutions-igw"
+    Name = "samples-igw"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_subnet" "solutions-public-sb" {
   availability_zone = element(var.azs,count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "Subnet-${count.index+1}"
+    Name = "samples-Subnet-${count.index+1}"
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_route_table" "solutions_rt" {
     gateway_id = aws_internet_gateway.solutions_igw.id
   }
   tags = {
-    Name = "solutions-prt"
+    Name = "samples-prt"
   }
 }
 
