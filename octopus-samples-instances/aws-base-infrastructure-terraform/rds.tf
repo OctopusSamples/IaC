@@ -8,6 +8,7 @@ resource "aws_db_instance" "mariadb_rds_instance" {
   password             = var.aws_mariadb_administrator_password
   iam_database_authentication_enabled = true
   skip_final_snapshot  = true
+  vpc_security_group_ids = aws_security_group.samples_security_group.id
 }
 
 resource "aws_db_instance" "mysql_rds_instance" {
@@ -20,6 +21,7 @@ resource "aws_db_instance" "mysql_rds_instance" {
   password             = var.aws_mysql_administrator_password
   iam_database_authentication_enabled = true
   skip_final_snapshot  = true
+  vpc_security_group_ids = aws_security_group.samples_security_group.id
 }
 
 resource "aws_db_instance" "postgresql_rds_instance" {
@@ -32,15 +34,18 @@ resource "aws_db_instance" "postgresql_rds_instance" {
   password             = var.aws_postgresql_administrator_password
   iam_database_authentication_enabled = true
   skip_final_snapshot  = true
+  vpc_security_group_ids = aws_security_group.samples_security_group.id
 }
 
 resource "aws_db_instance" "mssql_rds_instance" {
   allocated_storage    = 10
   engine               = "sqlserver-ee"
-  instance_class       = "db.t2.micro"
+  engine_version = "15.00.4198.2.v1"
+  instance_class       = "db.t3.small"
   identifier = var.aws_sqlserver_name
   username             = var.aws_sqlserver_administrator_name
   password             = var.aws_sqlserver_administrator_password
   skip_final_snapshot  = true
   license_model        = "license-included"
+  vpc_security_group_ids = aws_security_group.samples_security_group.id
 }
