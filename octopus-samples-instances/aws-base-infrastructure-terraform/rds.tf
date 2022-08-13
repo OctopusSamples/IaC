@@ -1,7 +1,7 @@
 resource "aws_db_instance" "mariadb_rds_instance" {
   allocated_storage    = 10
   engine               = "mariadb"
-  engine_version       = "10.5.12"
+  engine_version       = "10.6.8"
   instance_class       = "db.t2.micro"
   identifier = var.aws_mariadb_name
   username             = var.aws_mariadb_administrator_name
@@ -42,4 +42,5 @@ resource "aws_db_instance" "mssql_rds_instance" {
   username             = var.aws_sqlserver_administrator_name
   password             = var.aws_sqlserver_administrator_password
   skip_final_snapshot  = true
+  license_model        = "license-included"
 }
