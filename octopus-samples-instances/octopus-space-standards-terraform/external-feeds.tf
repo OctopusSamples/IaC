@@ -2,7 +2,7 @@ resource "octopusdeploy_github_repository_feed" "github" {
   name = "GitHub Feed TF"  
   #feed_type = "GitHub"
   feed_uri = "https://api.github.com"
-  is_enhanced_mode = false
+  #is_enhanced_mode = false
 }
 
 resource "octopusdeploy_nuget_feed" "feedz" {
