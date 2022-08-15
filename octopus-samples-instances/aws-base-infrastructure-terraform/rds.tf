@@ -45,8 +45,8 @@ resource "aws_db_instance" "postgresql_rds_instance" {
 
 resource "aws_db_instance" "mssql_rds_instance" {
   allocated_storage    = 10
-  engine               = "sqlserver-ee"
-  #engine_version = "15.00.4198.2.v1"
+  engine               = "sqlserver-ex"
+  engine_version = "15.00.4198.2.v1"
   instance_class       = "db.t3.small"
   identifier = var.aws_sqlserver_name
   username             = var.aws_sqlserver_administrator_name
