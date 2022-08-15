@@ -1,7 +1,7 @@
-#resource "aws_db_subnet_group" "samples_rds_subnet_group" {
-#    name = "samples_rds_subnet_group"
-#    subnet_ids = [aws_subnet.solutions-public-sb.id]
-#}
+resource "aws_db_subnet_group" "samples_rds_subnet_group" {
+    name = "samples_rds_subnet_group"
+    subnet_ids = values(aws_subnet.solutions-public-sb)[*].id
+}
 
 
 resource "aws_db_instance" "mariadb_rds_instance" {
