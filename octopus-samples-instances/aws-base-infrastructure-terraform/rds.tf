@@ -44,7 +44,7 @@ resource "aws_db_instance" "postgresql_rds_instance" {
 }
 
 resource "aws_db_instance" "mssql_rds_instance" {
-  allocated_storage    = 10
+  allocated_storage    = 20
   engine               = "sqlserver-ex"
   engine_version = "15.00.4198.2.v1"
   instance_class       = "db.t3.small"
