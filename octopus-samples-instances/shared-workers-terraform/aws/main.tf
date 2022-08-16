@@ -18,5 +18,5 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "#{Project.AWS.Backend.Region}"
+  region = "#{Project.AWS.Resource.Region}"
 }
