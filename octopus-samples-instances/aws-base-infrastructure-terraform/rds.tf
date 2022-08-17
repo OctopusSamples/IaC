@@ -7,7 +7,6 @@ resource "aws_db_subnet_group" "samples_rds_subnet_group" {
 resource "aws_db_instance" "mariadb_rds_instance" {
   allocated_storage    = 10
   engine               = "mariadb"
-  engine_version       = "10.6.8"
   instance_class       = "db.t2.micro"
   identifier = var.aws_mariadb_name
   username             = var.aws_mariadb_administrator_name
@@ -21,7 +20,6 @@ resource "aws_db_instance" "mariadb_rds_instance" {
 resource "aws_db_instance" "mysql_rds_instance" {
   allocated_storage    = 10
   engine               = "mysql"
-  engine_version       = "5.7.26"
   instance_class       = "db.t2.micro"
   identifier = var.aws_mysql_name
   username             = var.aws_mysql_administrator_name
@@ -35,7 +33,6 @@ resource "aws_db_instance" "mysql_rds_instance" {
 resource "aws_db_instance" "postgresql_rds_instance" {
   allocated_storage    = 10
   engine               = "postgres"
-  engine_version       = "11.14"
   instance_class       = "db.t2.micro"
   identifier = var.aws_postresql_name
   username             = var.aws_postgresql_administrator_name
@@ -49,7 +46,6 @@ resource "aws_db_instance" "postgresql_rds_instance" {
 resource "aws_db_instance" "mssql_rds_instance" {
   allocated_storage    = 20
   engine               = "sqlserver-ex"
-  engine_version = "15.00.4198.2.v1"
   instance_class       = "db.t3.small"
   identifier = var.aws_sqlserver_name
   username             = var.aws_sqlserver_administrator_name
