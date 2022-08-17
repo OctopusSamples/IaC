@@ -57,7 +57,7 @@ Having one massive `main.tf` is not sustainable.  Besides, Terraform has no conc
 ### Making Changes
 It can be hard to test changes to these files.  To help with that, the runbook [Terraform Research](https://samples-admin.octopus.app/app#/Spaces-1/projects/standards/operations/runbooks/Runbooks-48/overview) has been created.  
 
-- Unlike the maing space standards runbook, this runbook uses inline code.
+- Unlike the main space standards runbook, this runbook uses inline code.
 - It will create the resource, allow you to review via a manual intervention, then it will destroy the resource.
 - Everything created by this runbook has a separate state file from the space standards state file.
 - When making changes, be sure to update both the apply and destroy steps.
