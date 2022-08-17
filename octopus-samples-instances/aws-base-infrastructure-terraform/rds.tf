@@ -33,7 +33,7 @@ resource "aws_db_instance" "mysql_rds_instance" {
 resource "aws_db_instance" "postgresql_rds_instance" {
   allocated_storage    = 10
   engine               = "postgres"
-  instance_class       = "db.t2.micro"
+  instance_class       = "db.t3.micro"
   identifier = var.aws_postresql_name
   username             = var.aws_postgresql_administrator_name
   password             = var.aws_postgresql_administrator_password
