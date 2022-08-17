@@ -12,6 +12,7 @@ resource "aws_launch_configuration" "linux-worker-launchconfig" {
     instance_type = var.octopus_aws_ec2_instance_type
 
     iam_instance_profile = "${aws_iam_instance_profile.linux-worker-profile.name}"
+    key_name = "ShawnSesna-samples-debug"
     
     security_groups = ["${var.octopus_aws_security_group_id}"]
   

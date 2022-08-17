@@ -9,6 +9,10 @@ workerPool="#{Octopus.Action[Get Samples Spaces].Output.WorkerPoolName}"
 machinePolicy="Default Machine Policy"
 space="#{Octopus.Action[Get Samples Spaces].Output.InitialSpaceName}"
 
+# Install basic utilities
+sudo apt-get update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common wget -y
+
 # Install Tentacle
 sudo apt-key adv --fetch-keys "https://apt.octopus.com/public.key"
 sudo add-apt-repository "deb https://apt.octopus.com/ focal main"
@@ -16,13 +20,9 @@ sudo apt-get update
 sudo apt-get install tentacle -y
 
 # Install Docker
-sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-
-# Install wget
-sudo apt-get install wget -y
 
 # Download the Microsoft repository GPG keys
 wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb
