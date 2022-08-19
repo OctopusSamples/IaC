@@ -4,7 +4,7 @@ resource "aws_db_subnet_group" "samples_rds_subnet_group" {
 }
 
 resource "aws_db_parameter_group" "solutions_mariadb" {
-  name = "solutions_mariadb"
+  name = "solutions-mariadb"
   family = "mariadb10.6"
     parameter {
     name  = "character_set_server"
@@ -32,7 +32,7 @@ resource "aws_db_instance" "mariadb_rds_instance" {
 }
 
 resource "aws_db_parameter_group" "solutions_mysql" {
-  name = "solutions_mysql"
+  name = "solutions-mysql"
   family = "mysql8.0"
     parameter {
     name  = "character_set_server"
@@ -60,7 +60,7 @@ resource "aws_db_instance" "mysql_rds_instance" {
 }
 
 resource "aws_db_parameter_group" "solutions_postgresql" {
-  name = "solutions_postgresql"
+  name = "solutions-postgresql"
   family = "postgres14"
     parameter {
     name  = "character_set_server"
