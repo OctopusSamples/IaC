@@ -63,12 +63,7 @@ resource "aws_db_parameter_group" "solutions_postgresql" {
   name = "solutions-postgresql"
   family = "postgres14"
     parameter {
-    name  = "character_set_server"
-    value = "utf8"
-  }
-
-  parameter {
-    name  = "character_set_client"
+    name  = "server_encoding"
     value = "utf8"
   }
 }
