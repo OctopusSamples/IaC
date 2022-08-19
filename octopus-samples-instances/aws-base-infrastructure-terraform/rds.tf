@@ -25,6 +25,11 @@ resource "aws_db_parameter_group" "solutions_mariadb" {
     name = "character_set_database"
     value = "utf8"
   }
+
+  parameter {
+    name = "character_set_results"
+    value = "utf8"
+  }
 }
 
 resource "aws_db_instance" "mariadb_rds_instance" {
@@ -62,7 +67,12 @@ resource "aws_db_parameter_group" "solutions_mysql" {
   parameter {
     name = "character_set_database"
     value = "utf8"
-  }  
+  }
+
+  parameter {
+    name = "character_set_results"
+    value = "utf8"
+  }    
 }
 
 resource "aws_db_instance" "mysql_rds_instance" {
