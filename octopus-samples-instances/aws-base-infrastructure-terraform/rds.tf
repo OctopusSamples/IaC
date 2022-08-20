@@ -8,27 +8,27 @@ resource "aws_db_parameter_group" "solutions_mariadb" {
   family = "mariadb10.6"
     parameter {
     name  = "character_set_server"
-    value = "utf8"
+    value = "utf8mb4"
   }
 
   parameter {
     name  = "character_set_client"
-    value = "utf8"
+    value = "utf8mb4"
   }
 
   parameter {
     name = "character_set_connection"
-    value = "utf8"
+    value = "utf8mb4"
   }
 
   parameter {
     name = "character_set_database"
-    value = "utf8"
+    value = "utf8mb4"
   }
 
   parameter {
     name = "character_set_results"
-    value = "utf8"
+    value = "utf8mb4"
   }
 }
 
