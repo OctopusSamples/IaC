@@ -5,7 +5,7 @@ resource "aws_db_subnet_group" "samples_rds_subnet_group" {
 
 resource "aws_db_parameter_group" "solutions_mariadb" {
   name = "solutions-mariadb"
-  family = "mariadb10.5"
+  family = "mariadb10.6"
     parameter {
     name  = "log_bin_trust_function_creators"
     value = "1"
@@ -24,7 +24,6 @@ resource "aws_db_instance" "mariadb_rds_instance" {
   db_subnet_group_name = aws_db_subnet_group.samples_rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.samples_security_group.id]
   parameter_group_name = aws_db_parameter_group.solutions_mariadb.name
-  engine_version = "10.5.16"
 }
 
 resource "aws_db_instance" "mysql_rds_instance" {
