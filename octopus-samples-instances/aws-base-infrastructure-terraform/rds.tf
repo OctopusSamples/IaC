@@ -5,30 +5,10 @@ resource "aws_db_subnet_group" "samples_rds_subnet_group" {
 
 resource "aws_db_parameter_group" "solutions_mariadb" {
   name = "solutions-mariadb"
-  family = "mariadb10.6"
+  family = "mariadb10.5"
     parameter {
-    name  = "character_set_server"
-    value = "utf8mb4"
-  }
-
-  parameter {
-    name  = "character_set_client"
-    value = "utf8mb4"
-  }
-
-  parameter {
-    name = "character_set_connection"
-    value = "utf8mb4"
-  }
-
-  parameter {
-    name = "character_set_database"
-    value = "utf8mb4"
-  }
-
-  parameter {
-    name = "character_set_results"
-    value = "utf8mb4"
+    name  = "log_bin_trust_function_creators"
+    value = "1"
   }
 }
 
@@ -44,35 +24,7 @@ resource "aws_db_instance" "mariadb_rds_instance" {
   db_subnet_group_name = aws_db_subnet_group.samples_rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.samples_security_group.id]
   parameter_group_name = aws_db_parameter_group.solutions_mariadb.name
-}
-
-resource "aws_db_parameter_group" "solutions_mysql" {
-  name = "solutions-mysql"
-  family = "mysql8.0"
-    parameter {
-    name  = "character_set_server"
-    value = "utf8"
-  }
-
-  parameter {
-    name  = "character_set_client"
-    value = "utf8"
-  }
-
-  parameter {
-    name = "character_set_connection"
-    value = "utf8"
-  }
-
-  parameter {
-    name = "character_set_database"
-    value = "utf8"
-  }
-
-  parameter {
-    name = "character_set_results"
-    value = "utf8"
-  }    
+  engine_version = "10.5.16"
 }
 
 resource "aws_db_instance" "mysql_rds_instance" {
@@ -86,7 +38,6 @@ resource "aws_db_instance" "mysql_rds_instance" {
   skip_final_snapshot  = true
   db_subnet_group_name = aws_db_subnet_group.samples_rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.samples_security_group.id]
-  parameter_group_name = aws_db_parameter_group.solutions_mysql.name
 }
 
 
