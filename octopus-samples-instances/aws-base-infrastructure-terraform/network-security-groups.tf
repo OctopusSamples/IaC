@@ -48,6 +48,24 @@ resource "aws_security_group" "samples_security_group" {
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
+  ingress {
+    description      = "OctoPetShop default ports"
+    from_port        = 5000
+    to_port          = 5001
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
+  }
+
+  ingress {
+    description      = "Oracle default ports"
+    from_port        = 1521
+    to_port          = 1521
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
