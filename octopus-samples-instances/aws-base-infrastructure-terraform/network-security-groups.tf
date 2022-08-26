@@ -8,7 +8,7 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
@@ -17,7 +17,7 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 8080
     to_port          = 8080
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
@@ -46,6 +46,7 @@ resource "aws_security_group" "samples_security_group" {
     protocol         = "tcp"
     cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
+    
   }
 
   ingress {
@@ -53,7 +54,7 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 5000
     to_port          = 5001
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
