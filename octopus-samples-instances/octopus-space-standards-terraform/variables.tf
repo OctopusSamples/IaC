@@ -86,6 +86,16 @@ variable "octopus_static_gcp_worker_pool_name" {
     default = "GCP Worker Pool TF"
 }
 
+variable "octopus_static_aws_windows_worker_pool_name" {
+    type = string
+    default = "AWS Windows Worker Pool TF"
+}
+
+variable "octopus_static_azure_windows_worker_pool_name" {
+    type = string
+    default = "Azure Windows Worker Pool TF"
+}
+
 variable "octopus_azurevmss_api_key" {
     type = string
     sensitive = true
