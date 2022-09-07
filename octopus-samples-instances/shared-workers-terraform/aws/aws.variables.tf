@@ -26,6 +26,11 @@ variable "octopus_aws_linux_ami_id" {
     default = "#{Project.AWS.Linux.AMI.Id}"
 }
 
+variable "octopus_aws_windows_ami_id" {
+    type = string
+    default = "#{Project.AWS.Windows.AMI.Id}"
+}
+
 variable "octopus_aws_subnets" {
     type = list(string)
     default = #{Project.AWS.Subnets}

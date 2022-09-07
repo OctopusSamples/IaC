@@ -36,6 +36,9 @@ sudo apt-get update
 # Install PowerShell
 sudo apt-get install -y powershell
 
+# Install AWS CLI
+sudo apt-get install awscli -y
+
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
 
