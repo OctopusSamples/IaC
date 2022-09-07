@@ -46,6 +46,11 @@ variable "octopus_azure_vm_sku" {
     default = "#{Project.Azure.VM.Sku}"
 }
 
+variable "octopus_azure_windows_vm_sku" {
+    type = string
+    default = "#{Project.Azure.Windows.VM.Sku}"
+}
+
 variable "octopus_azure_vm_admin_username" {
     type = string
     sensitive = true
@@ -68,3 +73,7 @@ variable "octopus_azure_scaleset_name" {
     default = "#{Project.Azure.ScaleSet.Name}"
 }
 
+variable "octopus_azure_windows_worker_name" {
+    type = string
+    default = "#{Project.Azure.WindowsWorker.Name}"
+}

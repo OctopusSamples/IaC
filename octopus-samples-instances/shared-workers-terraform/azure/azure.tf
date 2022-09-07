@@ -70,6 +70,66 @@ resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
   tags = var.tags
 }
 
+# Create Windows worker
+resource "azurerm_network_interface" "windows-worker-nic" {
+  name = "samples-windows-worker-nic"
+  location = var.octopus_azure_location
+  resource_group_name = var.octopus_azure_resourcegroup_name
+  ip_configuration {
+    name = "internal"
+    subnet_id = azurerm_subnet.octopus-samples-workers-subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_windows_virtual_machine" "samples-windows-worker" {
+  name = var.octopus_azure_windows_worker_name
+  location = var.octopus_azure_location
+  resource_group_name = var.octopus_azure_resourcegroup_name
+  size = var.octopus_azure_vm_size
+  admin_username      = var.octopus_azure_vm_admin_username
+  admin_password =  var.octopus_azure_vm_admin_password
+  allow_extension_operations = true
+  network_interface_ids = [
+    azurerm_network_interface.windows-worker-nic.id
+    ]
+  
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = var.octopus_azure_windows_vm_sku
+    version   = "latest"
+  }  
+    
+  #custom_data = "${base64encode(file("../configure-tentacle.ps1"))}"
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_virtual_machine_extension" "bootstrap-script" {
+  name = "samples-windows-vm-boostrap"
+  virtual_machine_id = azurerm_windows_virtual_machine.samples-windows-worker.id
+  publisher = "Microsoft.Compute"
+  type = "CustomScriptExtension"
+  type_handler_version = "1.9"
+
+  protected_settings = <<SETTINGS
+    {
+      "commandToExecute": "powershell -command \"[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('${base64encode(file("../configure-tentacle.ps1"))}')) | Out-File -filepath bootstrap.ps1\" && powershell -ExecutionPolicy Unrestricted -File bootstrap.ps1"
+    }
+  SETTINGS
+  tags = var.tags
+}
+
 /* DEBUG PURPOSES ONLY 
 
 This section will create a "jumpbox" VM to allow you to SSH into your Scale Set VMs

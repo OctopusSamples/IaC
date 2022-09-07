@@ -10,8 +10,20 @@ $apiKey = "#{Samples.Octopus.Api.Key}"
 # Install chocolaty
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
-# Get local hostname
-$OctopusName = (Invoke-RestMethod http://169.254.169.254/latest/meta-data/hostname)
+$OctopusName = $null
+try
+{
+    # This is for AWS
+    $OctopusName = (Invoke-RestMethod http://169.254.169.254/latest/meta-data/hostname)
+}
+catch
+{
+    # This is for Azure
+    if ($_.Exception.Response.StatusCode.value__ -eq 404)
+    {
+        $OctopusName = ((Invoke-RestMethod "http://169.254.169.254/metadata/instance?api-version=2021-02-01" -Headers @{"MetaData" = "true"}).compute.name)
+    }
+}
 
 # Use chocolaty to install tentacle
 choco install octopusdeploy.tentacle -y
