@@ -18,4 +18,6 @@ resource "octopusdeploy_feed" "docker" {
   is_enhanced_mode = false
   download_attempts = 0
   download_retry_backoff_seconds = 0
+  username = var.octopus_feed_dockerhub_username
+  password = var.octopus_feed_dockerhub_password
 }

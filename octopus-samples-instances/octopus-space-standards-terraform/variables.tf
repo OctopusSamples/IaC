@@ -199,3 +199,12 @@ variable "octopus_aws_mariadb_admin_password" {
     type = string
     sensitive = true
 }
+
+variable "octopus_feed_dockerhub_username" {
+    type = string
+}
+
+variable "octopus_feed_dockerhub_password" {
+    type = string
+    sensitive = true
+}
