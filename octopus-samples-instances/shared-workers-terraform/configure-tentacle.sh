@@ -39,6 +39,9 @@ sudo apt-get install -y powershell
 # Install AWS CLI
 sudo apt-get install awscli -y
 
+# Install .NET 6
+sudo apt-get install dotnet-sdk-6.0 -y
+
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
 
