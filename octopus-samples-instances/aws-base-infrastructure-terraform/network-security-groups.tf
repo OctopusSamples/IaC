@@ -67,6 +67,24 @@ resource "aws_security_group" "samples_security_group" {
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
+  ingress {
+    description      = "Tentacle default ports"
+    from_port        = 10933
+    to_port          = 10933
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
+  }
+
+  ingress {
+    description      = "IIS default HTTP port"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
+  }  
+
   egress {
     from_port        = 0
     to_port          = 0
