@@ -15,7 +15,7 @@ resource "aws_db_parameter_group" "solutions_mariadb" {
 resource "aws_db_instance" "mariadb_rds_instance" {
   allocated_storage    = 10
   engine               = "mariadb"
-  instance_class       = "db.t2.micro"
+  instance_class       = "db.t3.micro"
   identifier = var.aws_mariadb_name
   username             = var.aws_mariadb_administrator_name
   password             = var.aws_mariadb_administrator_password
@@ -29,7 +29,7 @@ resource "aws_db_instance" "mariadb_rds_instance" {
 resource "aws_db_instance" "mysql_rds_instance" {
   allocated_storage    = 10
   engine               = "mysql"
-  instance_class       = "db.t2.micro"
+  instance_class       = "db.t3.micro"
   identifier = var.aws_mysql_name
   username             = var.aws_mysql_administrator_name
   password             = var.aws_mysql_administrator_password
