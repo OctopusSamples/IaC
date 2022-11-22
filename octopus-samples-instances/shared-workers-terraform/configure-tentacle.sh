@@ -8,6 +8,8 @@ applicationPath="/home/Octopus/Applications/"
 workerPool="#{Octopus.Action[Get Samples Spaces].Output.WorkerPoolName}"
 machinePolicy="Default Machine Policy"
 space="#{Octopus.Action[Get Samples Spaces].Output.InitialSpaceName}"
+pinnedTentacleVersion="#{Project.LinuxWorkers.PinnedTentacleVersion}"
+pinnedPowershellCoreVersion="#{Project.LinuxWorkers.PinnedPSCoreVersion}"
 
 # Install basic utilities
 sudo apt-get update
@@ -17,7 +19,14 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 sudo apt-key adv --fetch-keys "https://apt.octopus.com/public.key"
 sudo add-apt-repository "deb https://apt.octopus.com/ focal main"
 sudo apt-get update
-sudo apt-get install tentacle -y
+
+if [[ ! -z "$pinnedTentacleVersion" ]]; then
+    echo "installing specific tentacle version: $pinnedTentacleVersion"
+    sudo apt-get install tentacle=$pinnedTentacleVersion -y --allow-downgrades
+else
+    echo "installing latest tentacle version"
+    sudo apt-get install tentacle
+fi
 
 # Install Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -34,7 +43,13 @@ sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get update
 
 # Install PowerShell
-sudo apt-get install -y powershell
+if [[ ! -z "$pinnedPowershellCoreVersion" ]]; then
+    echo "installing specific powershell core version: $pinnedPowershellCoreVersion"
+    sudo apt-get install powershell=$pinnedPowershellCoreVersion -y --allow-downgrades
+else
+    echo "installing latest powershell core version"
+    sudo apt-get install -y powershell
+fi
 
 # Install AWS CLI
 sudo apt-get install awscli -y
