@@ -8,7 +8,7 @@ resource "azurerm_mysql_flexible_server" "permanent" {
 
   sku_name                     = "B_Standard_B1ms"
   version                      = "8.0"
-  backup_retention_days        = 7
+  backup_retention_days        = 1
   geo_redundant_backup_enabled = false
 
   storage {
