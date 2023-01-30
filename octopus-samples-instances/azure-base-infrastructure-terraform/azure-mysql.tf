@@ -7,7 +7,7 @@ resource "azurerm_mysql_flexible_server" "permanent" {
   administrator_password = var.azure_mysql_administrator_password
 
   sku_name                     = "B_Standard_B1ms"
-  version                      = "8.0"
+  version                      = "8.0.21"
   backup_retention_days        = 1
   geo_redundant_backup_enabled = false
 
