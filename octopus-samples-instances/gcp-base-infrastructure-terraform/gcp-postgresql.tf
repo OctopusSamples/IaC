@@ -26,6 +26,10 @@ resource "google_sql_user" "postgresql_service_account" {
   name = "${var.database_service_account_name}@${var.octopus_gcp_project}.iam" # Service account created in shared workers for GCP
   instance = google_sql_database_instance.postgresql.name
   type = "CLOUD_IAM_SERVICE_ACCOUNT"
+
+  depends_on = [
+    google_sql_database_instance.postgresql
+  ]
 }
 
 resource "google_compute_firewall" "allow-postgresql" {
