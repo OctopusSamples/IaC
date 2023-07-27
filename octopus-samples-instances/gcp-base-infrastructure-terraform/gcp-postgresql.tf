@@ -29,7 +29,7 @@ resource "google_sql_user" "postgres" {
 resource "time_sleep" "wait" {
   depends_on = [google_sql_database_instance.postgresql]
 
-  create_duration = "20s"
+  create_duration = "120s"
 }
 
 ########################################################################################
