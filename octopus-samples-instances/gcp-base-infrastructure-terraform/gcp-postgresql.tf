@@ -22,13 +22,27 @@ resource "google_sql_user" "postgres" {
   type = "BUILT_IN"
 }
 
+########################################################################################
+## Workaround for https://github.com/hashicorp/terraform-provider-google/issues/14233 ##
+########################################################################################
+
+resource "time_sleep" "wait" {
+  depends_on = [google_sql_database_instance.postgresql]
+
+  create_duration = "20s"
+}
+
+########################################################################################
+## End workaround                                                                     ##
+########################################################################################
+
 resource "google_sql_user" "postgresql_service_account" {
   name = "${var.database_service_account_name}@${var.octopus_gcp_project}.iam" # Service account created in shared workers for GCP
   instance = google_sql_database_instance.postgresql.name
   type = "CLOUD_IAM_SERVICE_ACCOUNT"
 
   depends_on = [
-    google_sql_database_instance.postgresql
+    time_sleep.wait # Implementation of workaround
   ]
 }
 
