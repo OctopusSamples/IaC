@@ -15,7 +15,11 @@ resource "azurerm_postgresql_flexible_server" "permanent" {
   tags = {
     LifetimeInDays = 365
   }
-
+  
+  authentication {
+    active_directory_auth_enabled = true
+    password_auth_enabled = true
+  }
 }
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "all_azure_resources" {
