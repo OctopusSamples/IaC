@@ -82,6 +82,13 @@ resource "azurerm_network_interface" "windows-worker-nic" {
   }
 }
 
+resource "azurerm_user_assigned_identity" "database-admin" {
+  location = var.octopus_azure_location
+  resource_group_name = var.octopus_azure_resourcegroup_name
+
+  name = "samples-database-admin"
+}
+
 resource "azurerm_windows_virtual_machine" "samples-windows-worker" {
   name = var.octopus_azure_windows_worker_name
   location = var.octopus_azure_location
@@ -109,7 +116,9 @@ resource "azurerm_windows_virtual_machine" "samples-windows-worker" {
   #custom_data = "${base64encode(file("../configure-tentacle.ps1"))}"
 
   identity {
-    type = "SystemAssigned"
+    #type = "SystemAssigned"
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.database-admin.id]
   }
 
   tags = var.tags
