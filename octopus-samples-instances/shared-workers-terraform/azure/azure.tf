@@ -29,6 +29,16 @@ resource "azurerm_subnet" "octopus-samples-workers-subnet" {
   ]  
 }
 
+// Define user managed identity
+resource "azurerm_user_assigned_identity" "database-admin" {
+  location = var.octopus_azure_location
+  resource_group_name = var.octopus_azure_resourcegroup_name
+
+  name = "samples-database-admin"
+
+  depends_on = [ azurerm_resource_group.octopus-samples-azure-workers ]
+}
+
 // Define azure scale set
 resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
   name                = var.octopus_azure_scaleset_name
@@ -42,12 +52,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
   user_data = "${base64encode(file("../configure-tentacle.sh"))}"
   
   identity {
-    type = "SystemAssigned"
+    #type = "SystemAssigned"
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.database-admin.id]
   }
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
+    offer     = "0001-com-ubuntu-server-jammy"
     sku       = var.octopus_azure_vm_sku
     version   = "latest"
   }
@@ -68,6 +80,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "samples-azure-workers" {
     }
   }
   tags = var.tags
+
+  depends_on = [ azurerm_user_assigned_identity.database-admin ]
 }
 
 # Create Windows worker
@@ -81,6 +95,8 @@ resource "azurerm_network_interface" "windows-worker-nic" {
     private_ip_address_allocation = "Dynamic"
   }
 }
+
+
 
 resource "azurerm_windows_virtual_machine" "samples-windows-worker" {
   name = var.octopus_azure_windows_worker_name
@@ -109,10 +125,14 @@ resource "azurerm_windows_virtual_machine" "samples-windows-worker" {
   #custom_data = "${base64encode(file("../configure-tentacle.ps1"))}"
 
   identity {
-    type = "SystemAssigned"
+    #type = "SystemAssigned"
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.database-admin.id]
   }
 
   tags = var.tags
+
+  depends_on = [ azurerm_user_assigned_identity.database-admin ]
 }
 
 resource "azurerm_virtual_machine_extension" "bootstrap-script" {

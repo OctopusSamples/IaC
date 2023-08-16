@@ -26,7 +26,7 @@ catch
 }
 
 # Install .net 4.8
-choco install dotnetfx
+#choco install dotnetfx -y
 
 # Use chocolaty to install tentacle
 choco install octopusdeploy.tentacle -y
