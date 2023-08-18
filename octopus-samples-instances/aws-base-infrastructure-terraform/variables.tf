@@ -63,3 +63,7 @@ variable "aws_sqlserver_administrator_name" {
 variable "aws_sqlserver_administrator_password" {
     type = string
 }
+
+variable "octopus_cloud_static_cidr" {
+    type = string
+}

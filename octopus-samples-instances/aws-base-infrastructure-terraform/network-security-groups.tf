@@ -72,7 +72,7 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 10933
     to_port          = 10933
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block, var.var.octopus_cloud_static_cidr]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
