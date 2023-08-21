@@ -3,7 +3,7 @@ terraform {
     azurerm = {
       source = "hashicorp/azurerm"
       #version = ">= 2.93.1" # example: 0.7.62
-      version = ">=3.5.0"
+      version = ">=3.7.0"
     }
   }
 
