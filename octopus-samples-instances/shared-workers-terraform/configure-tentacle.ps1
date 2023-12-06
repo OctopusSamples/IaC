@@ -54,9 +54,14 @@ choco install javaruntime -y
 choco install azure-cli -y
 
 # Install docker engine
-#Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
-#.\install-docker-ce.ps1
+# Windows Server 2022
+Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
+.\install-docker-ce.ps1
+
+<#
+# Windows Server 2019
 Install-PackageProvider -Name Nuget -Force
 Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
 Install-Package -Name docker -ProviderName DockerMsftProvider -Force
 Restart-Computer -Force
+#>
