@@ -25,7 +25,7 @@ if [[ ! -z "$pinnedTentacleVersion" ]]; then
     sudo apt-get install tentacle=$pinnedTentacleVersion -y --allow-downgrades
 else
     echo "installing latest tentacle version"
-    sudo apt-get install tentacle
+    sudo apt-get install tentacle -y
 fi
 
 # Install Docker
@@ -52,7 +52,7 @@ else
 fi
 
 # Install AWS CLI
-sudo apt-get install awscli -y
+#sudo apt-get install awscli -y
 
 # Install .NET 6
 sudo apt-get install dotnet-sdk-6.0 -y
@@ -73,6 +73,14 @@ echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/microsof
     
 sudo apt-get update
 sudo apt-get install azure-cli   
+
+# Install aws cli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# Install Java
+sudo apt install default-jre
 
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
