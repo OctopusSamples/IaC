@@ -81,7 +81,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 
 # Install Java
-sudo apt install default-jre -y
+sudo apt install openjdk-17-jdk -y
 
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
