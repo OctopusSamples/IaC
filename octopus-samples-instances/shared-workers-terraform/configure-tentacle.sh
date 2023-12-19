@@ -59,7 +59,7 @@ sudo apt-get install dotnet-sdk-6.0 -y
 
 # Install az CLI
 sudo apt-get update
-sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg -y
 
 sudo mkdir -p /etc/apt/keyrings
 curl -sLS https://packages.microsoft.com/keys/microsoft.asc |
@@ -72,15 +72,16 @@ echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/microsof
     sudo tee /etc/apt/sources.list.d/azure-cli.list
     
 sudo apt-get update
-sudo apt-get install azure-cli   
+sudo apt-get install azure-cli -y
 
 # Install aws cli
+sudo apt-get install unzip -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 
 # Install Java
-sudo apt install default-jre
+sudo apt install default-jre -y
 
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
