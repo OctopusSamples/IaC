@@ -96,13 +96,11 @@ if ([string]::IsNullOrWhiteSpace($OptionalSpaceId) -eq $false -and $OptionalSpac
 $env:OCTOPUS_URL = $AdminInstanceUrl
 $env:OCTOPUS_API_KEY = $AdminInstanceApiKey
 
-Write-Verbose "Setting stderr to progress"
-Write-Host "##octopus[stderr-progress]"
 foreach ($space in $spacesList)
 {
     Write-Host "Queueing a runbook run for $($space.Name) using the space id $($space.Id).  The runbook will run on $AdminInstanceUrl for the environment $AdminEnvironmentName in the space $AdminSpaceName"
     Write-Host "Running command: octopus runbook run --project ""Standards"" --name ""Enforce Space Standards"" --environment ""$AdminEnvironmentName"" --variable=""Project.Standards.SpaceId:$($space.Id)"" --space=""$AdminSpaceName"" to queue the runbook"
     
-    & octopus runbook run --project "Standards" --name "Enforce Space Standards" --environment "$AdminEnvironmentName" --variable="Project.Standards.SpaceId:$($space.Id)" --space="$AdminSpaceName" --no-prompt
+    octopus runbook run --project "Standards" --name "Enforce Space Standards" --environment "$AdminEnvironmentName" --variable="Project.Standards.SpaceId:$($space.Id)" --space="$AdminSpaceName" --no-prompt
 }
-Write-Host "##octopus[stderr-default]"
+
