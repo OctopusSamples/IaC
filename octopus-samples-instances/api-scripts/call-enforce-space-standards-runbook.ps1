@@ -9,6 +9,11 @@ param
     $OptionalSpaceId
 )
 
+# Fix ANSI Color on PWSH Core issues when displaying objects
+if ($PSEdition -eq "Core") {
+    $PSStyle.OutputRendering = "PlainText"
+}
+
 function Invoke-OctopusApi
 {
     param
@@ -90,9 +95,12 @@ if ([string]::IsNullOrWhiteSpace($OptionalSpaceId) -eq $false -and $OptionalSpac
 $env:OCTOPUS_URL = $AdminInstanceUrl
 $env:OCTOPUS_API_KEY = $AdminInstanceApiKey
 
+Write-Host "##octopus[stderr-ignore]"
 foreach ($space in $spacesList)
 {
     Write-Host "Queueing a runbook run for $($space.Name) using the space id $($space.Id).  The runbook will run on $AdminInstanceUrl for the environment $AdminEnvironmentName in the space $AdminSpaceName"
     Write-Host "Running command: octopus runbook run --project ""Standards"" --name ""Enforce Space Standards"" --environment ""$AdminEnvironmentName"" --variable=""Project.Standards.SpaceId:$($space.Id)"" --space=""$AdminSpaceName"" to queue the runbook"
+    
     octopus runbook run --project "Standards" --name "Enforce Space Standards" --environment "$AdminEnvironmentName" --variable="Project.Standards.SpaceId:$($space.Id)" --space="$AdminSpaceName"
 }
+Write-Host "##octopus[stderr-default]"
