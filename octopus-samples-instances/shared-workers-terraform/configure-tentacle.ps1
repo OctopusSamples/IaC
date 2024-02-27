@@ -41,8 +41,9 @@ Write-Host "Finished register worker..."
 & "C:\Program Files\Octopus Deploy\Tentacle\Tentacle.exe" service --install
 & "C:\Program Files\Octopus Deploy\Tentacle\Tentacle.exe" service --start
 
-# Install .net 6
+# Install .net sdks
 choco install dotnet-6.0-sdk -y
+choco install dotnet-8.0-sdk -y
 
 # Install PowerShell Core
 choco install powershell-core -y
@@ -57,9 +58,10 @@ choco install azure-cli -y
 choco install awscli -y
 
 # Install docker engine
-# Windows Server 2022
+# Windows Server 2022 - may require restart which is killing this method
 Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
 .\install-docker-ce.ps1
+
 
 <#
 # Windows Server 2019

@@ -54,8 +54,9 @@ fi
 # Install AWS CLI
 #sudo apt-get install awscli -y
 
-# Install .NET 6
+# Install .NET sdk
 sudo apt-get install dotnet-sdk-6.0 -y
+sudo apt-get install dotnet-sdk-8.0 -y
 
 # Install az CLI
 sudo apt-get update
