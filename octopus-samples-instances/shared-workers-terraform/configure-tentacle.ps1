@@ -28,6 +28,16 @@ catch
 # Install .net 4.8
 #choco install dotnetfx -y
 
+# Check to see if temp folder exists
+if (!(Test-Path "c:\temp"))
+{
+    New-Item -ItemType Directory -Force -Path "c:\temp"
+}
+
+# Set temp location
+$env:TEMP = "c:\temp"
+$env:TMP = "c:\temp"
+
 # Use chocolaty to install tentacle
 choco install octopusdeploy.tentacle -y
 
