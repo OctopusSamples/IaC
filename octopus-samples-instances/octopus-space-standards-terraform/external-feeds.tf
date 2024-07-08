@@ -21,3 +21,9 @@ resource "octopusdeploy_feed" "docker" {
   username = var.octopus_feed_dockerhub_username
   password = var.octopus_feed_dockerhub_password
 }
+
+resource "octopusdeploy_feed" "ghcr" {
+  name = "GitHub Container Registry Feed TF"
+  feed_type = "Docker"
+  feed_uri = "https://ghcr.io"
+}
