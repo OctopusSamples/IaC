@@ -86,6 +86,8 @@ sudo apt install openjdk-17-jdk -y
 
 # Pull worker tools image
 sudo docker pull #{Project.Docker.WorkerToolImage}:#{Project.Docker.WorkerToolImageTag}
+sudo docker pull ghcr.io/octopusdeploylabs/azure-workertools
+sudo docker pull ghcr.io/octopusdeploylabs/k8s-workertools
 
 # Configure and register worker
 sudo /opt/octopus/tentacle/Tentacle create-instance --config "$configFilePath" --instance "$name"
