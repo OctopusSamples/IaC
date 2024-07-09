@@ -208,3 +208,12 @@ variable "octopus_feed_dockerhub_password" {
     type = string
     sensitive = true
 }
+
+variable "octopus_feed_ghcr_username" {
+    type = string
+}
+
+variable "octpopus_feed_ghcr_password" {
+    type = string
+    sensitive = true
+}
