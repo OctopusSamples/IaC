@@ -8,7 +8,7 @@ resource "azurerm_mariadb_server" "permanent" {
 
   sku_name                     = "B_Gen5_1"
   version                      = "10.3"
-  backup_retention_days        = 1
+  backup_retention_days        = 7
   geo_redundant_backup_enabled = false
   ssl_enforcement_enabled = true
   storage_mb = 5120
