@@ -6,7 +6,7 @@ resource "azurerm_mariadb_server" "permanent" {
   administrator_login    = var.azure_mariadb_administrator_name
   administrator_login_password = var.azure_mariadb_administrator_password
 
-  sku_name                     = "B_Standard_B1ms"
+  sku_name                     = "B_Gen5_1"
   version                      = "10.4"
   backup_retention_days        = 1
   geo_redundant_backup_enabled = false
