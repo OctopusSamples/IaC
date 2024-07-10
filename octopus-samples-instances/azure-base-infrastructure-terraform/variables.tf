@@ -77,3 +77,15 @@ variable "azure_mysql_administrator_name" {
 variable "azure_mysql_administrator_password" {
     type = string
 }
+
+variable "azure_mariadb_administrator_name" {
+    type = string
+}
+
+variable "azure_mariadb_administrator_password" {
+    type = string
+}
+
+variable "azure_mariadb_name" {
+    type = string
+}
