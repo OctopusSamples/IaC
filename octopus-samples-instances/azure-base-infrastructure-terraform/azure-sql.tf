@@ -31,10 +31,9 @@ resource "azurerm_mssql_virtual_network_rule" "permanent" {
     subnet_id                       = azurerm_subnet.default.id
 }
 
-resource "azurerm_sql_firewall_rule" "all_azure_resources" {
+resource "azurerm_mssql_firewall_rule" "all_azure_resources" {
+  server_id           = azurerm_mssql_server.permanent.id 
   name                = "all-azure-resources"
-  resource_group_name = azurerm_resource_group.permanent.name
-  server_name         = azurerm_mssql_server.permanent.name
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
