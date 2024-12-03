@@ -1,6 +1,7 @@
 terraform {
 
-  required_version = ">=0.12"
+  #required_version = ">=0.12"
+  required_version = "~> 1.9.8"
   
   required_providers {
     aws = {
@@ -13,7 +14,8 @@ terraform {
     bucket = "#{Project.AWS.Backend.Bucket}"
     key = "#{Project.AWS.Backend.Key}"
     region = "#{Project.AWS.Backend.Region}"
-  }  
+  }
+    
 }
 
 # Configure the AWS Provider

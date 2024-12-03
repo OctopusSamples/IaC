@@ -11,6 +11,8 @@ terraform {
     key = "#{Project.AWS.Backend.Key}"
     region = "#{Project.AWS.Backend.Region}"
   }
+
+  required_version = "~> 1.9.8"
 }
 
 provider "google" {
