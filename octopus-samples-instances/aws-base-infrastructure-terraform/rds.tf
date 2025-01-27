@@ -5,7 +5,7 @@ resource "aws_db_subnet_group" "samples_rds_subnet_group" {
 
 resource "aws_db_parameter_group" "solutions_mariadb" {
   name = "solutions-mariadb"
-  family = "mariadb10.11"
+  family = "mariadb11.4"
     parameter {
     name  = "log_bin_trust_function_creators"
     value = "1"
