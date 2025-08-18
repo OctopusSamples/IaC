@@ -4,7 +4,8 @@ param
     $OctopusApiKey,
     $RolesAllowedCsv,
     $TeamName,
-    $OptionalSpaceId
+    $OptionalSpaceId,
+    $OptionalIgnoreSpaceList
 )
 
 function Invoke-OctopusApi
@@ -78,6 +79,8 @@ function Invoke-OctopusApi
 
 $rolesAllowedSplit = @($RolesAllowedCsv -split ",")
 
+$ignoreSpaces = $OptionalIgnoreSpaceList.Split([Environment]::NewLine)
+
 $roleList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "userroles/all" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
 $rolesAllowedList = @()
 
@@ -135,6 +138,12 @@ else
     $spacesList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "spaces?skip=0&take=1000" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
     foreach ($space in $spacesList.Items)
     {    	
+        if ($ignoreSpaces -contains $space.Name)
+        {
+        	Write-Verbose "Ignoring space $($space.Name) as it is in the ignore list"
+            continue
+        }
+        
         Write-Verbose "Checking to see if $($space.Id) is already in the list"
         if ($spaceIdList -notcontains $space.Id)
         {
