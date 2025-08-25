@@ -79,7 +79,14 @@ function Invoke-OctopusApi
 
 $rolesAllowedSplit = @($RolesAllowedCsv -split ",")
 
-$ignoreSpaces = $OptionalIgnoreSpaceList.Split([Environment]::NewLine)
+if ([string]::IsNullOrWhiteSpace($OptionalIgnoreSpaceList) -eq $false)
+{
+    $ignoreSpaces = $OptionalIgnoreSpaceList.Split([Environment]::NewLine)
+}
+else
+{
+    $ignoreSpaces = @()
+}
 
 $roleList = Invoke-OctopusApi -OctopusUrl $octopusUrl -endPoint "userroles/all" -spaceId $null -apiKey $OctopusApiKey -item $null -method "GET"
 $rolesAllowedList = @()
