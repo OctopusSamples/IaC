@@ -1,3 +1,7 @@
+data "google_service_account" "database_service_account" {
+  account_id = var.database_service_account_name
+}
+
 resource "google_compute_instance" "vm_instance" {
   count        = var.instance_count
   name         = "${var.instance_name}-${count.index + 1}"
@@ -21,7 +25,7 @@ resource "google_compute_instance" "vm_instance" {
   metadata_startup_script = file("../configure-tentacle.sh")
 
   service_account {
-    email = google_service_account.database_service_account.email
+    email = data.google_service_account.database_service_account.email
     scopes = ["cloud-platform"]
   }
 
