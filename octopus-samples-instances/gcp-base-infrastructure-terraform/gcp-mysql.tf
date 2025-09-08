@@ -13,6 +13,10 @@ resource "google_sql_database_instance" "mysql" {
       value = "on"
     }
   }
+
+  timeouts {
+    create = "30m" # Timeout for creating the instance
+  }
 }
 
 resource "google_sql_user" "mysql_root" {
