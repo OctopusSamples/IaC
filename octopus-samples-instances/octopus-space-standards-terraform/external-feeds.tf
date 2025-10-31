@@ -13,6 +13,8 @@ resource "octopusdeploy_docker_container_registry" "docker" {
   feed_uri = "https://index.docker.io"
   username = var.octopus_feed_dockerhub_username
   password = var.octopus_feed_dockerhub_password
+  download_attempts = 3 
+  download_retry_backoff_seconds = 10  
 }
 
 resource "octopusdeploy_docker_container_registry" "ghcr" {
@@ -20,4 +22,6 @@ resource "octopusdeploy_docker_container_registry" "ghcr" {
   feed_uri = "https://ghcr.io"
   username = var.octopus_feed_ghcr_username
   password = var.octopus_feed_ghcr_password
+  download_attempts = 3 
+  download_retry_backoff_seconds = 10    
 }
