@@ -25,3 +25,8 @@ resource "octopusdeploy_docker_container_registry" "ghcr" {
   download_attempts = 3 
   download_retry_backoff_seconds = 10    
 }
+
+resource "octopusdeploy_maven_feed" "maven" {
+  name = "Maven Feed TF"  
+  feed_uri = "http://octopus-sales-public-maven-repo.s3-website-ap-southeast-2.amazonaws.com/snapshot"
+}
