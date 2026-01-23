@@ -27,6 +27,13 @@ resource "octopusdeploy_docker_container_registry" "ghcr" {
 }
 
 resource "octopusdeploy_maven_feed" "maven" {
-  name = "Maven Feed TF"  
+  name = "Octopus Maven Feed"  
   feed_uri = "http://octopus-sales-public-maven-repo.s3-website-ap-southeast-2.amazonaws.com/snapshot"
+}
+
+resource "octopusdeploy_docker_container_registry" "ghcr_anonymous" {
+  name = "GHCR Anonymous"
+  feed_uri = "https://ghcrfacade-a6awccayfpcpg4cg.eastus-01.azurewebsites.net"
+  download_attempts = 3 
+  download_retry_backoff_seconds = 10    
 }
