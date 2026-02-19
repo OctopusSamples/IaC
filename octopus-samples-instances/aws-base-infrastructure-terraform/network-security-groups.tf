@@ -26,7 +26,8 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }  
 
@@ -35,7 +36,8 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 1433
     to_port          = 1433
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
   }
 
@@ -44,7 +46,8 @@ resource "aws_security_group" "samples_security_group" {
     from_port        = 5432
     to_port          = 5432
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    #cidr_blocks      = [aws_vpc.solutions_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     #ipv6_cidr_blocks = [aws_vpc.solutions_vpc.ipv6_cidr_block]
     
   }
