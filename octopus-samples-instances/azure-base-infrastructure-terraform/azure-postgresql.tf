@@ -2,7 +2,7 @@ resource "azurerm_postgresql_flexible_server" "permanent" {
   name                = var.azure_postresql_name
   resource_group_name = azurerm_resource_group.permanent.name
   location            = azurerm_resource_group.permanent.location
-
+  public_network_access_enabled = true
   administrator_login    = var.azure_postgresql_administrator_name
   administrator_password = var.azure_postgresql_administrator_password
 

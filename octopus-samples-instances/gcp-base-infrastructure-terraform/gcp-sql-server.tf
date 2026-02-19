@@ -8,6 +8,9 @@ resource "google_sql_database_instance" "mssql" {
     # Second-generation instance tiers are based on the machine
     # type. See argument reference below.
     tier = "db-custom-1-3840"
+    ip_configuration {
+      ipv4_enabled = true
+    }    
   }
 }
 

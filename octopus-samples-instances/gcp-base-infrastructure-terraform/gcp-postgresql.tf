@@ -12,6 +12,9 @@ resource "google_sql_database_instance" "postgresql" {
       name  = "cloudsql.iam_authentication"
       value = "on"
     }
+    ip_configuration {
+      ipv4_enabled = true
+    }    
   }
 }
 

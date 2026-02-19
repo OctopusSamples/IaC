@@ -91,3 +91,31 @@ resource "azurerm_network_security_rule" "webserver_fourthly" {
     resource_group_name         = azurerm_resource_group.permanent.name
     network_security_group_name = azurerm_network_security_group.permanent.name
 }
+
+resource "azurerm_network_security_rule" "mysql_db" {
+    name                        = "MySQL_DB"
+    priority                    = 700
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"        
+    source_port_range           = "*"
+    destination_port_range      = "3306"
+    source_address_prefix       = "*"
+    destination_address_prefix  = "*"
+    resource_group_name         = azurerm_resource_group.permanent.name
+    network_security_group_name = azurerm_network_security_group.permanent.name
+}
+
+resource "azurerm_network_security_rule" "postgresql_db" {
+    name                        = "PostgreSQL_DB"
+    priority                    = 800
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"        
+    source_port_range           = "*"
+    destination_port_range      = "5432"
+    source_address_prefix       = "*"
+    destination_address_prefix  = "*"
+    resource_group_name         = azurerm_resource_group.permanent.name
+    network_security_group_name = azurerm_network_security_group.permanent.name
+}
