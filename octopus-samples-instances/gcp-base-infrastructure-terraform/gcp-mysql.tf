@@ -19,6 +19,7 @@ resource "google_sql_database_instance" "mysql" {
         name = "allow-all"
         value = "0.0.0.0/0"
     }
+    }
   }
 
   timeouts {
