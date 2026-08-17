@@ -14,7 +14,6 @@ resource "azurerm_subnet" "default" {
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     address_prefixes                = tolist([var.azure_virtual_network_address_space_default_subnet])
-#    service_endpoints               = ["Microsoft.AzureCosmosDB", "Microsoft.KeyVault", "Microsoft.Sql", "Microsoft.Storage", "Microsoft.Web"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "default_subnet_security_group" {
