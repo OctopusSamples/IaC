@@ -14,6 +14,22 @@ resource "azurerm_subnet" "default" {
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     address_prefixes                = tolist([var.azure_virtual_network_address_space_default_subnet])
+    #service_endpoints               = ["Microsoft.AzureCosmosDB", "Microsoft.KeyVault", "Microsoft.Sql", "Microsoft.Storage", "Microsoft.Web"]
+    service_endpoint {
+        service = "Microsoft.Sql"
+    }
+    service_endpoint {
+        service = "Microsoft.Storage"
+    }
+    service_endpoint {
+        service = "Microsoft.Web"
+    }
+    service_endpoint {
+        service = "Microsoft.AzureCosmosDB"
+    }
+    service_endpoint {
+        service = "Microsoft.KeyVault"
+    }
 }
 
 resource "azurerm_subnet_network_security_group_association" "default_subnet_security_group" {
@@ -47,6 +63,22 @@ resource "azurerm_subnet" "nosqlendpoint" {
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     address_prefixes                = tolist([var.azure_virtual_network_address_space_nosqlendpoint_subnet])
+#    service_endpoints               = ["Microsoft.AzureCosmosDB", "Microsoft.KeyVault", "Microsoft.Storage", "Microsoft.Web"]
+    service_endpoint {
+        service = "Microsoft.Sql"
+    }
+    service_endpoint {
+        service = "Microsoft.Storage"
+    }
+    service_endpoint {
+        service = "Microsoft.Web"
+    }
+    service_endpoint {
+        service = "Microsoft.AzureCosmosDB"
+    }
+    service_endpoint {
+        service = "Microsoft.KeyVault"
+    }
 }
 
 resource "azurerm_subnet_network_security_group_association" "nosqlendpoint_subnet_security_group" {
