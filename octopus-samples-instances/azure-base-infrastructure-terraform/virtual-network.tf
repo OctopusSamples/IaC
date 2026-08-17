@@ -47,7 +47,6 @@ resource "azurerm_subnet" "nosqlendpoint" {
     resource_group_name             = azurerm_resource_group.permanent.name
     virtual_network_name            = azurerm_virtual_network.permanent.name
     address_prefixes                = tolist([var.azure_virtual_network_address_space_nosqlendpoint_subnet])
-    service_endpoints               = ["Microsoft.AzureCosmosDB", "Microsoft.KeyVault", "Microsoft.Storage", "Microsoft.Web"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "nosqlendpoint_subnet_security_group" {
